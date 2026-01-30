@@ -104,7 +104,12 @@ DB_PASSWORD=your_password
 
 5. **Run migrations and seed data**
 ```bash
-php artisan migrate --seed
+# Fresh install with all data
+php artisan migrate:fresh --seed
+
+# Or run migrations and seeders separately
+php artisan migrate
+php artisan db:seed
 ```
 
 6. **Start the development server**
@@ -112,7 +117,9 @@ php artisan migrate --seed
 php artisan serve
 ```
 
-Visit `http://localhost:8000` to access the application.
+**🎯 Ready to test!**
+- **Admin Panel**: http://localhost:8000/admin/login (admin@parking.com / password)
+- **Visitor Panel**: http://localhost:8000/visitor/login (ahmed@example.com / password123)
 
 ## 🔧 Configuration
 
@@ -219,6 +226,54 @@ php artisan migrate:rollback
 
 # Fresh migration with seeding
 php artisan migrate:fresh --seed
+
+# Run individual seeders
+php artisan db:seed --class=UserSeeder
+php artisan db:seed --class=ParkingLocationSeeder
+php artisan db:seed --class=VehicleSeeder
+php artisan db:seed --class=BookingSeeder
+php artisan db:seed --class=PaymentSeeder
+
+# Quick test setup (minimal data for immediate testing)
+php artisan db:seed --class=QuickTestSeeder
+```
+
+### 🌱 Synchronized Seeder System
+
+Our modular seeder system provides comprehensive test data with smart dependency management:
+
+#### **Core Seeders**
+- **DefaultRolesAndPermissionsSeeder**: Creates roles, permissions, and default admin user
+- **SystemSettingsSeeder**: Configures system-wide settings and preferences
+
+#### **Business Module Seeders**
+- **ParkingLocationSeeder**: Creates 5 parking locations with 460+ slots total
+- **UserSeeder**: Creates test users (visitors, admin, operator) with proper roles
+- **VehicleSeeder**: Creates verified test vehicles for users
+- **BookingSeeder**: Creates 30 days of historical booking data with various statuses
+- **PaymentSeeder**: Creates payment records for all bookings with realistic data
+- **QuickTestSeeder**: Minimal setup for immediate testing (single user with active booking)
+
+#### **Seeder Features**
+- **🔄 Idempotent**: Safe to run multiple times - skips existing records
+- **📊 Smart Dependencies**: Automatically checks for required data before proceeding
+- **🎯 Independent**: Each seeder can be run individually for targeted testing
+- **📋 Comprehensive Logging**: Shows exactly what was created vs. skipped
+- **🚀 Quick Setup**: Use QuickTestSeeder for immediate testing needs
+
+#### **Default Test Credentials**
+```
+Admin Panel:
+- Email: admin@parking.com
+- Password: password
+
+Test Users:
+- Email: ahmed@example.com / password123
+- Email: test@example.com / password (from QuickTestSeeder)
+
+URLs:
+- Admin: http://localhost:8000/admin/login
+- Visitor: http://localhost:8000/visitor/login
 ```
 
 ## 📊 API Documentation

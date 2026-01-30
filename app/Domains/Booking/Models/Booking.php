@@ -136,14 +136,6 @@ class Booking extends Model
     }
 
     /**
-     * Vehicle entries relationship.
-     */
-    public function vehicleEntries()
-    {
-        return $this->hasMany(VehicleEntry::class);
-    }
-
-    /**
      * Vehicle exits relationship.
      */
     public function vehicleExits()
