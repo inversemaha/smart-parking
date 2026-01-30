@@ -1,0 +1,75 @@
+<?php
+
+return [
+    'parking' => 'পার্কিং',
+    'parking_lot' => 'পার্কিং লট',
+    'parking_space' => 'পার্কিং স্থান',
+    'parking_slot' => 'পার্কিং স্লট',
+    'slot_number' => 'স্লট নম্বর',
+    'location' => 'অবস্থান',
+    'capacity' => 'ধারণক্ষমতা',
+    'available_slots' => 'উপলব্ধ স্লট',
+    'occupied_slots' => 'দখলকৃত স্লট',
+    'total_slots' => 'মোট স্লট',
+
+    // Booking
+    'booking' => 'বুকিং',
+    'book_slot' => 'স্লট বুক করুন',
+    'booking_time' => 'বুকিং সময়',
+    'start_time' => 'শুরুর সময়',
+    'end_time' => 'শেষের সময়',
+    'duration' => 'সময়কাল',
+    'hourly_rate' => 'ঘন্টা প্রতি হার',
+    'booking_fee' => 'বুকিং ফি',
+
+    // Entry/Exit
+    'entry' => 'প্রবেশ',
+    'exit' => 'নির্গমন',
+    'entry_time' => 'প্রবেশের সময়',
+    'exit_time' => 'নির্গমনের সময়',
+    'gate_number' => 'গেট নম্বর',
+
+    // Status
+    'slot_available' => 'উপলব্ধ',
+    'slot_occupied' => 'দখলকৃত',
+    'slot_reserved' => 'সংরক্ষিত',
+    'slot_maintenance' => 'রক্ষণাবেক্ষণাধীন',
+
+    // Messages
+    'slot_booked_successfully' => 'পার্কিং স্লট সফলভাবে বুক হয়েছে।',
+    'slot_cancelled_successfully' => 'বুকিং সফলভাবে বাতিল হয়েছে।',
+    'entry_recorded' => 'যানবাহন প্রবেশ সফলভাবে রেকর্ড হয়েছে।',
+    'exit_recorded' => 'যানবাহন নির্গমন সফলভাবে রেকর্ড হয়েছে।',
+    'no_available_slots' => 'এই মুহূর্তে কোন পার্কিং স্লট উপলব্ধ নেই।',
+    'booking_expired' => 'আপনার বুকিংের মেয়াদ শেষ হয়ে গেছে।',
+
+    // Welcome page
+    'welcome_title' => 'স্মার্ট পার্কিং সহজ করে তোলা',
+    'welcome_description' => 'আমাদের বুদ্ধিমান পার্কিং ব্যবস্থাপনা সিস্টেমের সাথে অনায়াসে পার্কিং স্পট খুঁজুন, বুক করুন এবং পেমেন্ট করুন।',
+    'feature_booking' => 'সহজ বুকিং',
+    'feature_booking_desc' => 'আমাদের সহজ রিজার্ভেশন সিস্টেমের সাথে আগাম পার্কিং স্পট বুক করুন।',
+    'feature_security' => 'নিরাপদ পার্কিং',
+    'feature_security_desc' => 'উন্নত নিরাপত্তা ব্যবস্থা সহ ২৪/৭ নিরীক্ষিত পার্কিং এলাকা।',
+    'feature_payment' => 'ডিজিটাল পেমেন্ট',
+    'feature_payment_desc' => 'একাধিক পেমেন্ট অপশন সহ নির্বিঘ্ন পেমেন্ট প্রক্রিয়া।',
+    'go_to_dashboard' => 'ড্যাশবোর্ডে যান',
+    'book_now' => 'এখনই বুক করুন',
+    'get_started' => 'শুরু করুন',
+    'sign_in' => 'সাইন ইন',
+    'about' => 'সম্পর্কে',
+    'footer_about' => 'বুদ্ধিমান ব্যবস্থাপনা এবং ব্যবহারকারী-বান্ধব ইন্টারফেস সহ আধুনিক শহরের জন্য স্মার্ট পার্কিং সমাধান।',
+    'services' => 'সেবাসমূহ',
+    'service_parking' => 'পার্কিং ব্যবস্থাপনা',
+    'service_booking' => 'অনলাইন বুকিং',
+    'service_payment' => 'ডিজিটাল পেমেন্ট',
+    'support' => 'সহায়তা',
+    'contact_us' => 'যোগাযোগ করুন',
+    'help_center' => 'সহায়তা কেন্দ্র',
+    'faq' => 'প্রায়শই জিজ্ঞাসিত প্রশ্ন',
+    'legal' => 'আইনি',
+    'privacy_policy' => 'গোপনীয়তা নীতি',
+    'terms_service' => 'সেবার শর্তাবলী',
+    'all_rights_reserved' => 'সমস্ত অধিকার সংরক্ষিত।',
+    'find_reserve_slot' => 'পার্কিং স্লট খুঁজুন এবং রিজার্ভ করুন',
+    'slot' => 'স্লট',
+];

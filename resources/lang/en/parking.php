@@ -1,0 +1,75 @@
+<?php
+
+return [
+    'parking' => 'Parking',
+    'parking_lot' => 'Parking Lot',
+    'parking_space' => 'Parking Space',
+    'parking_slot' => 'Parking Slot',
+    'slot_number' => 'Slot Number',
+    'location' => 'Location',
+    'capacity' => 'Capacity',
+    'available_slots' => 'Available Slots',
+    'occupied_slots' => 'Occupied Slots',
+    'total_slots' => 'Total Slots',
+
+    // Booking
+    'booking' => 'Booking',
+    'book_slot' => 'Book Slot',
+    'booking_time' => 'Booking Time',
+    'start_time' => 'Start Time',
+    'end_time' => 'End Time',
+    'duration' => 'Duration',
+    'hourly_rate' => 'Hourly Rate',
+    'booking_fee' => 'Booking Fee',
+
+    // Entry/Exit
+    'entry' => 'Entry',
+    'exit' => 'Exit',
+    'entry_time' => 'Entry Time',
+    'exit_time' => 'Exit Time',
+    'gate_number' => 'Gate Number',
+
+    // Status
+    'slot_available' => 'Available',
+    'slot_occupied' => 'Occupied',
+    'slot_reserved' => 'Reserved',
+    'slot_maintenance' => 'Under Maintenance',
+
+    // Messages
+    'slot_booked_successfully' => 'Parking slot booked successfully.',
+    'slot_cancelled_successfully' => 'Booking cancelled successfully.',
+    'entry_recorded' => 'Vehicle entry recorded successfully.',
+    'exit_recorded' => 'Vehicle exit recorded successfully.',
+    'no_available_slots' => 'No parking slots available at this time.',
+    'booking_expired' => 'Your booking has expired.',
+
+    // Welcome page
+    'welcome_title' => 'Smart Parking Made Simple',
+    'welcome_description' => 'Find, book, and pay for parking spots effortlessly with our intelligent parking management system.',
+    'feature_booking' => 'Easy Booking',
+    'feature_booking_desc' => 'Book parking spots in advance with our simple reservation system.',
+    'feature_security' => 'Secure Parking',
+    'feature_security_desc' => '24/7 monitored parking areas with advanced security systems.',
+    'feature_payment' => 'Digital Payment',
+    'feature_payment_desc' => 'Seamless payment processing with multiple payment options.',
+    'go_to_dashboard' => 'Go to Dashboard',
+    'book_now' => 'Book Now',
+    'get_started' => 'Get Started',
+    'sign_in' => 'Sign In',
+    'about' => 'About',
+    'footer_about' => 'Smart parking solution for modern cities with intelligent management and user-friendly interface.',
+    'services' => 'Services',
+    'service_parking' => 'Parking Management',
+    'service_booking' => 'Online Booking',
+    'service_payment' => 'Digital Payment',
+    'support' => 'Support',
+    'contact_us' => 'Contact Us',
+    'help_center' => 'Help Center',
+    'faq' => 'FAQ',
+    'legal' => 'Legal',
+    'privacy_policy' => 'Privacy Policy',
+    'terms_service' => 'Terms of Service',
+    'all_rights_reserved' => 'All rights reserved.',
+    'find_reserve_slot' => 'Find and reserve parking slots',
+    'slot' => 'Slot',
+];
