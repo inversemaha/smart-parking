@@ -2,7 +2,7 @@
 
 namespace App\Shared\Contracts;
 
-use App\Models\Vehicle;
+use App\Domains\Vehicle\Models\Vehicle;
 
 interface VehicleServiceInterface extends ServiceInterface
 {

@@ -2,11 +2,11 @@
 
 namespace App\Jobs;
 
-use App\Models\User;
-use App\Models\Booking;
-use App\Models\Payment;
-use App\Models\Vehicle;
-use App\Models\ParkingSlot;
+use App\Domains\User\Models\User;
+use App\Domains\Booking\Models\Booking;
+use App\Domains\Payment\Models\Payment;
+use App\Domains\Vehicle\Models\Vehicle;
+use App\Domains\Parking\Models\ParkingSlot;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;

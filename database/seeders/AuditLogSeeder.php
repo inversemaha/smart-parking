@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\AuditLog;
+use App\Shared\Models\AuditLog;
 use App\Domains\User\Models\User;
 use App\Domains\Booking\Models\Booking;
 use App\Domains\Parking\Models\ParkingLocation;

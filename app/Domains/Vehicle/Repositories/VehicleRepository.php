@@ -52,6 +52,8 @@ class VehicleRepository implements RepositoryInterface
         }
 
         return $query->count();
+    }
+
     /**
      * Create a new vehicle.
      */
@@ -63,18 +65,10 @@ class VehicleRepository implements RepositoryInterface
     /**
      * Update vehicle.
      */
-    public function update(Vehicle $vehicle, array $data): Vehicle
+    public function update($model, array $data)
     {
-        $vehicle->update($data);
-        return $vehicle->fresh();
-    }
-
-    /**
-     * Find vehicle by ID.
-     */
-    public function find(int $id): ?Vehicle
-    {
-        return $this->model->find($id);
+        $model->update($data);
+        return $model->fresh();
     }
 
     /**
@@ -200,9 +194,9 @@ class VehicleRepository implements RepositoryInterface
     /**
      * Delete vehicle.
      */
-    public function delete(Vehicle $vehicle): bool
+    public function delete($model): bool
     {
-        return $vehicle->delete();
+        return $model->delete();
     }
 
     /**

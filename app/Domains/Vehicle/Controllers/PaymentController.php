@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Domains\Vehicle\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\Payment;
-use App\Services\PaymentService;
-use App\Repositories\PaymentRepository;
+use App\Domains\Payment\Models\Payment;
+use App\Domains\Payment\Services\PaymentService;
+use App\Domains\Payment\Repositories\PaymentRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 

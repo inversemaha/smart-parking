@@ -49,7 +49,7 @@ class VisitorController extends Controller
         // Get basic statistics
         $totalLocations = $this->parkingLocationService->getActiveLocationCount();
         $totalSlots = $this->parkingLocationService->getTotalSlotCount();
-        $availableSlots = $this->parkingLocationService->getAvailableSlotCount();
+        $availableSlots = $this->parkingLocationService->getTotalAvailableSlotCount();
 
         // Get featured/popular locations for display
         $featuredLocations = $this->parkingLocationService->getFeaturedLocations(6);

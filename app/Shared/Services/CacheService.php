@@ -243,7 +243,7 @@ class CacheService
             $results['system_stats'] = 'success';
 
             // Cache parking availability for all areas
-            $parkingAreas = \App\Models\ParkingArea::active()->get();
+            $parkingAreas = \App\Domains\Parking\Models\ParkingArea::active()->get();
             foreach ($parkingAreas as $area) {
                 $availability = $this->generateParkingAvailability($area->id);
                 $this->cacheParkingAvailability($area->id, $availability);
@@ -251,7 +251,7 @@ class CacheService
             $results['parking_availability'] = count($parkingAreas) . ' areas cached';
 
             // Cache recent BRTA verifications
-            $recentVehicles = \App\Models\Vehicle::where('verified_at', '>', now()->subDays(1))
+            $recentVehicles = \App\Domains\Vehicle\Models\Vehicle::where('verified_at', '>', now()->subDays(1))
                 ->limit(100)
                 ->get();
 
@@ -312,14 +312,14 @@ class CacheService
     protected function generateSystemStats(): array
     {
         return [
-            'total_users' => \App\Models\User::count(),
-            'active_bookings' => \App\Models\Booking::where('status', 'active')->count(),
-            'total_vehicles' => \App\Models\Vehicle::count(),
-            'verified_vehicles' => \App\Models\Vehicle::where('verification_status', 'verified')->count(),
-            'total_payments' => \App\Models\Payment::where('status', 'completed')->count(),
-            'total_revenue' => \App\Models\Payment::where('status', 'completed')->sum('amount'),
-            'available_slots' => \App\Models\ParkingSlot::where('status', 'available')->count(),
-            'occupied_slots' => \App\Models\ParkingSlot::where('status', 'occupied')->count(),
+            'total_users' => \App\Domains\User\Models\User::count(),
+            'active_bookings' => \App\Domains\Booking\Models\Booking::where('status', 'active')->count(),
+            'total_vehicles' => \App\Domains\Vehicle\Models\Vehicle::count(),
+            'verified_vehicles' => \App\Domains\Vehicle\Models\Vehicle::where('verification_status', 'verified')->count(),
+            'total_payments' => \App\Domains\Payment\Models\Payment::where('status', 'completed')->count(),
+            'total_revenue' => \App\Domains\Payment\Models\Payment::where('status', 'completed')->sum('amount'),
+            'available_slots' => \App\Domains\Parking\Models\ParkingSlot::where('status', 'available')->count(),
+            'occupied_slots' => \App\Domains\Parking\Models\ParkingSlot::where('status', 'occupied')->count(),
             'cached_at' => now()->toISOString(),
         ];
     }
@@ -329,7 +329,7 @@ class CacheService
      */
     protected function generateParkingAvailability(int $parkingAreaId): array
     {
-        $area = \App\Models\ParkingArea::find($parkingAreaId);
+        $area = \App\Domains\Parking\Models\ParkingArea::find($parkingAreaId);
 
         if (!$area) {
             return [];

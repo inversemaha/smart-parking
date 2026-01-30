@@ -2,7 +2,7 @@
 
 namespace App\Shared\Contracts;
 
-use App\Models\Booking;
+use App\Domains\Booking\Models\Booking;
 
 interface BookingServiceInterface extends ServiceInterface
 {

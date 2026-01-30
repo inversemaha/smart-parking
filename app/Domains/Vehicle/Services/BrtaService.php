@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Services;
+namespace App\Domains\Vehicle\Services;
 
-use App\Models\Vehicle;
-use App\Models\BrtaConfig;
-use App\Models\BrtaVerificationLog;
+use App\Domains\Vehicle\Models\Vehicle;
+use App\Domains\Vehicle\Models\BrtaConfig;
+use App\Domains\Vehicle\Models\BrtaVerificationLog;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;

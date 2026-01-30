@@ -2,8 +2,8 @@
 
 namespace App\Jobs;
 
-use App\Models\Payment;
-use App\Models\Booking;
+use App\Domains\Payment\Models\Payment;
+use App\Domains\Booking\Models\Booking;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;

@@ -2,7 +2,7 @@
 
 namespace App\Shared\Services;
 
-use App\Models\AuditLog;
+use App\Domains\Admin\Models\AuditLog;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 

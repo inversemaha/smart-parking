@@ -4,7 +4,7 @@ namespace App\Domains\Payment\Services;
 
 use App\Domains\Payment\Models\Payment;
 use App\Domains\Booking\Models\Booking;
-use App\Repositories\PaymentRepository;
+use App\Domains\Payment\Repositories\PaymentRepository;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;

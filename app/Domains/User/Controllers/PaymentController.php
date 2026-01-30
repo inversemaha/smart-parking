@@ -3,7 +3,7 @@
 namespace App\Domains\User\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\Payment;
+use App\Domains\Payment\Models\Payment;
 use App\Domains\Payment\Services\PaymentService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;

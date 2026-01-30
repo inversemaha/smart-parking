@@ -384,7 +384,7 @@ class ParkingLocationService
     /**
      * Get total available slots across all locations
      */
-    public function getAvailableSlotCount(): int
+    public function getTotalAvailableSlotCount(): int
     {
         return Cache::remember('global_available_slot_count', 300, function () {
             $locations = ParkingLocation::where('is_active', true)->get();

@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
-use App\Models\AuditLog;
+use App\Shared\Models\AuditLog;
 
 class ComprehensiveAuditMiddleware
 {

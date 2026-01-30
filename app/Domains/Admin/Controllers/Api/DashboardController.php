@@ -7,7 +7,7 @@ use App\Domains\User\Models\User;
 use App\Domains\Vehicle\Models\Vehicle;
 use App\Domains\Booking\Models\Booking;
 use App\Domains\Payment\Models\Payment;
-use App\Models\AuditLog;
+use App\Shared\Models\AuditLog;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;

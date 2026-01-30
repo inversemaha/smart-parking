@@ -4,10 +4,10 @@ namespace App\Domains\Admin\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\SystemSetting;
-use App\Models\User;
-use App\Models\Role;
-use App\Models\Permission;
-use App\Models\Vehicle;
+use App\Domains\User\Models\User;
+use App\Domains\User\Models\Role;
+use App\Domains\User\Models\Permission;
+use App\Domains\Vehicle\Models\Vehicle;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Validator;

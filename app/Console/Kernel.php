@@ -60,14 +60,14 @@ class Kernel extends ConsoleKernel
 
         // Clear old audit logs (older than 90 days)
         $schedule->call(function () {
-            \App\Models\AuditLog::where('created_at', '<', now()->subDays(90))->delete();
+            \App\Domains\Admin\Models\AuditLog::where('created_at', '<', now()->subDays(90))->delete();
         })->daily()
             ->name('cleanup-old-audit-logs')
             ->appendOutputTo(storage_path('logs/cleanup.log'));
 
         // Send booking reminders
         $schedule->call(function () {
-            $bookings = \App\Models\Booking::where('status', 'confirmed')
+            $bookings = \App\Domains\Booking\Models\Booking::where('status', 'confirmed')
                 ->where('start_time', '>', now())
                 ->where('start_time', '<=', now()->addMinutes(30))
                 ->whereDoesntHave('notifications', function ($query) {
@@ -85,7 +85,7 @@ class Kernel extends ConsoleKernel
 
         // Send booking end reminders
         $schedule->call(function () {
-            $bookings = \App\Models\Booking::where('status', 'active')
+            $bookings = \App\Domains\Booking\Models\Booking::where('status', 'active')
                 ->where('end_time', '>', now())
                 ->where('end_time', '<=', now()->addMinutes(15))
                 ->whereDoesntHave('notifications', function ($query) {
@@ -103,7 +103,7 @@ class Kernel extends ConsoleKernel
 
         // Monitor overdue bookings
         $schedule->call(function () {
-            $overdueBookings = \App\Models\Booking::where('status', 'active')
+            $overdueBookings = \App\Domains\Booking\Models\Booking::where('status', 'active')
                 ->where('end_time', '<', now())
                 ->get();
 

@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\Booking;
-use App\Models\User;
+use App\Domains\Booking\Models\Booking;
+use App\Domains\User\Models\User;
 use Illuminate\Auth\Access\Response;
 
 class BookingPolicy

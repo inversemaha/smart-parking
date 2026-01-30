@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
-use App\Models\ParkingSlot;
-use App\Models\ParkingLocation;
+use App\Domains\Parking\Models\ParkingSlot;
+use App\Domains\Parking\Models\ParkingLocation;
 use App\Models\SystemSetting;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Log;

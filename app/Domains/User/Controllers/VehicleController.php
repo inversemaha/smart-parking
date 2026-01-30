@@ -3,7 +3,7 @@
 namespace App\Domains\User\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\Vehicle;
+use App\Domains\Vehicle\Models\Vehicle;
 use App\Domains\Vehicle\Services\VehicleService;
 use App\Shared\DTOs\VehicleDTO;
 use Illuminate\Http\Request;

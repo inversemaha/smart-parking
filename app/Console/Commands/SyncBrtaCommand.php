@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use App\Models\Vehicle;
+use App\Domains\Vehicle\Models\Vehicle;
 use App\Shared\Jobs\ProcessBrtaVerification;
 
 class SyncBrtaCommand extends Command

@@ -43,7 +43,7 @@ Artisan::command('parking:sync-brta {--limit=50}', function () {
     $this->info("Syncing BRTA data for {$limit} pending vehicles...");
 
     // Get pending vehicles and dispatch BRTA verification jobs
-    $vehicles = \App\Models\Vehicle::where('verification_status', 'pending')
+    $vehicles = \App\Domains\Vehicle\Models\Vehicle::where('verification_status', 'pending')
         ->limit($limit)
         ->get();
 

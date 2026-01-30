@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Domains\Payment\Repositories;
 
-use App\Models\Payment;
+use App\Domains\Payment\Models\Payment;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -26,10 +26,10 @@ class PaymentRepository
     /**
      * Update payment.
      */
-    public function update(Payment $payment, array $data): Payment
+    public function update($model, array $data)
     {
-        $payment->update($data);
-        return $payment->fresh();
+        $model->update($data);
+        return $model->fresh();
     }
 
     /**

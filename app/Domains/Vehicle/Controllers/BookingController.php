@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Domains\Vehicle\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\Booking;
-use App\Models\ParkingLocation;
-use App\Services\BookingService;
-use App\Repositories\BookingRepository;
-use App\Repositories\VehicleRepository;
+use App\Domains\Booking\Models\Booking;
+use App\Domains\Parking\Models\ParkingLocation;
+use App\Domains\Booking\Services\BookingService;
+use App\Domains\Booking\Repositories\BookingRepository;
+use App\Domains\Vehicle\Repositories\VehicleRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Gate;
@@ -312,7 +312,7 @@ class BookingController extends Controller
             $startTime = \Carbon\Carbon::parse($request->start_time);
             $endTime = \Carbon\Carbon::parse($request->end_time);
 
-            $availableSlot = app(\App\Repositories\ParkingSlotRepository::class)
+            $availableSlot = app(\App\Domains\Parking\Repositories\ParkingSlotRepository::class)
                 ->findAvailableSlot(
                     $request->parking_location_id,
                     $request->vehicle_type,
@@ -360,7 +360,7 @@ class BookingController extends Controller
 
             // Add availability info for each location
             $locations->each(function ($location) {
-                $availableSlots = app(\App\Repositories\ParkingSlotRepository::class)
+                $availableSlots = app(\App\Domains\Parking\Repositories\ParkingSlotRepository::class)
                     ->getAvailableSlotsByType($location->id);
 
                 $location->available_slots = $availableSlots;

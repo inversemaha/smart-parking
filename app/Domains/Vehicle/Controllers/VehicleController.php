@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Domains\Vehicle\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\Vehicle;
-use App\Services\VehicleService;
-use App\Repositories\VehicleRepository;
+use App\Domains\Vehicle\Models\Vehicle;
+use App\Domains\Vehicle\Services\VehicleService;
+use App\Domains\Vehicle\Repositories\VehicleRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Gate;

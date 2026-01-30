@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Domains\Parking\Repositories;
 
-use App\Models\ParkingSlot;
-use App\Models\ParkingLocation;
+use App\Domains\Parking\Models\ParkingSlot;
+use App\Domains\Parking\Models\ParkingLocation;
 use Illuminate\Database\Eloquent\Collection;
 use Carbon\Carbon;
 
@@ -27,10 +27,10 @@ class ParkingSlotRepository
     /**
      * Update parking slot.
      */
-    public function update(ParkingSlot $slot, array $data): ParkingSlot
+    public function update($model, array $data)
     {
-        $slot->update($data);
-        return $slot->fresh();
+        $model->update($data);
+        return $model->fresh();
     }
 
     /**

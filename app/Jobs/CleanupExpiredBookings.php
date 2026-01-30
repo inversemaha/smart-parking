@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Models\Booking;
+use App\Domains\Booking\Models\Booking;
 use App\Models\SystemSetting;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;

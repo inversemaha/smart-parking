@@ -10,7 +10,7 @@ use App\Domains\Parking\Models\ParkingLocation;
 use App\Domains\Parking\Models\ParkingSlot;
 use App\Domains\Booking\Models\Booking;
 use App\Domains\Payment\Models\Payment;
-use App\Models\AuditLog;
+use App\Shared\Models\AuditLog;
 use Carbon\Carbon;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;

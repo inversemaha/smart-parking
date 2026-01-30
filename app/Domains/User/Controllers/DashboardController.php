@@ -111,10 +111,10 @@ class DashboardController extends Controller
     protected function getAdminKPIs(): array
     {
         return [
-            'total_users' => \App\Models\User::count(),
-            'total_vehicles' => \App\Models\Vehicle::count(),
-            'active_bookings' => \App\Models\Booking::where('status', 'active')->count(),
-            'total_revenue' => \App\Models\Payment::where('status', 'completed')->sum('amount'),
+            'total_users' => \App\Domains\User\Models\User::count(),
+            'total_vehicles' => \App\Domains\Vehicle\Models\Vehicle::count(),
+            'active_bookings' => \App\Domains\Booking\Models\Booking::where('status', 'active')->count(),
+            'total_revenue' => \App\Domains\Payment\Models\Payment::where('status', 'completed')->sum('amount'),
         ];
     }
 

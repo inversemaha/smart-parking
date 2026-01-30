@@ -2,8 +2,8 @@
 
 namespace App\Shared\Contracts;
 
-use App\Models\Payment;
-use App\Models\Booking;
+use App\Domains\Payment\Models\Payment;
+use App\Domains\Booking\Models\Booking;
 
 interface PaymentServiceInterface extends ServiceInterface
 {

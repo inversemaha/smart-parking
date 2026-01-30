@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Domains\Booking\Repositories;
 
-use App\Models\Booking;
+use App\Domains\Booking\Models\Booking;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 use Carbon\Carbon;
@@ -27,10 +27,10 @@ class BookingRepository
     /**
      * Update booking.
      */
-    public function update(Booking $booking, array $data): Booking
+    public function update($model, array $data)
     {
-        $booking->update($data);
-        return $booking->fresh();
+        $model->update($data);
+        return $model->fresh();
     }
 
     /**
