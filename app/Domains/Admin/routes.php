@@ -2,17 +2,17 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Domains\Admin\Controllers\AdminController;
-use App\Domains\Admin\Controllers\DashboardController;
+use App\Domains\Admin\Controllers\Api\DashboardController as ApiDashboardController;
 use App\Domains\Admin\Controllers\ReportController;
 use App\Domains\Admin\Controllers\AuditLogController;
 
 // Admin dashboard routes
 Route::prefix('api/admin/dashboard')->middleware(['auth:sanctum', 'role:admin'])->group(function () {
-    Route::get('/', [DashboardController::class, 'index']);
-    Route::get('/statistics', [DashboardController::class, 'getStatistics']);
-    Route::get('/recent-activities', [DashboardController::class, 'getRecentActivities']);
-    Route::get('/revenue-stats', [DashboardController::class, 'getRevenueStats']);
-    Route::get('/occupancy-stats', [DashboardController::class, 'getOccupancyStats']);
+    Route::get('/', [ApiDashboardController::class, 'index']);
+    Route::get('/statistics', [ApiDashboardController::class, 'getStatistics']);
+    Route::get('/recent-activities', [ApiDashboardController::class, 'getRecentActivities']);
+    Route::get('/revenue-stats', [ApiDashboardController::class, 'getRevenueStats']);
+    Route::get('/occupancy-stats', [ApiDashboardController::class, 'getOccupancyStats']);
 });
 
 // User management

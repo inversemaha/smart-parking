@@ -7,14 +7,14 @@
         <div class="flex items-center justify-between">
             <div>
                 <h1 class="text-2xl font-bold text-gray-900">{{ __('general.dashboard') }}</h1>
-                <p class="text-gray-600 mt-1">{{ __('general.welcome_back') }}, {{ Auth::user()->first_name }}!</p>
+                <p class="text-gray-600 mt-1">{{ __('user.welcome_back') }}, {{ Auth::user()->name }}!</p>
             </div>
             <div class="flex items-center space-x-4">
                 <div class="bg-blue-50 text-blue-700 px-4 py-2 rounded-lg">
-                    <span class="text-sm font-medium">{{ __('general.total_vehicles') }}: {{ $totalVehicles }}</span>
+                    <span class="text-sm font-medium">{{ __('vehicles.total_vehicles') }}: {{ $totalVehicles }}</span>
                 </div>
                 <div class="bg-green-50 text-green-700 px-4 py-2 rounded-lg">
-                    <span class="text-sm font-medium">{{ __('general.active_bookings') }}: {{ $activeBookings }}</span>
+                    <span class="text-sm font-medium">{{ __('booking.active_bookings') }}: {{ $activeBookings }}</span>
                 </div>
             </div>
         </div>

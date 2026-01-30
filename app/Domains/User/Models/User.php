@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Domains\Vehicle\Models\Vehicle;
+use App\Domains\Booking\Models\Booking;
+use App\Domains\Payment\Models\Payment;
 
 class User extends Authenticatable
 {

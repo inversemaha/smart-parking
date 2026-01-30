@@ -25,9 +25,13 @@ return Application::configure(basePath: dirname(__DIR__))
             'set.language' => \App\Http\Middleware\SetLocaleMiddleware::class,
             'permission' => \App\Http\Middleware\PermissionMiddleware::class,
             'role' => \App\Http\Middleware\RoleMiddleware::class,
+            'role.check' => \App\Http\Middleware\RoleCheckMiddleware::class,
             'audit' => \App\Http\Middleware\AuditLogMiddleware::class,
+            'audit.log' => \App\Http\Middleware\AuditLogMiddleware::class,
             'rate_limit' => \App\Http\Middleware\RateLimitMiddleware::class,
             'api.rate.limit' => \App\Http\Middleware\RateLimitMiddleware::class,
+            'api.rate.limit.admin' => [\App\Http\Middleware\RateLimitMiddleware::class.':admin'],
+            'admin.security' => \App\Http\Middleware\AdminApiSecurityMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

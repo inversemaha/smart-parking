@@ -19,8 +19,13 @@ return [
     'login_successful' => 'লগইন সফল।',
     'logout_successful' => 'লগআউট সফল।',
     'registration_successful' => 'নন্দন সফল।',
+    'registration_failed' => 'নন্দন ব্যর্থ।',
     'password_reset_sent' => 'আপনার ইমেইলে পাসওয়ার্ড রিসেট লিঙ্ক পাঠানো হয়েছে।',
     'password_reset_successful' => 'পাসওয়ার্ড রিসেট সফল।',
+    'invalid_credentials' => 'অবৈধ পরিচয়পত্র।',
+    'account_deactivated' => 'অ্যাকাউন্ট নিষ্ক্রিয় করা হয়েছে।',
+    'current_password_incorrect' => 'বর্তমান পাসওয়ার্ড ভুল।',
+    'token_refreshed' => 'টোকেন রিফ্রেশ করা হয়েছে।',
 
     // Two Factor
     'two_factor' => 'দ্বি-পর্যায় প্রমাণীকরণ',

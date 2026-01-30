@@ -19,8 +19,13 @@ return [
     'login_successful' => 'Login successful.',
     'logout_successful' => 'Logout successful.',
     'registration_successful' => 'Registration successful.',
+    'registration_failed' => 'Registration failed.',
     'password_reset_sent' => 'Password reset link sent to your email.',
     'password_reset_successful' => 'Password reset successful.',
+    'invalid_credentials' => 'Invalid credentials.',
+    'account_deactivated' => 'Account has been deactivated.',
+    'current_password_incorrect' => 'Current password is incorrect.',
+    'token_refreshed' => 'Token refreshed successfully.',
 
     // Two Factor
     'two_factor' => 'Two Factor Authentication',

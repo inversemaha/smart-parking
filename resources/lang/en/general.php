@@ -48,6 +48,8 @@ return [
     'total_roles' => 'Total Roles',
     'total_permissions' => 'Total Permissions',
     'active_users_with_roles' => 'Active Users with Roles',
+    'logged_in_as' => 'Logged in as',
+    'all_rights_reserved' => 'All rights reserved',
     'permission_modules' => 'Permission Modules',
     'role_name' => 'Role Name',
     'enter_permission_name' => 'Enter permission name',
