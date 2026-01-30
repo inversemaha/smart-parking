@@ -37,6 +37,22 @@ class DashboardController extends Controller
     }
 
     /**
+     * Legacy dashboard handler - redirects to appropriate dashboard
+     */
+    public function legacyDashboard(Request $request)
+    {
+        $user = auth()->user();
+
+        // Check user type and redirect accordingly
+        if ($user->hasAnyRole(['admin', 'super-admin', 'manager'])) {
+            return redirect()->route('admin.dashboard.index');
+        }
+
+        // Regular users (visitors) go to visitor dashboard
+        return redirect()->route('visitor.dashboard');
+    }
+
+    /**
      * Show user dashboard.
      */
     protected function userDashboard(Request $request)

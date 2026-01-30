@@ -18,6 +18,10 @@ class AuthServiceProvider extends ServiceProvider
         \App\Domains\Booking\Models\Booking::class => \App\Policies\BookingPolicy::class,
         \App\Domains\Payment\Models\Payment::class => \App\Policies\PaymentPolicy::class,
         \App\Domains\Parking\Models\ParkingLocation::class => \App\Policies\ParkingLocationPolicy::class,
+        // Visitor policies
+        'visitor.vehicle' => \App\Policies\VisitorVehiclePolicy::class,
+        'visitor.booking' => \App\Policies\VisitorBookingPolicy::class,
+        'visitor.payment' => \App\Policies\VisitorPaymentPolicy::class,
     ];
 
     /**

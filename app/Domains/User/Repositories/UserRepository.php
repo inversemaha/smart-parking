@@ -6,6 +6,7 @@ use App\Domains\User\Models\User;
 use App\Shared\Repositories\BaseRepository;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class UserRepository extends BaseRepository
@@ -241,9 +242,9 @@ class UserRepository extends BaseRepository
     /**
      * Soft delete user
      */
-    public function delete(User $user): bool
+    public function delete(Model $model): bool
     {
-        return $user->delete();
+        return $model->delete();
     }
 
     /**

@@ -8,24 +8,31 @@ use App\Domains\User\Controllers\PaymentController as UserPaymentController;
 use App\Domains\Auth\Controllers\AuthController;
 use App\Domains\Admin\Controllers\PermissionController;
 use App\Domains\Admin\Controllers\AdminDashboardController;
+use App\Domains\User\Controllers\VisitorController;
 
-// Guest routes
-Route::get('/', function () {
-    return view('welcome');
-})->name('welcome');
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Smart Parking System Routes
+| - Guest/Public routes
+| - Visitor Panel routes (public users)
+| - Admin Panel routes (staff/management)
+|
+*/
 
-// Default dashboard redirect
-Route::get('/home', function () {
-    return redirect()->route('dashboard.index');
-})->middleware('auth')->name('home');
+// Public welcome page with parking location overview
+Route::get('/', [VisitorController::class, 'welcome'])->name('welcome');
+
+// Default dashboard redirect (detect user type and redirect appropriately)
+Route::get('/home', [VisitorController::class, 'redirectToDashboard'])->middleware('auth')->name('home');
+
+// Visitor Panel Routes
+require __DIR__.'/visitor.php';
 
 // Language switching
-Route::post('/language/{locale}', function ($locale) {
-    if (in_array($locale, ['en', 'bn'])) {
-        session(['locale' => $locale]);
-    }
-    return redirect()->back();
-})->name('language.switch');
+Route::post('/language/{locale}', [VisitorController::class, 'switchLanguage'])->name('language.switch');
 
 // Authentication routes (Laravel Breeze/Fortify handles these)
 require __DIR__.'/auth.php';
@@ -33,14 +40,15 @@ require __DIR__.'/auth.php';
 // Gate operations routes
 require __DIR__.'/gate.php';
 
-// User dashboard routes (protected)
+// Legacy User dashboard routes (for backward compatibility)
+// TODO: Migrate existing users to visitor routes gradually
 Route::middleware(['auth', 'set.language'])->group(function () {
 
-    // Dashboard (with aliases for compatibility)
-    Route::get('/dashboard', [UserDashboardController::class, 'index'])
+    // Legacy Dashboard (redirect to visitor dashboard for regular users)
+    Route::get('/dashboard', [UserDashboardController::class, 'legacyDashboard'])
         ->name('dashboard.index');
 
-    Route::get('/user/dashboard', [UserDashboardController::class, 'index'])
+    Route::get('/user/dashboard', [UserDashboardController::class, 'legacyDashboard'])
         ->name('user.dashboard');
 
     // Vehicle management
@@ -145,3 +153,6 @@ Route::middleware(['auth', 'set.language'])->prefix('admin')->name('admin.')->gr
 Route::get('/api/docs', function () {
     return view('api.documentation');
 })->name('api.docs');
+
+// Include visitor routes
+require __DIR__.'/visitor.php';
