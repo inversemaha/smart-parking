@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ __('auth.register') }} - {{ config('app.name') }}</title>
+    <title>{{ __('auth.reset_password') }} - {{ config('app.name') }}</title>
     <link rel="stylesheet" href="{{ asset('backend/assets/css/app.css') }}" />
     @include('visitor.auth.partials.dark-init')
 </head>
@@ -12,19 +12,13 @@
     <div class="container sm:px-10">
         <div class="flex justify-end pt-5">
             <div class="dropdown">
-                <button class="dropdown-toggle btn btn-outline-secondary btn-sm" aria-expanded="false" data-tw-toggle="dropdown" type="button">
+                <button class="dropdown-toggle btn btn-outline-secondary btn-sm" data-tw-toggle="dropdown" type="button">
                     {{ app()->getLocale() === 'bn' ? 'বাংলা' : 'English' }}
                 </button>
                 <div class="dropdown-menu w-40">
                     <div class="dropdown-content">
-                        <form method="POST" action="{{ route('visitor.language.switch', ['locale' => 'en']) }}">
-                            @csrf
-                            <button type="submit" class="dropdown-item w-full text-left">English</button>
-                        </form>
-                        <form method="POST" action="{{ route('visitor.language.switch', ['locale' => 'bn']) }}">
-                            @csrf
-                            <button type="submit" class="dropdown-item w-full text-left">বাংলা</button>
-                        </form>
+                        <form method="POST" action="{{ route('visitor.language.switch', ['locale' => 'en']) }}">@csrf<button type="submit" class="dropdown-item w-full text-left">English</button></form>
+                        <form method="POST" action="{{ route('visitor.language.switch', ['locale' => 'bn']) }}">@csrf<button type="submit" class="dropdown-item w-full text-left">বাংলা</button></form>
                     </div>
                 </div>
             </div>
@@ -36,24 +30,22 @@
                     <img alt="{{ config('app.name') }}" class="w-6" src="{{ asset('backend/assets/images/logo.svg') }}">
                     <span class="text-white text-lg ml-3">{{ config('app.name', 'Rubick') }}</span>
                 </a>
-
                 <div class="my-auto">
                     <img alt="{{ config('app.name') }}" class="-intro-x w-1/2 -mt-16" src="{{ asset('backend/assets/images/illustration.svg') }}">
                     <div class="-intro-x text-white font-medium text-4xl leading-tight mt-10">
-                        {{ __('auth.create_account') }}
+                        {{ __('auth.reset_password') }}
                         <br>
-                        {{ __('auth.register_description') }}
+                        {{ __('auth.confirm_password') }}
                     </div>
                 </div>
             </div>
 
             <div class="h-screen xl:h-auto flex py-5 xl:py-0 my-10 xl:my-0">
                 <div class="my-auto mx-auto xl:ml-20 bg-white dark:bg-darkmode-600 xl:bg-transparent px-5 sm:px-8 py-8 xl:p-0 rounded-md shadow-md xl:shadow-none w-full sm:w-3/4 lg:w-2/4 xl:w-auto">
-                    <h2 class="intro-x font-bold text-2xl xl:text-3xl text-center xl:text-left">{{ __('auth.register') }}</h2>
-                    <div class="intro-x mt-2 text-slate-400 dark:text-slate-400 xl:hidden text-center">{{ __('auth.register_description') }}</div>
+                    <h2 class="intro-x font-bold text-2xl xl:text-3xl text-center xl:text-left">{{ __('auth.reset_password') }}</h2>
 
                     @if ($errors->any())
-                        <div class="intro-x alert alert-danger-soft mb-5">
+                        <div class="intro-x alert alert-danger-soft mt-5 mb-5">
                             <ul class="list-disc list-inside text-xs">
                                 @foreach ($errors->all() as $error)
                                     <li>{{ $error }}</li>
@@ -62,38 +54,21 @@
                         </div>
                     @endif
 
-                    <form method="POST" action="{{ route('visitor.register.store') }}">
+                    <form method="POST" action="{{ route('visitor.password.store') }}">
                         @csrf
+                        <input type="hidden" name="token" value="{{ $token }}">
+
                         <div class="intro-x mt-8">
-                            <input id="name" name="name" type="text" value="{{ old('name') }}" class="intro-x login__input form-control py-3 px-4 block" placeholder="{{ __('user.name') }}" required>
-                            <input id="email" name="email" type="email" value="{{ old('email') }}" class="intro-x login__input form-control py-3 px-4 block mt-4" placeholder="{{ __('user.email') }}" required>
-                            <input id="mobile" name="mobile" type="tel" value="{{ old('mobile') }}" pattern="01[3-9]\d{8}" class="intro-x login__input form-control py-3 px-4 block mt-4" placeholder="{{ __('user.mobile') }}" required>
+                            <input id="email" name="email" type="email" value="{{ old('email', $email) }}" class="intro-x login__input form-control py-3 px-4 block" placeholder="{{ __('auth.email') }}" required>
                             <input id="password" name="password" type="password" class="intro-x login__input form-control py-3 px-4 block mt-4" placeholder="{{ __('auth.password') }}" required>
                             <input id="password_confirmation" name="password_confirmation" type="password" class="intro-x login__input form-control py-3 px-4 block mt-4" placeholder="{{ __('auth.confirm_password') }}" required>
                         </div>
 
-                        <div class="intro-x flex items-center text-slate-600 mt-4 text-xs sm:text-sm">
-                            <input id="terms" name="terms" type="checkbox" class="form-check-input border mr-2" required>
-                            <label class="cursor-pointer select-none" for="terms">
-                                {{ __('auth.agree_to') }}
-                                <a class="text-primary ml-1" href="#">{{ __('general.terms_of_service') }}</a>
-                                {{ __('general.and') }}
-                                <a class="text-primary ml-1" href="#">{{ __('general.privacy_policy') }}</a>
-                            </label>
-                        </div>
-
                         <div class="intro-x mt-5 xl:mt-8 text-center xl:text-left">
-                            <button type="submit" class="btn btn-primary py-3 px-4 w-full xl:w-32 xl:mr-3 align-top">{{ __('auth.register') }}</button>
-                            <a href="{{ route('visitor.login') }}" class="btn btn-outline-secondary py-3 px-4 w-full xl:w-32 mt-3 xl:mt-0 align-top">{{ __('auth.login') }}</a>
+                            <button type="submit" class="btn btn-primary py-3 px-4 w-full xl:w-auto xl:mr-3 align-top">{{ __('auth.reset_password') }}</button>
+                            <a href="{{ route('visitor.login') }}" class="btn btn-outline-secondary py-3 px-4 w-full xl:w-auto mt-3 xl:mt-0 align-top">{{ __('auth.login') }}</a>
                         </div>
                     </form>
-
-                    <div class="intro-x mt-10 xl:mt-24 text-slate-600 dark:text-slate-500 text-center xl:text-left">
-                        {{ __('auth.agree_to') }}
-                        <a class="text-primary dark:text-slate-200" href="#">{{ __('general.terms_of_service') }}</a>
-                        {{ __('general.and') }}
-                        <a class="text-primary dark:text-slate-200" href="#">{{ __('general.privacy_policy') }}</a>
-                    </div>
                 </div>
             </div>
         </div>

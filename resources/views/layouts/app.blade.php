@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" class="light">
 <head>
     <meta charset="utf-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -8,8 +8,8 @@
     <meta name="keywords" content="parking, admin, dashboard, management, system">
     <meta name="author" content="Parking Management System">
 
-    <link href="https://fonts.googleapis.com/" rel="preconnect">
-    <link href="https://fonts.gstatic.com/" rel="preconnect" crossorigin="">
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin="">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&amp;display=swap" rel="stylesheet">
 
     <title>@yield('title', 'Dashboard') - Parking Management System</title>
@@ -21,6 +21,15 @@
     <link rel="stylesheet" href="{{ asset('backend/assets/css/vendors/simplebar.css') }}">
     <link rel="stylesheet" href="{{ asset('backend/assets/css/app.css') }}">
     <!-- END: CSS Assets-->
+
+    <script>
+        (function () {
+            const mode = localStorage.getItem('darkMode');
+            const isSystemDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const shouldDark = mode === 'active' || (mode === 'system' && isSystemDark);
+            document.documentElement.classList.toggle('dark', shouldDark);
+        })();
+    </script>
 
     @stack('styles')
 </head>

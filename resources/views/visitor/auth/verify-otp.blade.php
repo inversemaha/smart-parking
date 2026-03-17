@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ __('auth.login') }} - {{ config('app.name') }}</title>
+    <title>{{ __('auth.verify_otp') }} - {{ config('app.name') }}</title>
     <link rel="stylesheet" href="{{ asset('backend/assets/css/app.css') }}" />
     @include('visitor.auth.partials.dark-init')
 </head>
@@ -33,21 +33,24 @@
                 <div class="my-auto">
                     <img alt="{{ config('app.name') }}" class="-intro-x w-1/2 -mt-16" src="{{ asset('backend/assets/images/illustration.svg') }}">
                     <div class="-intro-x text-white font-medium text-4xl leading-tight mt-10">
-                        {{ __('auth.welcome_back') }}
+                        {{ __('auth.verify_otp') }}
                         <br>
-                        {{ __('auth.login_description') }}
+                        {{ __('auth.enter_otp_instruction') }}
                     </div>
-                    <div class="-intro-x mt-5 text-lg text-white text-opacity-70">{{ __('general.find_book_park_easily') }}</div>
                 </div>
             </div>
 
             <div class="h-screen xl:h-auto flex py-5 xl:py-0 my-10 xl:my-0">
                 <div class="my-auto mx-auto xl:ml-20 bg-white dark:bg-darkmode-600 xl:bg-transparent px-5 sm:px-8 py-8 xl:p-0 rounded-md shadow-md xl:shadow-none w-full sm:w-3/4 lg:w-2/4 xl:w-auto">
-                    <h2 class="intro-x font-bold text-2xl xl:text-3xl text-center xl:text-left">{{ __('auth.login') }}</h2>
-                    <div class="intro-x mt-2 text-slate-400 xl:hidden text-center">{{ __('auth.login_description') }}</div>
+                    <h2 class="intro-x font-bold text-2xl xl:text-3xl text-center xl:text-left">{{ __('auth.verify_otp') }}</h2>
+                    <div class="intro-x mt-2 text-slate-400 xl:hidden text-center">{{ __('auth.enter_otp_instruction') }}</div>
+
+                    @if (session('status'))
+                        <div class="intro-x alert alert-success-soft mt-5 mb-5">{{ session('status') }}</div>
+                    @endif
 
                     @if ($errors->any())
-                        <div class="intro-x alert alert-danger-soft mb-5">
+                        <div class="intro-x alert alert-danger-soft mt-5 mb-5">
                             <ul class="list-disc list-inside text-xs">
                                 @foreach ($errors->all() as $error)
                                     <li>{{ $error }}</li>
@@ -56,33 +59,21 @@
                         </div>
                     @endif
 
-                    <form method="POST" action="{{ route('visitor.login.store') }}">
+                    <form method="POST" action="{{ route('visitor.verify.otp.store') }}">
                         @csrf
                         <div class="intro-x mt-8">
-                            <input id="login" name="login" type="text" value="{{ old('login') }}" class="intro-x login__input form-control py-3 px-4 block" placeholder="{{ __('auth.email_or_mobile') }}" required>
-                            <input id="password" name="password" type="password" class="intro-x login__input form-control py-3 px-4 block mt-4" placeholder="{{ __('auth.password') }}" required>
-                        </div>
-
-                        <div class="intro-x flex text-slate-600 dark:text-slate-500 text-xs sm:text-sm mt-4">
-                            <div class="flex items-center mr-auto">
-                                <input id="remember-me" name="remember" type="checkbox" class="form-check-input border mr-2">
-                                <label class="cursor-pointer select-none" for="remember-me">{{ __('auth.remember_me') }}</label>
-                            </div>
-                            <a href="{{ route('visitor.password.request') }}">{{ __('auth.forgot_password') }}</a>
+                            <input id="otp" name="otp" type="text" maxlength="6" class="intro-x login__input form-control py-3 px-4 block" placeholder="{{ __('auth.otp_code') }}" required>
                         </div>
 
                         <div class="intro-x mt-5 xl:mt-8 text-center xl:text-left">
-                            <button class="btn btn-primary py-3 px-4 w-full xl:w-32 xl:mr-3 align-top" type="submit">{{ __('auth.login') }}</button>
-                            <a href="{{ route('visitor.register') }}" class="btn btn-outline-secondary py-3 px-4 w-full xl:w-32 mt-3 xl:mt-0 align-top">{{ __('auth.register') }}</a>
+                            <button type="submit" class="btn btn-primary py-3 px-4 w-full xl:w-auto xl:mr-3 align-top">{{ __('auth.verify') }}</button>
                         </div>
                     </form>
 
-                    <div class="intro-x mt-10 xl:mt-24 text-slate-600 dark:text-slate-500 text-center xl:text-left">
-                        {{ __('auth.agree_to') }}
-                        <a class="text-primary dark:text-slate-200" href="#">{{ __('general.terms_of_service') }}</a>
-                        {{ __('general.and') }}
-                        <a class="text-primary dark:text-slate-200" href="#">{{ __('general.privacy_policy') }}</a>
-                    </div>
+                    <form method="POST" action="{{ route('visitor.resend.otp') }}" class="intro-x mt-3 xl:mt-4 text-center xl:text-left">
+                        @csrf
+                        <button type="submit" class="btn btn-outline-secondary py-3 px-4 w-full xl:w-auto align-top">{{ __('auth.resend_otp') }}</button>
+                    </form>
                 </div>
             </div>
         </div>

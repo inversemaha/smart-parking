@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="light">
 <head>
     <meta charset="utf-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -8,8 +8,8 @@
     <meta name="keywords" content="{{ __('general.app_keywords') }}">
     <meta name="author" content="{{ config('app.name') }}">
 
-    <link href="https://fonts.googleapis.com/" rel="preconnect">
-    <link href="https://fonts.gstatic.com/" rel="preconnect" crossorigin="">
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin="">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&amp;display=swap" rel="stylesheet">
 
     <title>@yield('title', __('general.visitor_dashboard')) - {{ config('app.name') }}</title>
@@ -21,9 +21,26 @@
     <link rel="stylesheet" href="{{ asset('backend/assets/css/vendors/simplebar.css') }}">
     <link rel="stylesheet" href="{{ asset('backend/assets/css/app.css') }}">
 
+    <script>
+        (function () {
+            const mode = localStorage.getItem('darkMode');
+            const isSystemDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const shouldDark = mode === 'active' || (mode === 'system' && isSystemDark);
+            document.documentElement.classList.toggle('dark', shouldDark);
+        })();
+    </script>
+
     @stack('styles')
 </head>
 <body>
+    <div>
+        <div data-tw-toggle="modal" data-tw-target="#settings-dialog" class="fixed inset-y-0 right-0 z-50 my-auto flex hover:w-20 transition-all w-14 h-12 cursor-pointer border-(--color)/50 items-center border justify-center rounded-l-full shadow-lg overflow-hidden bg-background/80 [--color:var(--color-primary)] before:bg-(--color)/20 before:absolute before:inset-0">
+            <i data-lucide="settings" class="size-4 stroke-[1.5] [--color:currentColor] stroke-(--color) fill-(--color)/25 animate-spin"></i>
+        </div>
+
+        @include('partials.theme-settings')
+    </div>
+
     <!-- Page Loader -->
     <div class="page-loader bg-background fixed inset-0 z-[100] flex items-center justify-center transition-opacity">
         <div class="loader-spinner !w-14"></div>
@@ -86,8 +103,10 @@
     <script src="{{ asset('backend/assets/js/vendors/dom.js') }}"></script>
     <script src="{{ asset('backend/assets/js/vendors/simplebar.js') }}"></script>
     <script src="{{ asset('backend/assets/js/vendors/lucide.js') }}"></script>
-    <script src="{{ asset('backend/assets/js/components/base.js') }}"></script>
-    <script src="{{ asset('backend/assets/js/rubick.js') }}"></script>
+    <script src="{{ asset('backend/assets/js/components/base/page-loader.js') }}"></script>
+    <script src="{{ asset('backend/assets/js/themes/rubick.js') }}"></script>
+    <script src="{{ asset('backend/assets/js/utils/helper.js') }}"></script>
+    <script src="{{ asset('backend/assets/js/components/theme-switcher.js') }}"></script>
 
     @stack('scripts')
 
@@ -97,6 +116,18 @@
 
         // Current locale
         window.currentLocale = '{{ app()->getLocale() }}';
+
+        if (window.createIcons && window.icons) {
+            window.createIcons({ icons: window.icons, nameAttr: 'data-lucide' });
+        }
+
+        window.addEventListener('load', function () {
+            const loader = document.querySelector('.page-loader');
+            if (loader) {
+                loader.classList.add('opacity-0');
+                setTimeout(() => loader.classList.add('hidden'), 300);
+            }
+        });
     </script>
 </body>
 </html>
