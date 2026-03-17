@@ -61,14 +61,14 @@
                     <div class="flex items-center space-x-4">
                         <!-- Language Switcher -->
                         <div class="flex items-center space-x-2">
-                            <form method="POST" action="{{ route('language.switch', 'en') }}" class="inline">
+                            <form method="POST" action="{{ url('/language/en') }}" class="inline">
                                 @csrf
                                 <button type="submit" class="px-3 py-1 text-sm {{ app()->getLocale() == 'en' ? 'bg-blue-100 text-blue-800' : 'text-gray-600 hover:text-blue-600' }} rounded-md transition-colors">
                                     English
                                 </button>
                             </form>
                             <span class="text-gray-300">|</span>
-                            <form method="POST" action="{{ route('language.switch', 'bn') }}" class="inline">
+                            <form method="POST" action="{{ url('/language/bn') }}" class="inline">
                                 @csrf
                                 <button type="submit" class="px-3 py-1 text-sm {{ app()->getLocale() == 'bn' ? 'bg-blue-100 text-blue-800' : 'text-gray-600 hover:text-blue-600' }} rounded-md transition-colors">
                                     বাংলা

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.user')
 
 @section('title', __('Login'))
 
@@ -39,13 +39,13 @@
         <!-- Language Toggle -->
         <div class="flex justify-center mb-6">
             <div class="bg-gray-100 dark:bg-gray-800 rounded-lg p-1 flex">
-                <form action="{{ route('language.switch', 'en') }}" method="POST" class="inline">
+                <form action="{{ url('/language/en') }}" method="POST" class="inline">
                     @csrf
                     <button type="submit" class="px-3 py-1 rounded-md text-sm font-medium transition-colors {{ app()->getLocale() === 'en' ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow' : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white' }}">
                         English
                     </button>
                 </form>
-                <form action="{{ route('language.switch', 'bn') }}" method="POST" class="inline">
+                <form action="{{ url('/language/bn') }}" method="POST" class="inline">
                     @csrf
                     <button type="submit" class="px-3 py-1 rounded-md text-sm font-medium transition-colors {{ app()->getLocale() === 'bn' ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow' : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white' }}">
                         বাংলা
