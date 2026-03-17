@@ -58,9 +58,8 @@
                             <div class="flex flex-col sm:flex-row gap-2 min-w-fit">
                                 <!-- Set as Default -->
                                 @if(!$vehicle->is_default)
-                                    <form action="{{ route('visitor.vehicles.set-default', $vehicle) }}" method="POST" class="inline">
+                                    <form action="{{ route('visitor.vehicles.set.default', $vehicle) }}" method="POST" class="inline">
                                         @csrf
-                                        @method('PATCH')
                                         <button type="submit" class="text-sm text-blue-600 hover:text-blue-800 font-medium">
                                             {{ __('Set Default') }}
                                         </button>

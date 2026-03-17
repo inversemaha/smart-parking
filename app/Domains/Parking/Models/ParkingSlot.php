@@ -14,7 +14,7 @@ class ParkingSlot extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'parking_area_id',
+        'parking_location_id',
         'slot_number',
         'floor',
         'section',
@@ -42,9 +42,25 @@ class ParkingSlot extends Model
     /**
      * Parking area relationship.
      */
+    public function parkingLocation()
+    {
+        return $this->belongsTo(ParkingLocation::class);
+    }
+
+    /**
+     * Backward-compatible alias.
+     */
     public function parkingArea()
     {
-        return $this->belongsTo(ParkingArea::class);
+        return $this->parkingLocation();
+    }
+
+    /**
+     * Backward-compatible alias.
+     */
+    public function area()
+    {
+        return $this->parkingLocation();
     }
 
     /**

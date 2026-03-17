@@ -432,6 +432,6 @@ class User extends Authenticatable
      */
     public function activityLogs()
     {
-        return $this->hasMany(\App\Models\UserActivityLog::class);
+        return $this->hasMany(UserAccessLog::class);
     }
 }

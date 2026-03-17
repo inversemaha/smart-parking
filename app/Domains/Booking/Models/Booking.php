@@ -2,6 +2,9 @@
 
 namespace App\Domains\Booking\Models;
 
+use App\Domains\Parking\Models\ParkingLocation;
+use App\Domains\Parking\Models\ParkingSlot;
+use App\Domains\Payment\Models\Payment;
 use App\Domains\User\Models\User;
 use App\Domains\Vehicle\Models\Vehicle;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -93,11 +96,43 @@ class Booking extends Model
     }
 
     /**
+     * Backward-compatible location alias.
+     */
+    public function location()
+    {
+        return $this->parkingLocation();
+    }
+
+    /**
      * Parking slot relationship.
      */
     public function parkingSlot()
     {
         return $this->belongsTo(ParkingSlot::class);
+    }
+
+    /**
+     * Backward-compatible snake_case slot relation alias.
+     */
+    public function parking_slot()
+    {
+        return $this->parkingSlot();
+    }
+
+    /**
+     * Backward-compatible slot alias.
+     */
+    public function slot()
+    {
+        return $this->parkingSlot();
+    }
+
+    /**
+     * Backward-compatible slotType alias.
+     */
+    public function slotType()
+    {
+        return $this->parkingSlot();
     }
 
     /**
@@ -124,7 +159,7 @@ class Booking extends Model
      */
     public function vehicleEntries()
     {
-        return $this->hasMany(\App\Models\VehicleEntry::class);
+        return $this->hasMany(VehicleEntry::class);
     }
 
     /**
@@ -149,6 +184,15 @@ class Booking extends Model
     public function payments()
     {
         return $this->morphMany(Payment::class, 'payable');
+    }
+
+    /**
+     * Backward-compatible single payment relation.
+     */
+    public function payment()
+    {
+        return $this->hasOne(Payment::class, 'payable_id')
+            ->where('payable_type', self::class);
     }
 
     /**

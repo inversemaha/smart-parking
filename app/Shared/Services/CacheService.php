@@ -30,6 +30,38 @@ class CacheService
     }
 
     /**
+     * Generic cache get helper.
+     */
+    public function get(string $key, mixed $default = null): mixed
+    {
+        return Cache::get($key, $default);
+    }
+
+    /**
+     * Generic cache put helper.
+     */
+    public function put(string $key, mixed $value, int $ttl = 3600): bool
+    {
+        return Cache::put($key, $value, $ttl);
+    }
+
+    /**
+     * Generic cache forget helper.
+     */
+    public function forget(string $key): bool
+    {
+        return Cache::forget($key);
+    }
+
+    /**
+     * Generic cache remember helper.
+     */
+    public function remember(string $key, int $ttl, \Closure $callback): mixed
+    {
+        return Cache::remember($key, $ttl, $callback);
+    }
+
+    /**
      * Cache parking area availability.
      */
     public function cacheParkingAvailability(int $parkingAreaId, array $data): bool

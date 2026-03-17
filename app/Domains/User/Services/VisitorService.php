@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Schema;
 use Carbon\Carbon;
 
 class VisitorService
@@ -31,18 +32,30 @@ class VisitorService
     public function register(VisitorRegistrationData $data): User
     {
         return DB::transaction(function () use ($data) {
-            // Create user with visitor role
-            $user = $this->userRepository->create([
+            $payload = [
                 'name' => $data->name,
                 'email' => $data->email,
                 'mobile' => $data->mobile,
                 'password' => Hash::make($data->password),
-                'email_verified_at' => now(), // Auto verify for now
-                'mobile_verified_at' => now(), // Auto verify for now
+                'email_verified_at' => now(),
+                'mobile_verified_at' => now(),
                 'preferred_language' => $data->language ?? 'en',
-                'status' => 'active',
-                'user_type' => 'visitor'
-            ]);
+            ];
+
+            if (Schema::hasColumn('users', 'status')) {
+                $payload['status'] = 'active';
+            }
+
+            if (Schema::hasColumn('users', 'is_active')) {
+                $payload['is_active'] = true;
+            }
+
+            if (Schema::hasColumn('users', 'user_type')) {
+                $payload['user_type'] = 'visitor';
+            }
+
+            // Create user with visitor role
+            $user = $this->userRepository->create($payload);
 
             // Assign visitor role
             $user->assignRole('visitor');
@@ -62,16 +75,13 @@ class VisitorService
         // Determine if login is email or mobile
         $field = filter_var($data->login, FILTER_VALIDATE_EMAIL) ? 'email' : 'mobile';
 
-        $credentials = [
-            $field => $data->login,
-            'password' => $data->password
-        ];
+        $user = $this->applyActiveVisitorScope(User::query())
+            ->where($field, $data->login)
+            ->first();
 
-        // Add additional checks
-        $credentials['status'] = 'active';
-        $credentials['user_type'] = 'visitor';
+        if ($user && Hash::check($data->password, $user->password)) {
+            Auth::login($user, $data->remember);
 
-        if (Auth::attempt($credentials, $data->remember)) {
             // Log successful login
             $this->logUserActivity(Auth::user(), 'login', [
                 'login_method' => $field,
@@ -92,10 +102,9 @@ class VisitorService
     {
         $field = filter_var($data->login, FILTER_VALIDATE_EMAIL) ? 'email' : 'mobile';
 
-        $user = User::where($field, $data->login)
-                   ->where('status', 'active')
-                   ->where('user_type', 'visitor')
-                   ->first();
+        $user = $this->applyActiveVisitorScope(User::query())
+            ->where($field, $data->login)
+            ->first();
 
         if ($user && Hash::check($data->password, $user->password)) {
             // Delete old tokens for this device
@@ -145,10 +154,9 @@ class VisitorService
      */
     public function sendPasswordResetLink(string $email): bool
     {
-        $user = User::where('email', $email)
-                   ->where('user_type', 'visitor')
-                   ->where('status', 'active')
-                   ->first();
+        $user = $this->applyActiveVisitorScope(User::query())
+            ->where('email', $email)
+            ->first();
 
         if (!$user) {
             return false;
@@ -295,7 +303,17 @@ class VisitorService
                  ->update(['status' => 'cancelled', 'cancelled_at' => now()]);
 
             // Deactivate user
-            $user->update(['status' => 'inactive', 'deactivated_at' => now()]);
+            $deactivatePayload = ['deactivated_at' => now()];
+
+            if (Schema::hasColumn('users', 'status')) {
+                $deactivatePayload['status'] = 'inactive';
+            }
+
+            if (Schema::hasColumn('users', 'is_active')) {
+                $deactivatePayload['is_active'] = false;
+            }
+
+            $user->update($deactivatePayload);
 
             // Revoke all tokens
             $user->tokens()->delete();
@@ -313,10 +331,30 @@ class VisitorService
     public function getActiveVisitorsCount(): int
     {
         return $this->cacheService->remember('active_visitors_count', 300, function () {
-            return User::where('user_type', 'visitor')
-                      ->where('status', 'active')
-                      ->count();
+            return $this->applyActiveVisitorScope(User::query())->count();
         });
+    }
+
+    /**
+     * Apply active visitor constraints compatible with multiple user schemas.
+     */
+    private function applyActiveVisitorScope($query)
+    {
+        if (Schema::hasColumn('users', 'status')) {
+            $query->where('status', 'active');
+        } elseif (Schema::hasColumn('users', 'is_active')) {
+            $query->where('is_active', true);
+        }
+
+        if (Schema::hasColumn('users', 'user_type')) {
+            $query->where('user_type', 'visitor');
+        } else {
+            $query->whereHas('roles', function ($roleQuery) {
+                $roleQuery->whereIn('name', ['visitor', 'user']);
+            });
+        }
+
+        return $query;
     }
 
     /**
@@ -353,12 +391,15 @@ class VisitorService
      */
     protected function logUserActivity(User $user, string $action, array $metadata = []): void
     {
-        $user->activityLogs()->create([
+        $user->accessLogs()->create([
             'action' => $action,
-            'metadata' => $metadata,
             'ip_address' => request()->ip(),
             'user_agent' => request()->userAgent(),
-            'performed_at' => now()
+            'method' => request()->method(),
+            'url' => request()->fullUrl(),
+            'request_data' => $metadata,
+            'status' => 'success',
+            'created_at' => now(),
         ]);
     }
 

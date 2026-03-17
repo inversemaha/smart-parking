@@ -231,6 +231,54 @@ class BookingService
     }
 
     /**
+     * Get user bookings with optional filters.
+     */
+    public function getUserBookings(int $userId, array $filters = [])
+    {
+        $query = Booking::with(['parking_slot.area', 'vehicle'])
+            ->where('user_id', $userId)
+            ->orderBy('created_at', 'desc');
+
+        if (!empty($filters['status'])) {
+            $query->where('status', $filters['status']);
+        }
+
+        if (!empty($filters['payment_status'])) {
+            $query->where('payment_status', $filters['payment_status']);
+        }
+
+        if (!empty($filters['vehicle_id'])) {
+            $query->where('vehicle_id', $filters['vehicle_id']);
+        }
+
+        if (!empty($filters['date_from'])) {
+            $query->whereDate('start_time', '>=', $filters['date_from']);
+        }
+
+        if (!empty($filters['date_to'])) {
+            $query->whereDate('end_time', '<=', $filters['date_to']);
+        }
+
+        $perPage = (int) ($filters['per_page'] ?? 10);
+
+        return $query->paginate($perPage);
+    }
+
+    /**
+     * Get user's upcoming bookings.
+     */
+    public function getUserUpcomingBookings(int $userId, int $limit = 3)
+    {
+        return Booking::with(['parking_slot.area', 'vehicle'])
+            ->where('user_id', $userId)
+            ->whereIn('status', ['confirmed', 'active', 'pending'])
+            ->where('start_time', '>=', now())
+            ->orderBy('start_time')
+            ->limit($limit)
+            ->get();
+    }
+
+    /**
      * Get user's total parking hours.
      */
     public function getUserTotalParkingHours(int $userId): float

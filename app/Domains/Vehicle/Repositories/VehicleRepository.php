@@ -6,6 +6,7 @@ use App\Domains\Vehicle\Models\Vehicle;
 use App\Shared\Contracts\RepositoryInterface;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Schema;
 
 class VehicleRepository implements RepositoryInterface
 {
@@ -88,7 +89,11 @@ class VehicleRepository implements RepositoryInterface
 
         // Apply filters
         if (isset($filters['status'])) {
-            $query->where('status', $filters['status']);
+            if (Schema::hasColumn('vehicles', 'status')) {
+                $query->where('status', $filters['status']);
+            } elseif (Schema::hasColumn('vehicles', 'is_active')) {
+                $query->where('is_active', $filters['status'] === 'active');
+            }
         }
 
         if (isset($filters['verification_status'])) {
@@ -121,7 +126,11 @@ class VehicleRepository implements RepositoryInterface
 
         // Apply filters
         if (isset($filters['status'])) {
-            $query->where('status', $filters['status']);
+            if (Schema::hasColumn('vehicles', 'status')) {
+                $query->where('status', $filters['status']);
+            } elseif (Schema::hasColumn('vehicles', 'is_active')) {
+                $query->where('is_active', $filters['status'] === 'active');
+            }
         }
 
         if (isset($filters['verification_status'])) {
@@ -176,10 +185,21 @@ class VehicleRepository implements RepositoryInterface
      */
     public function getStatistics(): array
     {
+        $activeQuery = $this->model->newQuery();
+        $inactiveQuery = $this->model->newQuery();
+
+        if (Schema::hasColumn('vehicles', 'status')) {
+            $activeQuery->where('status', 'active');
+            $inactiveQuery->where('status', 'inactive');
+        } elseif (Schema::hasColumn('vehicles', 'is_active')) {
+            $activeQuery->where('is_active', true);
+            $inactiveQuery->where('is_active', false);
+        }
+
         return [
             'total' => $this->model->count(),
-            'active' => $this->model->where('status', 'active')->count(),
-            'inactive' => $this->model->where('status', 'inactive')->count(),
+            'active' => $activeQuery->count(),
+            'inactive' => $inactiveQuery->count(),
             'pending_verification' => $this->model->where('verification_status', 'pending')->count(),
             'verified' => $this->model->where('verification_status', 'verified')->count(),
             'failed_verification' => $this->model->where('verification_status', 'failed')->count(),

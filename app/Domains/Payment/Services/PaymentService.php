@@ -30,13 +30,16 @@ class PaymentService
 
         try {
             $payment = $this->paymentRepository->create([
-                'booking_id' => $booking->id,
                 'user_id' => $booking->user_id,
+                'payable_type' => Booking::class,
+                'payable_id' => $booking->id,
                 'amount' => $data['amount'],
                 'currency' => $data['currency'] ?? 'BDT',
+                'payment_method' => $data['gateway'] ?? 'sslcommerz',
                 'gateway' => $data['gateway'] ?? 'sslcommerz',
-                'transaction_id' => $this->generateTransactionId(),
-                'status' => 'pending',
+                'payment_id' => $this->generateTransactionId(),
+                'status' => 'initiated',
+                'initiated_at' => now(),
                 'gateway_response' => null,
             ]);
 
@@ -50,7 +53,7 @@ class PaymentService
             $payment->update([
                 'gateway_transaction_id' => $gatewayResponse['sessionkey'] ?? null,
                 'gateway_response' => $gatewayResponse,
-                'payment_url' => $gatewayResponse['redirectGatewayURL'] ?? null,
+                'status' => 'processing',
             ]);
 
             DB::commit();
@@ -93,17 +96,18 @@ class PaymentService
             }
 
             $payment->update([
-                'status' => 'completed',
+                'status' => 'paid',
                 'gateway_transaction_id' => $gatewayData['bank_tran_id'] ?? null,
                 'gateway_response' => $gatewayData,
-                'completed_at' => now(),
+                'paid_at' => now(),
             ]);
 
             // Update booking payment status
-            $payment->booking->update([
-                'payment_status' => 'paid',
-                'paid_at' => now(),
-            ]);
+            if ($payment->booking) {
+                $payment->booking->update([
+                    'payment_status' => 'paid',
+                ]);
+            }
 
             // Log successful payment
             $this->logSslcommerzTransaction($payment, 'success', $gatewayData);
@@ -153,16 +157,15 @@ class PaymentService
      */
     public function processRefund(Booking $booking): bool
     {
-        $payment = $booking->payments()->where('status', 'completed')->first();
+        $payment = $booking->payments()->where('status', 'paid')->first();
 
         if (!$payment) {
             return false;
         }
 
-        // For now, mark as refund pending (manual process)
+        // Refund workflow placeholder
         $payment->update([
-            'refund_status' => 'pending',
-            'refund_requested_at' => now(),
+            'notes' => trim(($payment->notes ?? '') . ' | Refund requested at ' . now()->toDateTimeString()),
         ]);
 
         return true;
@@ -178,11 +181,11 @@ class PaymentService
             'store_passwd' => $this->sslcommerzConfig['store_password'],
             'total_amount' => $payment->amount,
             'currency' => $payment->currency,
-            'tran_id' => $payment->transaction_id,
-            'success_url' => route('payment.success'),
-            'fail_url' => route('payment.fail'),
-            'cancel_url' => route('payment.cancel'),
-            'ipn_url' => route('payment.ipn'),
+            'tran_id' => $payment->payment_id,
+            'success_url' => route('payments.gateway.success'),
+            'fail_url' => route('payments.gateway.failure'),
+            'cancel_url' => route('payments.gateway.cancel'),
+            'ipn_url' => url('/payments/ipn'),
             'cus_name' => $booking->user->name,
             'cus_email' => $booking->user->email,
             'cus_phone' => $booking->user->phone,
@@ -204,7 +207,7 @@ class PaymentService
         $postData = [
             'store_id' => $this->sslcommerzConfig['store_id'],
             'store_passwd' => $this->sslcommerzConfig['store_password'],
-            'tran_id' => $payment->transaction_id,
+            'tran_id' => $payment->payment_id,
             'format' => 'json',
         ];
 
@@ -220,7 +223,7 @@ class PaymentService
     private function logSslcommerzTransaction(Payment $payment, string $status, array $response): void
     {
         $payment->sslcommerzLogs()->create([
-            'transaction_id' => $payment->transaction_id,
+            'transaction_id' => $payment->payment_id,
             'status' => $status,
             'request_data' => null,
             'response_data' => $response,
@@ -241,7 +244,7 @@ class PaymentService
     public function getUserTotalSpent(int $userId): float
     {
         return Payment::where('user_id', $userId)
-            ->where('status', 'completed')
+            ->where('status', 'paid')
             ->sum('amount') ?? 0;
     }
 
@@ -253,5 +256,33 @@ class PaymentService
         return Payment::where('user_id', $userId)
             ->where('status', 'pending')
             ->count();
+    }
+
+    /**
+     * Get user payments with optional filters.
+     */
+    public function getUserPayments(int $userId, array $filters = [])
+    {
+        $query = Payment::with(['booking'])
+            ->where('user_id', $userId)
+            ->orderByDesc('created_at');
+
+        if (!empty($filters['status'])) {
+            $query->where('status', $filters['status']);
+        }
+
+        if (!empty($filters['payment_method'])) {
+            $query->where('payment_method', $filters['payment_method']);
+        }
+
+        if (!empty($filters['start_date'])) {
+            $query->whereDate('created_at', '>=', $filters['start_date']);
+        }
+
+        if (!empty($filters['end_date'])) {
+            $query->whereDate('created_at', '<=', $filters['end_date']);
+        }
+
+        return $query->paginate(10);
     }
 }

@@ -68,6 +68,14 @@ class Vehicle extends Model
     }
 
     /**
+     * Backward-compatible alias.
+     */
+    public function verificationLogs()
+    {
+        return $this->brtaVerificationLogs();
+    }
+
+    /**
      * Manual verifications relationship.
      */
     public function manualVerifications()
