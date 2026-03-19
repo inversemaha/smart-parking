@@ -1,14 +1,14 @@
 <!-- BEGIN: Side Menu -->
 <nav class="side-nav">
-    <a href="{{ route('admin.dashboard.index') }}" class="intro-x flex items-center pl-5 pt-4">
-        <img alt="Logo" class="w-6" src="{{ asset('backend/assets/images/logo.svg') }}">
+    <a href="<?php echo e(route('admin.dashboard.index')); ?>" class="intro-x flex items-center pl-5 pt-4">
+        <img alt="Logo" class="w-6" src="<?php echo e(asset('backend/assets/images/logo.svg')); ?>">
         <span class="hidden xl:block text-white text-lg ml-3">Parking</span>
     </a>
     <div class="side-nav__devider my-6"></div>
     <ul>
         <!-- Dashboard -->
         <li>
-            <a href="{{ route('admin.dashboard.index') }}" class="side-menu {{ request()->routeIs('admin.dashboard*') ? 'side-menu--active' : '' }}">
+            <a href="<?php echo e(route('admin.dashboard.index')); ?>" class="side-menu <?php echo e(request()->routeIs('admin.dashboard*') ? 'side-menu--active' : ''); ?>">
                 <div class="side-menu__icon">
                     <i data-lucide="home"></i>
                 </div>
@@ -18,7 +18,7 @@
 
         <!-- Vehicles -->
         <li>
-            <a href="{{ route('admin.vehicles.index') }}" class="side-menu {{ request()->routeIs('admin.vehicles*') ? 'side-menu--active' : '' }}">
+            <a href="<?php echo e(route('admin.vehicles.index')); ?>" class="side-menu <?php echo e(request()->routeIs('admin.vehicles*') ? 'side-menu--active' : ''); ?>">
                 <div class="side-menu__icon">
                     <i data-lucide="car"></i>
                 </div>
@@ -31,7 +31,7 @@
             </a>
             <ul class="">
                 <li>
-                    <a href="{{ route('admin.vehicles.index') }}" class="side-menu {{ request()->routeIs('admin.vehicles.index') ? 'side-menu--active' : '' }}">
+                    <a href="<?php echo e(route('admin.vehicles.index')); ?>" class="side-menu <?php echo e(request()->routeIs('admin.vehicles.index') ? 'side-menu--active' : ''); ?>">
                         <div class="side-menu__icon">
                             <i data-lucide="list"></i>
                         </div>
@@ -39,7 +39,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('admin.vehicles.pending') }}" class="side-menu {{ request()->routeIs('admin.vehicles.pending') ? 'side-menu--active' : '' }}">
+                    <a href="<?php echo e(route('admin.vehicles.pending')); ?>" class="side-menu <?php echo e(request()->routeIs('admin.vehicles.pending') ? 'side-menu--active' : ''); ?>">
                         <div class="side-menu__icon">
                             <i data-lucide="clock"></i>
                         </div>
@@ -47,7 +47,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('admin.vehicles.create') }}" class="side-menu {{ request()->routeIs('admin.vehicles.create') ? 'side-menu--active' : '' }}">
+                    <a href="<?php echo e(route('admin.vehicles.create')); ?>" class="side-menu <?php echo e(request()->routeIs('admin.vehicles.create') ? 'side-menu--active' : ''); ?>">
                         <div class="side-menu__icon">
                             <i data-lucide="plus"></i>
                         </div>
@@ -59,7 +59,7 @@
 
         <!-- Parking Locations -->
         <li>
-            <a href="{{ route('admin.parking-locations.index') }}" class="side-menu {{ request()->routeIs('admin.parking-locations*') ? 'side-menu--active' : '' }}">
+            <a href="<?php echo e(route('admin.parking-locations.index')); ?>" class="side-menu <?php echo e(request()->routeIs('admin.parking-locations*') ? 'side-menu--active' : ''); ?>">
                 <div class="side-menu__icon">
                     <i data-lucide="map-pin"></i>
                 </div>
@@ -72,7 +72,7 @@
             </a>
             <ul class="">
                 <li>
-                    <a href="{{ route('admin.parking-locations.index') }}" class="side-menu {{ request()->routeIs('admin.parking-locations.index') ? 'side-menu--active' : '' }}">
+                    <a href="<?php echo e(route('admin.parking-locations.index')); ?>" class="side-menu <?php echo e(request()->routeIs('admin.parking-locations.index') ? 'side-menu--active' : ''); ?>">
                         <div class="side-menu__icon">
                             <i data-lucide="list"></i>
                         </div>
@@ -80,7 +80,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('admin.parking-locations.create') }}" class="side-menu {{ request()->routeIs('admin.parking-locations.create') ? 'side-menu--active' : '' }}">
+                    <a href="<?php echo e(route('admin.parking-locations.create')); ?>" class="side-menu <?php echo e(request()->routeIs('admin.parking-locations.create') ? 'side-menu--active' : ''); ?>">
                         <div class="side-menu__icon">
                             <i data-lucide="plus"></i>
                         </div>
@@ -92,7 +92,7 @@
 
         <!-- Bookings -->
         <li>
-            <a href="{{ route('admin.bookings.index') }}" class="side-menu {{ request()->routeIs('admin.bookings*') ? 'side-menu--active' : '' }}">
+            <a href="<?php echo e(route('admin.bookings.index')); ?>" class="side-menu <?php echo e(request()->routeIs('admin.bookings*') ? 'side-menu--active' : ''); ?>">
                 <div class="side-menu__icon">
                     <i data-lucide="calendar"></i>
                 </div>
@@ -105,7 +105,7 @@
             </a>
             <ul class="">
                 <li>
-                    <a href="{{ route('admin.bookings.index') }}" class="side-menu {{ request()->routeIs('admin.bookings.index') && !request()->has('status') ? 'side-menu--active' : '' }}">
+                    <a href="<?php echo e(route('admin.bookings.index')); ?>" class="side-menu <?php echo e(request()->routeIs('admin.bookings.index') && !request()->has('status') ? 'side-menu--active' : ''); ?>">
                         <div class="side-menu__icon">
                             <i data-lucide="list"></i>
                         </div>
@@ -113,7 +113,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('admin.bookings.index', ['status' => 'pending']) }}" class="side-menu">
+                    <a href="<?php echo e(route('admin.bookings.index', ['status' => 'pending'])); ?>" class="side-menu">
                         <div class="side-menu__icon">
                             <i data-lucide="clock"></i>
                         </div>
@@ -121,7 +121,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('admin.bookings.index', ['status' => 'active']) }}" class="side-menu">
+                    <a href="<?php echo e(route('admin.bookings.index', ['status' => 'active'])); ?>" class="side-menu">
                         <div class="side-menu__icon">
                             <i data-lucide="zap"></i>
                         </div>
@@ -133,7 +133,7 @@
 
         <!-- Users -->
         <li>
-            <a href="{{ route('admin.users.index') }}" class="side-menu {{ request()->routeIs('admin.users*') ? 'side-menu--active' : '' }}">
+            <a href="<?php echo e(route('admin.users.index')); ?>" class="side-menu <?php echo e(request()->routeIs('admin.users*') ? 'side-menu--active' : ''); ?>">
                 <div class="side-menu__icon">
                     <i data-lucide="users"></i>
                 </div>
@@ -146,7 +146,7 @@
             </a>
             <ul class="">
                 <li>
-                    <a href="{{ route('admin.users.index') }}" class="side-menu {{ request()->routeIs('admin.users.index') ? 'side-menu--active' : '' }}">
+                    <a href="<?php echo e(route('admin.users.index')); ?>" class="side-menu <?php echo e(request()->routeIs('admin.users.index') ? 'side-menu--active' : ''); ?>">
                         <div class="side-menu__icon">
                             <i data-lucide="list"></i>
                         </div>
@@ -154,7 +154,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('admin.users.create') }}" class="side-menu {{ request()->routeIs('admin.users.create') ? 'side-menu--active' : '' }}">
+                    <a href="<?php echo e(route('admin.users.create')); ?>" class="side-menu <?php echo e(request()->routeIs('admin.users.create') ? 'side-menu--active' : ''); ?>">
                         <div class="side-menu__icon">
                             <i data-lucide="plus"></i>
                         </div>
@@ -166,7 +166,7 @@
 
         <!-- Payments -->
         <li>
-            <a href="{{ route('admin.payments.index') }}" class="side-menu {{ request()->routeIs('admin.payments*') ? 'side-menu--active' : '' }}">
+            <a href="<?php echo e(route('admin.payments.index')); ?>" class="side-menu <?php echo e(request()->routeIs('admin.payments*') ? 'side-menu--active' : ''); ?>">
                 <div class="side-menu__icon">
                     <i data-lucide="credit-card"></i>
                 </div>
@@ -179,7 +179,7 @@
             </a>
             <ul class="">
                 <li>
-                    <a href="{{ route('admin.payments.index') }}" class="side-menu {{ request()->routeIs('admin.payments.index') && !request()->has('status') ? 'side-menu--active' : '' }}">
+                    <a href="<?php echo e(route('admin.payments.index')); ?>" class="side-menu <?php echo e(request()->routeIs('admin.payments.index') && !request()->has('status') ? 'side-menu--active' : ''); ?>">
                         <div class="side-menu__icon">
                             <i data-lucide="list"></i>
                         </div>
@@ -187,7 +187,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('admin.payments.index', ['status' => 'paid']) }}" class="side-menu">
+                    <a href="<?php echo e(route('admin.payments.index', ['status' => 'paid'])); ?>" class="side-menu">
                         <div class="side-menu__icon">
                             <i data-lucide="check-circle"></i>
                         </div>
@@ -195,7 +195,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('admin.payments.index', ['status' => 'pending']) }}" class="side-menu">
+                    <a href="<?php echo e(route('admin.payments.index', ['status' => 'pending'])); ?>" class="side-menu">
                         <div class="side-menu__icon">
                             <i data-lucide="clock"></i>
                         </div>
@@ -207,7 +207,7 @@
 
         <!-- Invoices -->
         <li>
-            <a href="{{ route('admin.invoices.index') }}" class="side-menu {{ request()->routeIs('admin.invoices*') ? 'side-menu--active' : '' }}">
+            <a href="<?php echo e(route('admin.invoices.index')); ?>" class="side-menu <?php echo e(request()->routeIs('admin.invoices*') ? 'side-menu--active' : ''); ?>">
                 <div class="side-menu__icon">
                     <i data-lucide="file-text"></i>
                 </div>
@@ -220,7 +220,7 @@
             </a>
             <ul class="">
                 <li>
-                    <a href="{{ route('admin.invoices.index') }}" class="side-menu {{ request()->routeIs('admin.invoices.index') && !request()->has('status') ? 'side-menu--active' : '' }}">
+                    <a href="<?php echo e(route('admin.invoices.index')); ?>" class="side-menu <?php echo e(request()->routeIs('admin.invoices.index') && !request()->has('status') ? 'side-menu--active' : ''); ?>">
                         <div class="side-menu__icon">
                             <i data-lucide="list"></i>
                         </div>
@@ -228,7 +228,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('admin.invoices.index', ['status' => 'unpaid']) }}" class="side-menu">
+                    <a href="<?php echo e(route('admin.invoices.index', ['status' => 'unpaid'])); ?>" class="side-menu">
                         <div class="side-menu__icon">
                             <i data-lucide="alert-circle"></i>
                         </div>
@@ -236,7 +236,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('admin.invoices.index', ['status' => 'paid']) }}" class="side-menu">
+                    <a href="<?php echo e(route('admin.invoices.index', ['status' => 'paid'])); ?>" class="side-menu">
                         <div class="side-menu__icon">
                             <i data-lucide="check-circle"></i>
                         </div>
@@ -248,7 +248,7 @@
 
         <!-- Reports -->
         <li>
-            <a href="{{ route('admin.reports.index') }}" class="side-menu {{ request()->routeIs('admin.reports*') ? 'side-menu--active' : '' }}">
+            <a href="<?php echo e(route('admin.reports.index')); ?>" class="side-menu <?php echo e(request()->routeIs('admin.reports*') ? 'side-menu--active' : ''); ?>">
                 <div class="side-menu__icon">
                     <i data-lucide="chart-column"></i>
                 </div>
@@ -258,7 +258,7 @@
 
         <!-- Permissions & Roles -->
         <li>
-            <a href="{{ route('admin.permissions.roles') }}" class="side-menu {{ request()->routeIs('admin.permissions*') || request()->routeIs('admin.roles*') ? 'side-menu--active' : '' }}">
+            <a href="<?php echo e(route('admin.permissions.roles')); ?>" class="side-menu <?php echo e(request()->routeIs('admin.permissions*') || request()->routeIs('admin.roles*') ? 'side-menu--active' : ''); ?>">
                 <div class="side-menu__icon">
                     <i data-lucide="lock"></i>
                 </div>
@@ -271,7 +271,7 @@
             </a>
             <ul class="">
                 <li>
-                    <a href="{{ route('admin.permissions.roles') }}" class="side-menu {{ request()->routeIs('admin.permissions.roles') ? 'side-menu--active' : '' }}">
+                    <a href="<?php echo e(route('admin.permissions.roles')); ?>" class="side-menu <?php echo e(request()->routeIs('admin.permissions.roles') ? 'side-menu--active' : ''); ?>">
                         <div class="side-menu__icon">
                             <i data-lucide="shield"></i>
                         </div>
@@ -279,7 +279,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('admin.permissions.users') }}" class="side-menu {{ request()->routeIs('admin.permissions.users') ? 'side-menu--active' : '' }}">
+                    <a href="<?php echo e(route('admin.permissions.users')); ?>" class="side-menu <?php echo e(request()->routeIs('admin.permissions.users') ? 'side-menu--active' : ''); ?>">
                         <div class="side-menu__icon">
                             <i data-lucide="user-check"></i>
                         </div>
@@ -287,7 +287,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('admin.permissions.index') }}" class="side-menu {{ request()->routeIs('admin.permissions.index') ? 'side-menu--active' : '' }}">
+                    <a href="<?php echo e(route('admin.permissions.index')); ?>" class="side-menu <?php echo e(request()->routeIs('admin.permissions.index') ? 'side-menu--active' : ''); ?>">
                         <div class="side-menu__icon">
                             <i data-lucide="key"></i>
                         </div>
@@ -301,7 +301,7 @@
 
         <!-- System Settings -->
         <li>
-            <a href="{{ route('admin.settings.index') }}" class="side-menu {{ request()->routeIs('admin.settings*') ? 'side-menu--active' : '' }}">
+            <a href="<?php echo e(route('admin.settings.index')); ?>" class="side-menu <?php echo e(request()->routeIs('admin.settings*') ? 'side-menu--active' : ''); ?>">
                 <div class="side-menu__icon">
                     <i data-lucide="settings"></i>
                 </div>
@@ -314,7 +314,7 @@
             </a>
             <ul class="">
                 <li>
-                    <a href="{{ route('admin.settings.index') }}" class="side-menu {{ request()->routeIs('admin.settings*') ? 'side-menu--active' : '' }}">
+                    <a href="<?php echo e(route('admin.settings.index')); ?>" class="side-menu <?php echo e(request()->routeIs('admin.settings*') ? 'side-menu--active' : ''); ?>">
                         <div class="side-menu__icon">
                             <i data-lucide="settings"></i>
                         </div>
@@ -322,7 +322,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('admin.system.logs') }}" class="side-menu {{ request()->routeIs('admin.system.logs') ? 'side-menu--active' : '' }}">
+                    <a href="<?php echo e(route('admin.system.logs')); ?>" class="side-menu <?php echo e(request()->routeIs('admin.system.logs') ? 'side-menu--active' : ''); ?>">
                         <div class="side-menu__icon">
                             <i data-lucide="activity"></i>
                         </div>
@@ -334,7 +334,7 @@
 
         <!-- User Profile -->
         <li>
-            <a href="{{ route('admin.profile.index') }}" class="side-menu {{ request()->routeIs('admin.profile*') ? 'side-menu--active' : '' }}">
+            <a href="<?php echo e(route('admin.profile.index')); ?>" class="side-menu <?php echo e(request()->routeIs('admin.profile*') ? 'side-menu--active' : ''); ?>">
                 <div class="side-menu__icon">
                     <i data-lucide="user"></i>
                 </div>
@@ -344,3 +344,4 @@
     </ul>
 </nav>
 <!-- END: Side Menu -->
+<?php /**PATH /media/bot/7E246BE4246B9DC1/laragon/www/parking/resources/views/partials/admin/sidebar.blade.php ENDPATH**/ ?>
