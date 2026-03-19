@@ -4,12 +4,12 @@
 <div class="content">
     <!-- Breadcrumb & Header -->
     <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between mb-4">
-        <h1 class="text-lg font-medium text-slate-800 dark:text-slate-100">Bookings</h1>
+        <h1 class="text-lg font-medium text-slate-800 dark:text-slate-100">{{ __('admin.bookings.title') }}</h1>
         <nav class="flex pt-2 sm:pt-0" aria-label="Breadcrumb">
             <ol class="flex items-center space-x-2">
-                <li><a href="{{ route('admin.dashboard.index') }}" class="text-slate-500 dark:text-slate-400 hover:text-slate-600">Dashboard</a></li>
+                <li><a href="{{ route('admin.dashboard.index') }}" class="text-slate-500 dark:text-slate-400 hover:text-slate-600">{{ __('admin.dashboard') }}</a></li>
                 <li class="text-slate-500 dark:text-slate-400">/</li>
-                <li class="text-slate-600 dark:text-slate-300">Bookings</li>
+                <li class="text-slate-600 dark:text-slate-300">{{ __('admin.bookings.title') }}</li>
             </ol>
         </nav>
     </div>
@@ -27,16 +27,16 @@
         <div class="col-span-12">
             <div class="flex flex-col sm:flex-row sm:items-center gap-4">
                 <div class="flex-1">
-                    <input type="text" id="search" placeholder="Search by booking number, vehicle, or user..."
+                    <input type="text" id="search" placeholder="{{ __('admin.bookings.search_placeholder') }}"
                         class="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500">
                 </div>
                 <select id="status-filter" class="px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <option value="">All Status</option>
-                    <option value="pending">Pending</option>
-                    <option value="confirmed">Confirmed</option>
-                    <option value="active">Active</option>
-                    <option value="completed">Completed</option>
-                    <option value="cancelled">Cancelled</option>
+                    <option value="">{{ __('general.all_status') }}</option>
+                    <option value="pending">{{ __('admin.bookings.status_pending') }}</option>
+                    <option value="confirmed">{{ __('admin.bookings.status_confirmed') }}</option>
+                    <option value="active">{{ __('admin.bookings.status_active') }}</option>
+                    <option value="completed">{{ __('admin.bookings.status_completed') }}</option>
+                    <option value="cancelled">{{ __('admin.bookings.status_cancelled') }}</option>
                 </select>
             </div>
         </div>

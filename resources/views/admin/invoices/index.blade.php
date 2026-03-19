@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Invoices')
+@section('title', __('admin.invoices.title'))
 
 @section('content')
 <div class="content">
@@ -10,12 +10,12 @@
             <nav aria-label="breadcrumb" class="flex flex-1">
                 <ol class="flex items-center whitespace-nowrap">
                     <li>
-                        <a href="{{ route('admin.dashboard.index') }}">Dashboard</a>
+                        <a href="{{ route('admin.dashboard.index') }}">{{ __('admin.dashboard') }}</a>
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" class="w-4 h-4 mx-2 stroke-slate-400">
                             <polyline points="9 18 15 12 9 6"></polyline>
                         </svg>
                     </li>
-                    <li class="text-primary font-medium">Invoices</li>
+                    <li class="text-primary font-medium">{{ __('admin.invoices.title') }}</li>
                 </ol>
             </nav>
         </div>
@@ -27,7 +27,7 @@
             <!-- BEGIN: Invoices List -->
             <div class="intro-y box">
                 <div class="flex flex-col sm:flex-row sm:items-center p-5 border-b border-slate-200/60">
-                    <h2 class="font-bold text-base mr-auto">Invoices Management</h2>
+                    <h2 class="font-bold text-base mr-auto">{{ __('admin.invoices.management') }}</h2>
                     <div class="flex items-center gap-3 w-full sm:w-auto mt-3 sm:mt-0">
                     </div>
                 </div>
@@ -40,28 +40,28 @@
                             <div class="flex-1">
                                 <div class="relative">
                                     <i data-lucide="search" class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400"></i>
-                                    <input type="text" name="search" placeholder="Search by Invoice # or User..." value="{{ request('search') }}"
+                                    <input type="text" name="search" placeholder="{{ __('admin.invoices.search_placeholder') }}" value="{{ request('search') }}"
                                         class="pl-10 pr-4 py-2 w-full border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
                                 </div>
                             </div>
 
                             <!-- Status Filter -->
                             <select name="status" class="px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
-                                <option value="">All Status</option>
-                                <option value="paid" {{ request('status') === 'paid' ? 'selected' : '' }}>Paid</option>
-                                <option value="unpaid" {{ request('status') === 'unpaid' ? 'selected' : '' }}>Unpaid</option>
-                                <option value="overdue" {{ request('status') === 'overdue' ? 'selected' : '' }}>Overdue</option>
+                                <option value="">{{ __('general.all_status') }}</option>
+                                <option value="paid" {{ request('status') === 'paid' ? 'selected' : '' }}>{{ __('admin.invoices.status.paid') }}</option>
+                                <option value="unpaid" {{ request('status') === 'unpaid' ? 'selected' : '' }}>{{ __('admin.invoices.status.unpaid') }}</option>
+                                <option value="overdue" {{ request('status') === 'overdue' ? 'selected' : '' }}>{{ __('admin.invoices.status.overdue') }}</option>
                             </select>
 
                             <!-- Filter Button -->
                             <button type="submit" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors whitespace-nowrap">
-                                <i data-lucide="filter" class="w-4 h-4 inline-block mr-2"></i>Filter
+                                <i data-lucide="filter" class="w-4 h-4 inline-block mr-2"></i>{{ __('general.filter') }}
                             </button>
 
                             <!-- Reset Filter -->
                             @if(request('search') || request('status'))
                                 <a href="{{ route('admin.invoices.index') }}" class="px-4 py-2 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors whitespace-nowrap">
-                                    <i data-lucide="x" class="w-4 h-4 inline-block mr-2"></i>Reset
+                                    <i data-lucide="x" class="w-4 h-4 inline-block mr-2"></i>{{ __('general.reset') }}
                                 </a>
                             @endif
                         </div>

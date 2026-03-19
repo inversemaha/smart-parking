@@ -132,14 +132,19 @@ return [
     // Payment Management
     'payments' => [
         'title' => 'পেমেন্ট ব্যবস্থাপনা',
-        'transactions' => 'লেনদেন',
+        'transactions' => 'পেমেন্ট লেনদেন',
+        'search_placeholder' => 'পেমেন্ট আইডি বা ব্যবহারকারীর নাম দিয়ে অনুসন্ধান করুন...',
+        'all_methods' => 'সমস্ত পদ্ধতি',
         'reconciliation' => 'পুনর্মিলন',
         'refunds' => 'ফেরত',
         'gateway_logs' => 'গেটওয়ে লগ',
         'process_refund' => 'ফেরত প্রক্রিয়া',
         'verify_payment' => 'পেমেন্ট যাচাই',
         'status' => [
+            'initiated' => 'শুরু করা হয়েছে',
             'pending' => 'অপেক্ষমান',
+            'processing' => 'প্রক্রিয়াকরণ',
+            'paid' => 'প্রদত্ত',
             'completed' => 'সম্পন্ন',
             'failed' => 'ব্যর্থ',
             'refunded' => 'ফেরত',
@@ -150,7 +155,67 @@ return [
             'nagad' => 'নগদ',
             'rocket' => 'রকেট',
             'card' => 'ক্রেডিট/ডেবিট কার্ড',
-            'bank' => 'ব্যাংক ট্রান্সফার'
+            'bank_transfer' => 'ব্যাংক ট্রান্সফার',
+            'wallet' => 'ওয়ালেট'
+        ]
+    ],
+
+    // Invoice Management
+    'invoices' => [
+        'title' => 'চালান ব্যবস্থাপনা',
+        'management' => 'চালান ব্যবস্থাপনা',
+        'search_placeholder' => 'চালান নম্বর বা ব্যবহারকারী দ্বারা অনুসন্ধান করুন...',
+        'status' => [
+            'paid' => 'প্রদত্ত',
+            'unpaid' => 'অপ্রদত্ত',
+            'overdue' => 'দেরী'
+        ]
+    ],
+
+    // Booking Management
+    'bookings' => [
+        'title' => 'বুকিং ব্যবস্থাপনা',
+        'search_placeholder' => 'বুকিং নম্বর, গাড়ি বা ব্যবহারকারী দ্বারা অনুসন্ধান করুন...',
+        'status_pending' => 'অপেক্ষমান',
+        'status_confirmed' => 'নিশ্চিত',
+        'status_active' => 'সক্রিয়',
+        'status_completed' => 'সম্পন্ন',
+        'status_cancelled' => 'বাতিল',
+        'active' => 'সক্রিয় বুকিং',
+        'expired' => 'মেয়াদোত্তীর্ণ বুকিং',
+        'history' => 'বুকিং ইতিহাস',
+        'cancel' => 'বুকিং বাতিল করুন',
+        'extend' => 'বুকিং বর্ধন করুন',
+        'force_end' => 'জোরপূর্বক সমাপ্ত করুন',
+        'status' => [
+            'active' => 'সক্রিয়',
+            'completed' => 'সম্পন্ন',
+            'expired' => 'মেয়াদোত্তীর্ণ',
+            'cancelled' => 'বাতিল'
+        ]
+    ],
+
+    // Parking Management
+    'parking' => [
+        'title' => 'পার্কিং ব্যবস্থাপনা',
+        'locations' => 'পার্কিং স্থান',
+        'slots' => 'পার্কিং স্লট',
+        'slot_types' => 'স্লটের ধরণ',
+        'occupancy' => 'দখল মনিটর',
+        'create_location' => 'অবস্থান তৈরি করুন',
+        'edit_location' => 'অবস্থান সম্পাদনা করুন',
+        'create_slot' => 'স্লট তৈরি করুন',
+        'edit_slot' => 'স্লট সম্পাদনা করুন',
+        'slot_status' => [
+            'available' => 'উপলব্ধ',
+            'occupied' => 'দখলকৃত',
+            'maintenance' => 'রক্ষণাবেক্ষণ',
+            'reserved' => 'সংরক্ষিত'
+        ],
+        'slot_types' => [
+            'regular' => 'নিয়মিত',
+            'premium' => 'প্রিমিয়াম',
+            'handicap' => 'প্রতিবন্ধী'
         ]
     ],
 
@@ -248,6 +313,17 @@ return [
         'broadcast_message' => 'বার্তা প্রচার',
         'emergency_contact' => 'জরুরি যোগাযোগ',
         'confirm_action' => 'জরুরি কার্য নিশ্চিত করুন'
+    ],
+
+    // System Settings
+    'settings' => [
+        'title' => 'সিস্টেম সেটিংস',
+        'general' => 'সাধারণ সেটিংস',
+        'parking_rates' => 'পার্কিং রেট',
+        'working_hours' => 'কাজের সময়',
+        'payment_gateway' => 'পেমেন্ট গেটওয়ে',
+        'email_settings' => 'ইমেল সেটিংস',
+        'maintenance_mode' => 'রক্ষণাবেক্ষণ মোড'
     ],
 
     // Common Actions

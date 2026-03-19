@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Payments')
+@section('title', __('admin.payments.title'))
 
 @section('content')
 <div class="content">
@@ -10,12 +10,12 @@
             <nav aria-label="breadcrumb" class="flex flex-1">
                 <ol class="flex items-center whitespace-nowrap">
                     <li>
-                        <a href="{{ route('admin.dashboard.index') }}">Dashboard</a>
+                        <a href="{{ route('admin.dashboard.index') }}">{{ __('admin.dashboard') }}</a>
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" class="w-4 h-4 mx-2 stroke-slate-400">
                             <polyline points="9 18 15 12 9 6"></polyline>
                         </svg>
                     </li>
-                    <li class="text-primary font-medium">Payments</li>
+                    <li class="text-primary font-medium">{{ __('admin.payments.title') }}</li>
                 </ol>
             </nav>
         </div>
@@ -27,7 +27,7 @@
             <!-- BEGIN: Payments List -->
             <div class="intro-y box">
                 <div class="flex flex-col sm:flex-row sm:items-center p-5 border-b border-slate-200/60">
-                    <h2 class="font-bold text-base mr-auto">Payment Transactions</h2>
+                    <h2 class="font-bold text-base mr-auto">{{ __('admin.payments.transactions') }}</h2>
                     <div class="flex items-center gap-3 w-full sm:w-auto mt-3 sm:mt-0">
                     </div>
                 </div>
@@ -40,40 +40,40 @@
                             <div class="flex-1">
                                 <div class="relative">
                                     <i data-lucide="search" class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400"></i>
-                                    <input type="text" name="search" placeholder="Search by Payment ID or User..." value="{{ request('search') }}"
+                                    <input type="text" name="search" placeholder="{{ __('admin.payments.search_placeholder') }}" value="{{ request('search') }}"
                                         class="pl-10 pr-4 py-2 w-full border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
                                 </div>
                             </div>
 
                             <!-- Status Filter -->
                             <select name="status" class="px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
-                                <option value="">All Status</option>
-                                <option value="initiated" {{ request('status') === 'initiated' ? 'selected' : '' }}>Initiated</option>
-                                <option value="pending" {{ request('status') === 'pending' ? 'selected' : '' }}>Pending</option>
-                                <option value="processing" {{ request('status') === 'processing' ? 'selected' : '' }}>Processing</option>
-                                <option value="paid" {{ request('status') === 'paid' ? 'selected' : '' }}>Paid</option>
-                                <option value="failed" {{ request('status') === 'failed' ? 'selected' : '' }}>Failed</option>
+                                <option value="">{{ __('general.all_status') }}</option>
+                                <option value="initiated" {{ request('status') === 'initiated' ? 'selected' : '' }}>{{ __('admin.payments.status.initiated') }}</option>
+                                <option value="pending" {{ request('status') === 'pending' ? 'selected' : '' }}>{{ __('admin.payments.status.pending') }}</option>
+                                <option value="processing" {{ request('status') === 'processing' ? 'selected' : '' }}>{{ __('admin.payments.status.processing') }}</option>
+                                <option value="paid" {{ request('status') === 'paid' ? 'selected' : '' }}>{{ __('admin.payments.status.paid') }}</option>
+                                <option value="failed" {{ request('status') === 'failed' ? 'selected' : '' }}>{{ __('admin.payments.status.failed') }}</option>
                             </select>
 
                             <!-- Payment Method Filter -->
                             <select name="payment_method" class="px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
-                                <option value="">All Methods</option>
-                                <option value="card" {{ request('payment_method') === 'card' ? 'selected' : '' }}>Card</option>
-                                <option value="bank_transfer" {{ request('payment_method') === 'bank_transfer' ? 'selected' : '' }}>Bank Transfer</option>
-                                <option value="bkash" {{ request('payment_method') === 'bkash' ? 'selected' : '' }}>bKash</option>
-                                <option value="nagad" {{ request('payment_method') === 'nagad' ? 'selected' : '' }}>Nagad</option>
-                                <option value="wallet" {{ request('payment_method') === 'wallet' ? 'selected' : '' }}>Wallet</option>
+                                <option value="">{{ __('admin.payments.all_methods') }}</option>
+                                <option value="card" {{ request('payment_method') === 'card' ? 'selected' : '' }}>{{ __('admin.payments.methods.card') }}</option>
+                                <option value="bank_transfer" {{ request('payment_method') === 'bank_transfer' ? 'selected' : '' }}>{{ __('admin.payments.methods.bank_transfer') }}</option>
+                                <option value="bkash" {{ request('payment_method') === 'bkash' ? 'selected' : '' }}>{{ __('admin.payments.methods.bkash') }}</option>
+                                <option value="nagad" {{ request('payment_method') === 'nagad' ? 'selected' : '' }}>{{ __('admin.payments.methods.nagad') }}</option>
+                                <option value="wallet" {{ request('payment_method') === 'wallet' ? 'selected' : '' }}>{{ __('admin.payments.methods.wallet') }}</option>
                             </select>
 
                             <!-- Filter Button -->
                             <button type="submit" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors whitespace-nowrap">
-                                <i data-lucide="filter" class="w-4 h-4 inline-block mr-2"></i>Filter
+                                <i data-lucide="filter" class="w-4 h-4 inline-block mr-2"></i>{{ __('general.filter') }}
                             </button>
 
                             <!-- Reset Filter -->
                             @if(request('search') || request('status') || request('payment_method'))
                                 <a href="{{ route('admin.payments.index') }}" class="px-4 py-2 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors whitespace-nowrap">
-                                    <i data-lucide="x" class="w-4 h-4 inline-block mr-2"></i>Reset
+                                    <i data-lucide="x" class="w-4 h-4 inline-block mr-2"></i>{{ __('general.reset') }}
                                 </a>
                             @endif
                         </div>

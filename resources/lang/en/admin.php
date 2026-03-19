@@ -132,14 +132,19 @@ return [
     // Payment Management
     'payments' => [
         'title' => 'Payment Management',
-        'transactions' => 'Transactions',
+        'transactions' => 'Payment Transactions',
+        'search_placeholder' => 'Search by Payment ID or User...',
+        'all_methods' => 'All Methods',
         'reconciliation' => 'Reconciliation',
         'refunds' => 'Refunds',
         'gateway_logs' => 'Gateway Logs',
         'process_refund' => 'Process Refund',
         'verify_payment' => 'Verify Payment',
         'status' => [
+            'initiated' => 'Initiated',
             'pending' => 'Pending',
+            'processing' => 'Processing',
+            'paid' => 'Paid',
             'completed' => 'Completed',
             'failed' => 'Failed',
             'refunded' => 'Refunded',
@@ -150,7 +155,61 @@ return [
             'nagad' => 'Nagad',
             'rocket' => 'Rocket',
             'card' => 'Credit/Debit Card',
-            'bank' => 'Bank Transfer'
+            'bank_transfer' => 'Bank Transfer',
+            'wallet' => 'Wallet'
+        ]
+    ],
+
+    // Invoice Management
+    'invoices' => [
+        'title' => 'Invoice Management',
+        'management' => 'Invoices Management',
+        'search_placeholder' => 'Search by Invoice # or User...',
+        'status' => [
+            'paid' => 'Paid',
+            'unpaid' => 'Unpaid',
+            'overdue' => 'Overdue'
+        ]
+    ],
+
+    // Booking Management
+    'bookings' => [
+        'title' => 'Booking Management',
+        'active' => 'Active Bookings',
+        'expired' => 'Expired Bookings',
+        'history' => 'Booking History',
+        'cancel' => 'Cancel Booking',
+        'extend' => 'Extend Booking',
+        'force_end' => 'Force End',
+        'status' => [
+            'active' => 'Active',
+            'completed' => 'Completed',
+            'expired' => 'Expired',
+            'cancelled' => 'Cancelled'
+        ]
+    ],
+
+    // Parking Management
+    'parking' => [
+        'title' => 'Parking Management',
+        'locations' => 'Parking Locations',
+        'slots' => 'Parking Slots',
+        'slot_types' => 'Slot Types',
+        'occupancy' => 'Occupancy Monitor',
+        'create_location' => 'Create Location',
+        'edit_location' => 'Edit Location',
+        'create_slot' => 'Create Slot',
+        'edit_slot' => 'Edit Slot',
+        'slot_status' => [
+            'available' => 'Available',
+            'occupied' => 'Occupied',
+            'maintenance' => 'Maintenance',
+            'reserved' => 'Reserved'
+        ],
+        'slot_types' => [
+            'regular' => 'Regular',
+            'premium' => 'Premium',
+            'handicap' => 'Handicap'
         ]
     ],
 
@@ -248,6 +307,17 @@ return [
         'broadcast_message' => 'Broadcast Message',
         'emergency_contact' => 'Emergency Contact',
         'confirm_action' => 'Confirm Emergency Action'
+    ],
+
+    // System Settings
+    'settings' => [
+        'title' => 'System Settings',
+        'general' => 'General Settings',
+        'parking_rates' => 'Parking Rates',
+        'working_hours' => 'Working Hours',
+        'payment_gateway' => 'Payment Gateway',
+        'email_settings' => 'Email Settings',
+        'maintenance_mode' => 'Maintenance Mode'
     ],
 
     // Common Actions

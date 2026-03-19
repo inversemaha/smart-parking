@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'System Settings')
+@section('title', __('admin.settings.title'))
 
 @section('content')
 <div class="content">
