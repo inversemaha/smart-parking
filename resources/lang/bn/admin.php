@@ -479,6 +479,28 @@ return [
         'denied' => 'অস্বীকৃত অ্যাক্সেস',
         'pending' => 'মুলতুবি অ্যাক্সেস',
         'alerts' => 'অ্যাক্সেস সতর্কতা'
+    ],
+
+    'parking_sessions' => [
+        'title' => 'পার্কিং সেশন',
+        'singular' => 'সেশন',
+        'create' => 'সেশন তৈরি করুন',
+        'edit' => 'সেশন সম্পাদনা করুন',
+        'delete' => 'সেশন মুছে ফেলুন',
+        'restore' => 'সেশন পুনরুদ্ধার করুন',
+        'session_created_successfully' => 'পার্কিং সেশন সফলভাবে তৈরি হয়েছে',
+        'session_updated_successfully' => 'পার্কিং সেশন সফলভাবে আপডেট হয়েছে',
+        'session_deleted_successfully' => 'পার্কিং সেশন সফলভাবে মুছে ফেলা হয়েছে',
+        'session_restored_successfully' => 'পার্কিং সেশন সফলভাবে পুনরুদ্ধার হয়েছে',
+        'active_sessions' => 'সক্রিয় সেশন',
+        'all_sessions' => 'সমস্ত সেশন',
+        'new_session' => 'নতুন সেশন',
+        'occupancy_monitor' => 'অধিগ্রহণ পর্যবেক্ষণ',
+        'session_analytics' => 'সেশন বিশ্লেষণ',
+        'session_marked_exited' => 'সেশন প্রস্থান হিসাবে চিহ্নিত করা হয়েছে',
+        'session_extended' => 'সেশন সফলভাবে সম্প্রসারিত হয়েছে',
+        'session_cancelled' => 'সেশন সফলভাবে বাতিল করা হয়েছে',
+        'payment_collected' => 'পেমেন্ট সফলভাবে সংগ্রহ করা হয়েছে'
     ]
 ];
 

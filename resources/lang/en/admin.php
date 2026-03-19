@@ -471,5 +471,28 @@ return [
         'allowed' => 'Allowed Access',
         'denied' => 'Denied Access',
         'pending' => 'Pending Access',
-        'alerts' => 'Access Alerts'    ]
+        'alerts' => 'Access Alerts'
+    ],
+
+    'parking_sessions' => [
+        'title' => 'Parking Sessions',
+        'singular' => 'Session',
+        'create' => 'Create Session',
+        'edit' => 'Edit Session',
+        'delete' => 'Delete Session',
+        'restore' => 'Restore Session',
+        'session_created_successfully' => 'Parking session created successfully',
+        'session_updated_successfully' => 'Parking session updated successfully',
+        'session_deleted_successfully' => 'Parking session deleted successfully',
+        'session_restored_successfully' => 'Parking session restored successfully',
+        'active_sessions' => 'Active Sessions',
+        'all_sessions' => 'All Sessions',
+        'new_session' => 'New Session',
+        'occupancy_monitor' => 'Occupancy Monitor',
+        'session_analytics' => 'Session Analytics',
+        'session_marked_exited' => 'Session marked as exited',
+        'session_extended' => 'Session extended successfully',
+        'session_cancelled' => 'Session cancelled successfully',
+        'payment_collected' => 'Payment collected successfully'
+    ]
 ];

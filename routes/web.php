@@ -22,6 +22,7 @@ use App\Domains\Parking\Controllers\VehicleTypeController;
 use App\Domains\Parking\Controllers\ParkingRateController;
 use App\Domains\Parking\Controllers\ParkingGateController;
 use App\Domains\Parking\Controllers\ParkingQrCodeController;
+use App\Domains\Parking\Controllers\ParkingSessionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -255,6 +256,26 @@ Route::middleware(['auth', 'set.language'])->prefix('admin')->name('admin.')->gr
         Route::get('/{qrCode}/download', [ParkingQrCodeController::class, 'download'])->name('download');
         Route::post('/bulk/generate-for-zone', [ParkingQrCodeController::class, 'bulkGenerateForZone'])->name('bulk-generate');
         Route::get('/stats/statistics', [ParkingQrCodeController::class, 'statistics'])->name('statistics');
+    });
+
+    // Phase 3: Parking Sessions Management (Entry/Exit Tracking)
+    Route::middleware('permission:manage_parking')->prefix('parking-sessions')->name('parking-sessions.')->group(function () {
+        Route::get('/', [ParkingSessionController::class, 'index'])->name('index');
+        Route::get('/active', [ParkingSessionController::class, 'active'])->name('active');
+        Route::get('/create', [ParkingSessionController::class, 'create'])->name('create');
+        Route::post('/', [ParkingSessionController::class, 'store'])->name('store');
+        Route::get('/{parkingSession}', [ParkingSessionController::class, 'show'])->name('show');
+        Route::get('/{parkingSession}/edit', [ParkingSessionController::class, 'edit'])->name('edit');
+        Route::put('/{parkingSession}', [ParkingSessionController::class, 'update'])->name('update');
+        Route::delete('/{parkingSession}', [ParkingSessionController::class, 'destroy'])->name('destroy');
+        Route::post('/{parkingSession}/restore', [ParkingSessionController::class, 'restore'])->name('restore');
+        Route::patch('/{parkingSession}/exit', [ParkingSessionController::class, 'markExit'])->name('exit');
+        Route::patch('/{parkingSession}/extend', [ParkingSessionController::class, 'extend'])->name('extend');
+        Route::patch('/{parkingSession}/cancel', [ParkingSessionController::class, 'cancel'])->name('cancel');
+        Route::patch('/{parkingSession}/collect-payment', [ParkingSessionController::class, 'collectPayment'])->name('collect-payment');
+        Route::get('/analytics/report', [ParkingSessionController::class, 'analytics'])->name('analytics');
+        Route::get('/occupancy/live', [ParkingSessionController::class, 'occupancy'])->name('occupancy');
+        Route::get('/reports/monthly', [ParkingSessionController::class, 'report'])->name('report');
     });
 
     // Vehicle Management CRUD

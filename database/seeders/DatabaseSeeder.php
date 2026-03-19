@@ -30,13 +30,15 @@ class DatabaseSeeder extends Seeder
         // Module-specific seeders (can be run independently)
         $this->command->info('🏢 Seeding business modules...');
         $this->call([
-            Phase1ParkingSeeder::class,    // Create Phase 1 parking zones, floors, vehicle types and rates
-            ParkingLocationSeeder::class,  // Create parking locations and slots
-            UserSeeder::class,             // Create test users
-            VehicleSeeder::class,          // Create test vehicles
-            BookingSeeder::class,          // Create test bookings
-            PaymentSeeder::class,          // Create test payments
-            // AuditLogSeeder::class,      // Create audit logs (disabled for now)
+            UserSeeder::class,                       // Create test users (needed first)
+            VehicleSeeder::class,                    // Create test vehicles (needed for Phase 3)
+            Phase1ParkingSeeder::class,              // Phase 1: Zones, Floors, Vehicle Types, Rates
+            Phase2AccessControlSeeder::class,        // Phase 2: Parking Gates, QR Codes, Access Logs
+            Phase3ParkingSessionsSeeder::class,      // Phase 3: Parking Sessions (Entry/Exit Tracking)
+            ParkingLocationSeeder::class,            // Create parking locations and slots
+            BookingSeeder::class,                    // Create test bookings
+            PaymentSeeder::class,                    // Create test payments
+            // AuditLogSeeder::class,                // Create audit logs (disabled for now)
         ]);
         $this->command->info('✅ Business module seeding completed.');
         $this->command->newLine();
@@ -54,12 +56,13 @@ class DatabaseSeeder extends Seeder
         $this->command->newLine();
         $this->command->info('📊 SEEDING SUMMARY:');
         $this->command->info('├── Core System: Roles, Permissions, Settings');
-        $this->command->info('├── Parking: Locations and Slots');
+        $this->command->info('├── Phase 1: Parking Zones, Floors, Vehicle Types, Rates');
+        $this->command->info('├── Phase 2: Parking Gates, QR Codes, Access Logs');
+        $this->command->info('├── Phase 3: Parking Sessions (Entry/Exit Tracking)');
         $this->command->info('├── Users: Admin and Test Users');
         $this->command->info('├── Vehicles: Test Vehicle Registry');
         $this->command->info('├── Bookings: Historical Booking Data');
-        $this->command->info('├── Payments: Transaction Records');
-        $this->command->info('└── Audit: System Activity Logs');
+        $this->command->info('└── Payments: Transaction Records');
         $this->command->newLine();
         $this->command->info('🚀 Ready to test the Smart Parking System!');
         $this->command->newLine();

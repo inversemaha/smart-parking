@@ -317,6 +317,63 @@
                         </li>
                     </ul>
                 </li>
+
+                <!-- Parking Sessions (Entry/Exit Tracking) -->
+                <li>
+                    <a href="{{ route('admin.parking-sessions.index') }}" class="side-menu {{ request()->routeIs('admin.parking-sessions*') ? 'side-menu--active' : '' }}">
+                        <div class="side-menu__icon">
+                            <i data-lucide="clock"></i>
+                        </div>
+                        <div class="side-menu__title">
+                            {{ __('admin.parking_sessions') }}
+                            <div class="side-menu__sub-icon">
+                                <i data-lucide="chevron-down"></i>
+                            </div>
+                        </div>
+                    </a>
+                    <ul class="">
+                        <li>
+                            <a href="{{ route('admin.parking-sessions.active') }}" class="side-menu {{ request()->routeIs('admin.parking-sessions.active') ? 'side-menu--active' : '' }}">
+                                <div class="side-menu__icon">
+                                    <i data-lucide="play-circle"></i>
+                                </div>
+                                <div class="side-menu__title">{{ __('admin.active_sessions') }}</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('admin.parking-sessions.index') }}" class="side-menu {{ request()->routeIs('admin.parking-sessions.index') ? 'side-menu--active' : '' }}">
+                                <div class="side-menu__icon">
+                                    <i data-lucide="list"></i>
+                                </div>
+                                <div class="side-menu__title">{{ __('admin.all_sessions') }}</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('admin.parking-sessions.create') }}" class="side-menu {{ request()->routeIs('admin.parking-sessions.create') ? 'side-menu--active' : '' }}">
+                                <div class="side-menu__icon">
+                                    <i data-lucide="plus"></i>
+                                </div>
+                                <div class="side-menu__title">{{ __('admin.new_session') }}</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('admin.parking-sessions.occupancy') }}" class="side-menu {{ request()->routeIs('admin.parking-sessions.occupancy') ? 'side-menu--active' : '' }}">
+                                <div class="side-menu__icon">
+                                    <i data-lucide="pie-chart"></i>
+                                </div>
+                                <div class="side-menu__title">{{ __('admin.occupancy_monitor') }}</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('admin.parking-sessions.analytics') }}" class="side-menu {{ request()->routeIs('admin.parking-sessions.analytics') ? 'side-menu--active' : '' }}">
+                                <div class="side-menu__icon">
+                                    <i data-lucide="bar-chart-2"></i>
+                                </div>
+                                <div class="side-menu__title">{{ __('admin.session_analytics') }}</div>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
             </ul>
         </li>
 

@@ -47,6 +47,30 @@ class ParkingZone extends Model
     }
 
     /**
+     * Get all parking gates in this zone
+     */
+    public function gates(): HasMany
+    {
+        return $this->hasMany(ParkingGate::class, 'zone_id');
+    }
+
+    /**
+     * Get all QR codes for this zone
+     */
+    public function qrCodes(): HasMany
+    {
+        return $this->hasMany(ParkingQrCode::class, 'zone_id');
+    }
+
+    /**
+     * Get all parking sessions in this zone
+     */
+    public function parkingSessions(): HasMany
+    {
+        return $this->hasMany(ParkingSession::class, 'zone_id');
+    }
+
+    /**
      * Calculate occupancy percentage
      */
     public function occupancyPercentage(): float
