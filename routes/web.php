@@ -23,6 +23,7 @@ use App\Domains\Parking\Controllers\ParkingRateController;
 use App\Domains\Parking\Controllers\ParkingGateController;
 use App\Domains\Parking\Controllers\ParkingQrCodeController;
 use App\Domains\Parking\Controllers\ParkingSessionController;
+use App\Domains\Parking\Controllers\OperatorDashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -327,6 +328,26 @@ Route::middleware(['auth', 'set.language'])->prefix('admin')->name('admin.')->gr
         Route::get('/users', [AdminDashboardController::class, 'userReport'])->name('users');
     });
 });
+
+// Phase 4: Operator Dashboard Routes (Gate operators and admins)
+Route::middleware(['auth', 'permission:operate_gate|manage_parking', 'set.language'])
+    ->prefix('operator')
+    ->name('operator.')
+    ->group(function () {
+        // Main operator dashboard
+        Route::get('/', [OperatorDashboardController::class, 'dashboard'])->name('dashboard');
+        Route::get('/quick-scan', [OperatorDashboardController::class, 'quickScan'])->name('quick-scan');
+        
+        // API endpoints for quick operations
+        Route::post('/scan', [OperatorDashboardController::class, 'processScan'])->name('scan');
+        Route::post('/entry', [OperatorDashboardController::class, 'quickEntry'])->name('entry');
+        Route::post('/exit', [OperatorDashboardController::class, 'quickExit'])->name('exit');
+        Route::get('/search', [OperatorDashboardController::class, 'searchSession'])->name('search');
+        Route::get('/session/{id}', [OperatorDashboardController::class, 'sessionDetails'])->name('session-details');
+        Route::get('/gate/{id}', [OperatorDashboardController::class, 'gateStatus'])->name('gate-status');
+        Route::get('/alerts', [OperatorDashboardController::class, 'notifications'])->name('alerts');
+        Route::patch('/gate/{id}/status', [OperatorDashboardController::class, 'updateGateStatus'])->name('gate-status-update');
+    });
 
 require __DIR__.'/auth.php';
 require __DIR__.'/visitor.php';

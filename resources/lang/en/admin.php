@@ -494,5 +494,30 @@ return [
         'session_extended' => 'Session extended successfully',
         'session_cancelled' => 'Session cancelled successfully',
         'payment_collected' => 'Payment collected successfully'
+    ],
+
+    // Phase 4: Operator Mode
+    'operator' => [
+        'title' => 'Gate Operator Panel',
+        'dashboard' => 'Operator Dashboard',
+        'quick_scan' => 'Quick Scan',
+        'quick_operations' => 'Quick Operations',
+        'active_sessions_count' => 'Active Sessions',
+        'revenue_today' => 'Revenue Today',
+        'pending_payments_count' => 'Pending Payments',
+        'overstayed_count' => 'Overstayed Vehicles',
+        'recent_activities' => 'Recent Activities',
+        'entry' => 'Vehicle Entry',
+        'exit' => 'Vehicle Exit',
+        'manual_entry' => 'Manual Entry',
+        'manual_exit' => 'Manual Exit',
+        'search' => 'Search Vehicle',
+        'scan_qr' => 'Scan QR Code',
+        'alerts' => 'Real-time Alerts',
+        'gate_status' => 'Gate Status',
+        'entry_recorded' => 'Entry recorded successfully',
+        'exit_recorded' => 'Exit recorded successfully',
+        'search_results' => 'Search Results',
+        'no_results' => 'No sessions found',
     ]
 ];

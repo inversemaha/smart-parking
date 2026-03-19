@@ -501,6 +501,31 @@ return [
         'session_extended' => 'সেশন সফলভাবে সম্প্রসারিত হয়েছে',
         'session_cancelled' => 'সেশন সফলভাবে বাতিল করা হয়েছে',
         'payment_collected' => 'পেমেন্ট সফলভাবে সংগ্রহ করা হয়েছে'
+    ],
+
+    // Phase 4: Operator Mode
+    'operator' => [
+        'title' => 'গেট অপারেটর প্যানেল',
+        'dashboard' => 'অপারেটর ড্যাশবোর্ড',
+        'quick_scan' => 'দ্রুত স্ক্যান',
+        'quick_operations' => 'দ্রুত অপারেশন',
+        'active_sessions_count' => 'সক্রিয় সেশন',
+        'revenue_today' => 'আজকের রাজস্ব',
+        'pending_payments_count' => 'অপেক্ষমাণ পেমেন্ট',
+        'overstayed_count' => 'অতিরিক্ত খরচী যানবাহন',
+        'recent_activities' => 'সাম্প্রতিক কার্যকলাপ',
+        'entry' => 'যানবাহন প্রবেশ',
+        'exit' => 'যানবাহন প্রস্থান',
+        'manual_entry' => 'ম্যানুয়াল প্রবেশ',
+        'manual_exit' => 'ম্যানুয়াল প্রস্থান',
+        'search' => 'যানবাহন অনুসন্ধান করুন',
+        'scan_qr' => 'কিউআর কোড স্ক্যান করুন',
+        'alerts' => 'রিয়েল-টাইম সতর্কতা',
+        'gate_status' => 'গেট স্থিতি',
+        'entry_recorded' => 'প্রবেশ সফলভাবে রেকর্ড করা হয়েছে',
+        'exit_recorded' => 'প্রস্থান সফলভাবে রেকর্ড করা হয়েছে',
+        'search_results' => 'সার্চ ফলাফল',
+        'no_results' => 'কোন সেশন পাওয়া যায়নি',
     ]
 ];
 

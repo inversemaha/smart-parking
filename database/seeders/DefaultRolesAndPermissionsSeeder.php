@@ -57,8 +57,10 @@ class DefaultRolesAndPermissionsSeeder extends Seeder
             ['name' => 'gate.entry', 'module' => 'gate', 'description' => 'Vehicle entry operations'],
             ['name' => 'gate.exit', 'module' => 'gate', 'description' => 'Vehicle exit operations'],
             ['name' => 'gate.scan', 'module' => 'gate', 'description' => 'QR code scanning'],
+            ['name' => 'operate_gate', 'module' => 'gate', 'description' => 'Gate operator dashboard access'],
 
             // Parking permissions
+            ['name' => 'manage_parking', 'module' => 'parking', 'description' => 'Manage all parking (admin)'],
             ['name' => 'parking.manage', 'module' => 'parking', 'description' => 'Manage parking areas and slots'],
             ['name' => 'parking.view', 'module' => 'parking', 'description' => 'View parking information'],
         ];
@@ -125,11 +127,10 @@ class DefaultRolesAndPermissionsSeeder extends Seeder
         $adminRole->permissions()->syncWithoutDetaching($adminPermissions);
 
         // Operator gets gate and basic permissions
-        $operatorPermissions = Permission::whereIn('module', ['gate', 'vehicle', 'booking'])
-            ->whereIn('name', [
-                'gate.entry', 'gate.exit', 'gate.scan',
-                'vehicles.view', 'bookings.view'
-            ])->pluck('id')->toArray();
+        $operatorPermissions = Permission::whereIn('name', [
+            'operate_gate', 'gate.entry', 'gate.exit', 'gate.scan',
+            'vehicles.view', 'bookings.view', 'parking.view'
+        ])->pluck('id')->toArray();
         $operatorRole->permissions()->syncWithoutDetaching($operatorPermissions);
 
         // User gets basic permissions
