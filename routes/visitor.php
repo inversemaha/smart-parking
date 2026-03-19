@@ -18,9 +18,6 @@ use App\Domains\Parking\Controllers\VisitorParkingController;
 |
 */
 
-// Language switching for visitors
-Route::post('/language/{locale}', [VisitorController::class, 'switchLanguage'])->name('visitor.language.switch');
-
 // Public parking discovery (no auth required)
 Route::prefix('parking')->name('visitor.parking.')->group(function () {
     Route::get('/locations', [VisitorParkingController::class, 'locations'])->name('locations');

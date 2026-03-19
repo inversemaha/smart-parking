@@ -218,11 +218,6 @@ class VisitorController extends Controller
     {
         if (in_array($locale, ['en', 'bn'])) {
             session(['locale' => $locale]);
-
-            // Update user preference if logged in
-            if (auth()->check()) {
-                auth()->user()->update(['preferred_language' => $locale]);
-            }
         }
 
         return redirect()->back();
