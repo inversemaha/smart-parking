@@ -8,6 +8,7 @@ use App\Domains\User\Controllers\PaymentController as UserPaymentController;
 use App\Domains\Admin\Controllers\PermissionController;
 use App\Domains\Admin\Controllers\AdminDashboardController;
 use App\Domains\Admin\Controllers\AdminVehicleController;
+use App\Domains\Admin\Controllers\AdminParkingLocationController;
 use App\Domains\User\Controllers\VisitorController;
 
 /*
@@ -115,6 +116,17 @@ Route::middleware(['auth', 'set.language'])->prefix('admin')->name('admin.')->gr
         Route::get('/roles', [PermissionController::class, 'roles'])->name('permissions.roles');
         Route::post('/roles', [PermissionController::class, 'createRole'])->name('roles.store');
         Route::put('/roles/{role}', [PermissionController::class, 'updateRole'])->name('roles.update');
+    });
+
+    // Parking Location Management CRUD
+    Route::prefix('parking-locations')->name('parking-locations.')->group(function () {
+        Route::get('/', [AdminParkingLocationController::class, 'index'])->name('index');
+        Route::get('/create', [AdminParkingLocationController::class, 'create'])->name('create');
+        Route::post('/', [AdminParkingLocationController::class, 'store'])->name('store');
+        Route::get('/{parkingLocation}', [AdminParkingLocationController::class, 'show'])->name('show');
+        Route::get('/{parkingLocation}/edit', [AdminParkingLocationController::class, 'edit'])->name('edit');
+        Route::put('/{parkingLocation}', [AdminParkingLocationController::class, 'update'])->name('update');
+        Route::delete('/{parkingLocation}', [AdminParkingLocationController::class, 'destroy'])->name('destroy');
     });
 
     // Vehicle Management CRUD

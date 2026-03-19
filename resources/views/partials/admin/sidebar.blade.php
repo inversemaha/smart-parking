@@ -59,7 +59,7 @@
 
         <!-- Parking Locations -->
         <li>
-            <a href="javascript:;" class="side-menu">
+            <a href="{{ route('admin.parking-locations.index') }}" class="side-menu {{ request()->routeIs('admin.parking-locations*') ? 'side-menu--active' : '' }}">
                 <div class="side-menu__icon">
                     <i data-lucide="map-pin"></i>
                 </div>
@@ -72,12 +72,21 @@
             </a>
             <ul class="">
                 <li>
-                    <a href="javascript:;" class="side-menu">
+                    <a href="{{ route('admin.parking-locations.index') }}" class="side-menu {{ request()->routeIs('admin.parking-locations.index') ? 'side-menu--active' : '' }}">
                         <div class="side-menu__icon">
-                            <i data-lucide="activity"></i>
+                            <i data-lucide="list"></i>
                         </div>
                         <div class="side-menu__title">All Locations</div>
                     </a>
+                </li>
+                <li>
+                    <a href="{{ route('admin.parking-locations.create') }}" class="side-menu {{ request()->routeIs('admin.parking-locations.create') ? 'side-menu--active' : '' }}">
+                        <div class="side-menu__icon">
+                            <i data-lucide="plus"></i>
+                        </div>
+                        <div class="side-menu__title">Add Location</div>
+                    </a>
+                </li>
                 </li>
                 <li>
                     <a href="javascript:;" class="side-menu">
