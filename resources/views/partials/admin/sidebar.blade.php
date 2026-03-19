@@ -173,6 +173,47 @@
             </ul>
         </li>
 
+        <!-- Payments -->
+        <li>
+            <a href="{{ route('admin.payments.index') }}" class="side-menu {{ request()->routeIs('admin.payments*') ? 'side-menu--active' : '' }}">
+                <div class="side-menu__icon">
+                    <i data-lucide="credit-card"></i>
+                </div>
+                <div class="side-menu__title">
+                    Payments
+                    <div class="side-menu__sub-icon">
+                        <i data-lucide="chevron-down"></i>
+                    </div>
+                </div>
+            </a>
+            <ul class="">
+                <li>
+                    <a href="{{ route('admin.payments.index') }}" class="side-menu {{ request()->routeIs('admin.payments.index') && !request()->has('status') ? 'side-menu--active' : '' }}">
+                        <div class="side-menu__icon">
+                            <i data-lucide="list"></i>
+                        </div>
+                        <div class="side-menu__title">All Payments</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('admin.payments.index', ['status' => 'paid']) }}" class="side-menu">
+                        <div class="side-menu__icon">
+                            <i data-lucide="check-circle"></i>
+                        </div>
+                        <div class="side-menu__title">Completed</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('admin.payments.index', ['status' => 'pending']) }}" class="side-menu">
+                        <div class="side-menu__icon">
+                            <i data-lucide="clock"></i>
+                        </div>
+                        <div class="side-menu__title">Pending</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
         <!-- Reports -->
         <li>
             <a href="{{ route('admin.reports.index') }}" class="side-menu {{ request()->routeIs('admin.reports*') ? 'side-menu--active' : '' }}">

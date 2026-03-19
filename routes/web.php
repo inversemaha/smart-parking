@@ -11,6 +11,7 @@ use App\Domains\Admin\Controllers\AdminVehicleController;
 use App\Domains\Admin\Controllers\AdminParkingLocationController;
 use App\Domains\Admin\Controllers\AdminBookingController;
 use App\Domains\Admin\Controllers\AdminUserController;
+use App\Domains\Admin\Controllers\AdminPaymentController;
 use App\Domains\User\Controllers\VisitorController;
 
 /*
@@ -130,6 +131,13 @@ Route::middleware(['auth', 'set.language'])->prefix('admin')->name('admin.')->gr
         Route::put('/{user}', [AdminUserController::class, 'update'])->name('update');
         Route::post('/{user}/suspend', [AdminUserController::class, 'suspend'])->name('suspend');
         Route::post('/{user}/activate', [AdminUserController::class, 'activate'])->name('activate');
+    });
+
+    // Payment Management CRUD
+    Route::prefix('payments')->name('payments.')->group(function () {
+        Route::get('/', [AdminPaymentController::class, 'index'])->name('index');
+        Route::get('/{payment}', [AdminPaymentController::class, 'show'])->name('show');
+        Route::post('/{payment}/refund', [AdminPaymentController::class, 'refund'])->name('refund');
     });
 
     // Booking Management CRUD
