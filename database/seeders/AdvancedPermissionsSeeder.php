@@ -1,5 +1,7 @@
 <?php
 
+namespace Database\Seeders;
+
 use Illuminate\Database\Seeder;
 use App\Domains\User\Models\Permission;
 use App\Domains\User\Models\Role;
@@ -55,6 +57,12 @@ class AdvancedPermissionsSeeder extends Seeder
             ['name' => 'manage_payments', 'module' => 'payments', 'description' => 'Full payment management access'],
             ['name' => 'view_all_payments', 'module' => 'payments', 'description' => 'View all user payments'],
             ['name' => 'refund_payments', 'module' => 'payments', 'description' => 'Process payment refunds'],
+
+            // Invoice Management Permissions
+            ['name' => 'manage_invoices', 'module' => 'invoices', 'description' => 'Full invoice management access'],
+            ['name' => 'view_all_invoices', 'module' => 'invoices', 'description' => 'View all invoices'],
+            ['name' => 'download_invoices', 'module' => 'invoices', 'description' => 'Download invoice PDFs'],
+            ['name' => 'mark_invoice_paid', 'module' => 'invoices', 'description' => 'Mark invoices as paid'],
 
             // Report & Analytics Permissions
             ['name' => 'view_reports', 'module' => 'reports', 'description' => 'View system reports and analytics'],
@@ -118,8 +126,9 @@ class AdvancedPermissionsSeeder extends Seeder
             'manage_bookings', 'view_all_bookings', 'cancel_bookings',
             'manage_vehicles', 'verify_vehicles', 'view_all_vehicles',
             'manage_payments', 'view_all_payments', 'refund_payments',
+            'manage_invoices', 'view_all_invoices', 'download_invoices', 'mark_invoice_paid',
             'view_reports', 'export_reports', 'view_financial_reports',
-            'view_logs', 'view_user_sessions', 'view_access_logs'
+            'manage_settings', 'view_logs', 'view_user_sessions', 'view_access_logs'
         ])->pluck('id');
         $admin->permissions()->sync($adminPermissions);
 

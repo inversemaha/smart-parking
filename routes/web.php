@@ -125,7 +125,7 @@ Route::middleware(['auth', 'set.language'])->prefix('admin')->name('admin.')->gr
     });
 
     // User Management CRUD
-    Route::prefix('users')->name('users.')->group(function () {
+    Route::middleware('permission:manage_users')->prefix('users')->name('users.')->group(function () {
         Route::get('/', [AdminUserController::class, 'index'])->name('index');
         Route::get('/create', [AdminUserController::class, 'create'])->name('create');
         Route::post('/', [AdminUserController::class, 'store'])->name('store');
@@ -137,14 +137,14 @@ Route::middleware(['auth', 'set.language'])->prefix('admin')->name('admin.')->gr
     });
 
     // Payment Management CRUD
-    Route::prefix('payments')->name('payments.')->group(function () {
+    Route::middleware('permission:manage_payments')->prefix('payments')->name('payments.')->group(function () {
         Route::get('/', [AdminPaymentController::class, 'index'])->name('index');
         Route::get('/{payment}', [AdminPaymentController::class, 'show'])->name('show');
         Route::post('/{payment}/refund', [AdminPaymentController::class, 'refund'])->name('refund');
     });
 
     // Invoice Management CRUD
-    Route::prefix('invoices')->name('invoices.')->group(function () {
+    Route::middleware('permission:manage_invoices')->prefix('invoices')->name('invoices.')->group(function () {
         Route::get('/', [AdminInvoiceController::class, 'index'])->name('index');
         Route::get('/{invoice}', [AdminInvoiceController::class, 'show'])->name('show');
         Route::get('/{invoice}/download', [AdminInvoiceController::class, 'download'])->name('download');
@@ -152,7 +152,7 @@ Route::middleware(['auth', 'set.language'])->prefix('admin')->name('admin.')->gr
     });
 
     // Booking Management CRUD
-    Route::prefix('bookings')->name('bookings.')->group(function () {
+    Route::middleware('permission:manage_bookings')->prefix('bookings')->name('bookings.')->group(function () {
         Route::get('/', [AdminBookingController::class, 'index'])->name('index');
         Route::get('/{booking}', [AdminBookingController::class, 'show'])->name('show');
         Route::post('/{booking}/confirm', [AdminBookingController::class, 'confirm'])->name('confirm');
@@ -160,7 +160,7 @@ Route::middleware(['auth', 'set.language'])->prefix('admin')->name('admin.')->gr
     });
 
     // Parking Location Management CRUD
-    Route::prefix('parking-locations')->name('parking-locations.')->group(function () {
+    Route::middleware('permission:manage_parking')->prefix('parking-locations')->name('parking-locations.')->group(function () {
         Route::get('/', [AdminParkingLocationController::class, 'index'])->name('index');
         Route::get('/create', [AdminParkingLocationController::class, 'create'])->name('create');
         Route::post('/', [AdminParkingLocationController::class, 'store'])->name('store');
@@ -171,7 +171,7 @@ Route::middleware(['auth', 'set.language'])->prefix('admin')->name('admin.')->gr
     });
 
     // Vehicle Management CRUD
-    Route::prefix('vehicles')->name('vehicles.')->group(function () {
+    Route::middleware('permission:manage_vehicles')->prefix('vehicles')->name('vehicles.')->group(function () {
         // CRUD operations
         Route::get('/', [AdminVehicleController::class, 'index'])->name('index');
         Route::get('/create', [AdminVehicleController::class, 'create'])->name('create');
@@ -182,9 +182,11 @@ Route::middleware(['auth', 'set.language'])->prefix('admin')->name('admin.')->gr
         Route::delete('/{vehicle}', [AdminVehicleController::class, 'destroy'])->name('destroy');
         
         // Verification management
-        Route::get('/pending', [AdminDashboardController::class, 'pendingVehicles'])->name('pending');
-        Route::post('/{vehicle}/verify', [AdminDashboardController::class, 'verifyVehicle'])->name('verify');
-        Route::post('/{vehicle}/reject', [AdminDashboardController::class, 'rejectVehicle'])->name('reject');
+        Route::middleware('permission:verify_vehicles')->group(function () {
+            Route::get('/pending', [AdminDashboardController::class, 'pendingVehicles'])->name('pending');
+            Route::post('/{vehicle}/verify', [AdminDashboardController::class, 'verifyVehicle'])->name('verify');
+            Route::post('/{vehicle}/reject', [AdminDashboardController::class, 'rejectVehicle'])->name('reject');
+        });
     });
 
     // User Profile Routes
@@ -197,22 +199,22 @@ Route::middleware(['auth', 'set.language'])->prefix('admin')->name('admin.')->gr
     });
 
     // System Settings Routes
-    Route::prefix('settings')->name('settings.')->group(function () {
-        Route::get('/', [SystemSettingsController::class, 'index'])->name('index')->middleware('permission:manage_settings');
-        Route::put('/', [SystemSettingsController::class, 'update'])->name('update')->middleware('permission:manage_settings');
+    Route::middleware('permission:manage_settings')->prefix('settings')->name('settings.')->group(function () {
+        Route::get('/', [SystemSettingsController::class, 'index'])->name('index');
+        Route::put('/', [SystemSettingsController::class, 'update'])->name('update');
     });
 
     // System management
-    Route::prefix('system')->name('system.')->group(function () {
+    Route::middleware('permission:view_logs')->prefix('system')->name('system.')->group(function () {
         Route::get('/health', [AdminDashboardController::class, 'systemHealth'])->name('health');
         Route::get('/logs', [AdminDashboardController::class, 'systemLogs'])->name('logs');
-        Route::post('/cache/clear', [AdminDashboardController::class, 'clearCache'])->name('cache.clear');
+        Route::middleware('permission:manage_settings')->post('/cache/clear', [AdminDashboardController::class, 'clearCache'])->name('cache.clear');
     });
 
     // Reports
-    Route::prefix('reports')->name('reports.')->group(function () {
+    Route::middleware('permission:view_reports')->prefix('reports')->name('reports.')->group(function () {
         Route::get('/', [AdminDashboardController::class, 'reports'])->name('index');
-        Route::get('/revenue', [AdminDashboardController::class, 'revenueReport'])->name('revenue');
+        Route::middleware('permission:view_financial_reports')->get('/revenue', [AdminDashboardController::class, 'revenueReport'])->name('revenue');
         Route::get('/bookings', [AdminDashboardController::class, 'bookingReport'])->name('bookings');
         Route::get('/users', [AdminDashboardController::class, 'userReport'])->name('users');
     });
