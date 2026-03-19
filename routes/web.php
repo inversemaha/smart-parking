@@ -13,6 +13,8 @@ use App\Domains\Admin\Controllers\AdminBookingController;
 use App\Domains\Admin\Controllers\AdminUserController;
 use App\Domains\Admin\Controllers\AdminPaymentController;
 use App\Domains\Admin\Controllers\AdminInvoiceController;
+use App\Domains\Admin\Controllers\SystemSettingsController;
+use App\Domains\Admin\Controllers\ProfileController;
 use App\Domains\User\Controllers\VisitorController;
 
 /*
@@ -183,6 +185,21 @@ Route::middleware(['auth', 'set.language'])->prefix('admin')->name('admin.')->gr
         Route::get('/pending', [AdminDashboardController::class, 'pendingVehicles'])->name('pending');
         Route::post('/{vehicle}/verify', [AdminDashboardController::class, 'verifyVehicle'])->name('verify');
         Route::post('/{vehicle}/reject', [AdminDashboardController::class, 'rejectVehicle'])->name('reject');
+    });
+
+    // User Profile Routes
+    Route::prefix('profile')->name('profile.')->group(function () {
+        Route::get('/', [ProfileController::class, 'index'])->name('index');
+        Route::put('/', [ProfileController::class, 'update'])->name('update');
+        Route::post('/change-password', [ProfileController::class, 'changePassword'])->name('change-password');
+        Route::post('/logout-all', [ProfileController::class, 'logoutAll'])->name('logout-all');
+        Route::delete('/', [ProfileController::class, 'deleteAccount'])->name('delete-account');
+    });
+
+    // System Settings Routes
+    Route::prefix('settings')->name('settings.')->group(function () {
+        Route::get('/', [SystemSettingsController::class, 'index'])->name('index')->middleware('permission:manage_settings');
+        Route::put('/', [SystemSettingsController::class, 'update'])->name('update')->middleware('permission:manage_settings');
     });
 
     // System management

@@ -348,15 +348,15 @@
             </a>
             <ul class="">
                 <li>
-                    <a href="javascript:;" class="side-menu">
+                    <a href="{{ route('admin.settings.index') }}" class="side-menu {{ request()->routeIs('admin.settings*') ? 'side-menu--active' : '' }}">
                         <div class="side-menu__icon">
-                            <i data-lucide="activity"></i>
+                            <i data-lucide="settings"></i>
                         </div>
                         <div class="side-menu__title">System Settings</div>
                     </a>
                 </li>
                 <li>
-                    <a href="javascript:;" class="side-menu">
+                    <a href="{{ route('admin.system.logs') }}" class="side-menu {{ request()->routeIs('admin.system.logs') ? 'side-menu--active' : '' }}">
                         <div class="side-menu__icon">
                             <i data-lucide="activity"></i>
                         </div>
@@ -364,6 +364,16 @@
                     </a>
                 </li>
             </ul>
+        </li>
+
+        <!-- User Profile -->
+        <li>
+            <a href="{{ route('admin.profile.index') }}" class="side-menu {{ request()->routeIs('admin.profile*') ? 'side-menu--active' : '' }}">
+                <div class="side-menu__icon">
+                    <i data-lucide="user"></i>
+                </div>
+                <div class="side-menu__title">My Profile</div>
+            </a>
         </li>
     </ul>
 </nav>
