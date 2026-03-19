@@ -1,0 +1,113 @@
+<?php
+
+return [
+    // Phase 5: Billing & Invoicing
+    'title' => 'Billing & Invoicing',
+    'description' => 'Invoice generation, payment processing, and revenue reporting',
+
+    'invoices' => [
+        'title' => 'Invoices',
+        'invoice' => 'Invoice',
+        'create' => 'Create Invoice',
+        'edit' => 'Edit Invoice',
+        'view' => 'View Invoice',
+        'list' => 'Invoice List',
+        'back' => 'Back to Invoices',
+    ],
+
+    'statuses' => [
+        'draft' => 'Draft',
+        'issued' => 'Issued',
+        'partially_paid' => 'Partially Paid',
+        'paid' => 'Paid',
+        'overdue' => 'Overdue',
+        'cancelled' => 'Cancelled',
+    ],
+
+    'payment_statuses' => [
+        'unpaid' => 'Unpaid',
+        'partial' => 'Partial',
+        'paid' => 'Paid',
+    ],
+
+    'fields' => [
+        'invoice_number' => 'Invoice Number',
+        'invoice_date' => 'Invoice Date',
+        'due_date' => 'Due Date',
+        'amount' => 'Amount',
+        'tax_amount' => 'Tax Amount',
+        'discount_amount' => 'Discount Amount',
+        'total_amount' => 'Total Amount',
+        'payment_method' => 'Payment Method',
+        'reference_number' => 'Reference Number',
+        'payment_date' => 'Payment Date',
+        'user_name' => 'User Name',
+        'user_email' => 'User Email',
+        'description' => 'Description',
+        'notes' => 'Notes',
+        'currency' => 'Currency',
+        'session' => 'Parking Session',
+        'booking' => 'Booking',
+        'status' => 'Status',
+        'payment_status' => 'Payment Status',
+    ],
+
+    'actions' => [
+        'mark_paid' => 'Mark as Paid',
+        'record_payment' => 'Record Payment',
+        'cancel' => 'Cancel',
+        'refund' => 'Refund',
+        'download_pdf' => 'Download PDF',
+        'generate_from_session' => 'Generate from Session',
+        'view_details' => 'View Details',
+        'print' => 'Print',
+    ],
+
+    'messages' => [
+        'no_invoices' => 'No invoices found',
+        'invoice_created' => 'Invoice created successfully',
+        'invoice_updated' => 'Invoice updated successfully',
+        'invoice_deleted' => 'Invoice deleted successfully',
+        'invoice_marked_paid' => 'Invoice marked as paid successfully',
+        'payment_recorded' => 'Payment recorded successfully',
+        'invoice_cancelled' => 'Invoice cancelled successfully',
+        'refund_processed' => 'Refund processed successfully',
+        'generating_invoices' => 'Generating invoices from parking sessions...',
+        'generated_count' => 'Generated :count invoices',
+        'already_invoiced' => 'Session already has an invoice',
+        'cannot_refund_unpaid' => 'Cannot refund an unpaid invoice',
+        'refund_exceeds_total' => 'Refund amount exceeds invoice total',
+    ],
+
+    'reports' => [
+        'title' => 'Reports',
+        'revenue_report' => 'Revenue Report',
+        'overdue_report' => 'Overdue Invoices Report',
+        'total_revenue' => 'Total Revenue',
+        'total_tax' => 'Total Tax',
+        'total_discount' => 'Total Discount',
+        'invoice_count' => 'Invoice Count',
+        'average_invoice' => 'Average Invoice',
+        'parking_revenue' => 'Parking Revenue',
+        'booking_revenue' => 'Booking Revenue',
+        'total_overdue' => 'Total Overdue Amount',
+        'overdue_count' => 'Overdue Invoices Count',
+        'date_range' => 'Date Range',
+        'from_date' => 'From Date',
+        'to_date' => 'To Date',
+        'filter' => 'Filter',
+        'export' => 'Export Report',
+    ],
+
+    'dialog' => [
+        'mark_paid_title' => 'Mark Invoice as Paid',
+        'mark_paid_message' => 'Are you sure you want to mark this invoice as paid?',
+        'cancel_title' => 'Cancel Invoice',
+        'cancel_message' => 'Are you sure you want to cancel this invoice?',
+        'refund_title' => 'Process Refund',
+        'refund_amount' => 'Refund Amount',
+        'refund_reason' => 'Reason for Refund',
+        'confirm' => 'Confirm',
+        'cancel_btn' => 'Cancel',
+    ],
+];

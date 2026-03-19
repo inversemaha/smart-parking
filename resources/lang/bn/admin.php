@@ -526,6 +526,28 @@ return [
         'exit_recorded' => 'প্রস্থান সফলভাবে রেকর্ড করা হয়েছে',
         'search_results' => 'সার্চ ফলাফল',
         'no_results' => 'কোন সেশন পাওয়া যায়নি',
+    ],
+
+    // Phase 5: Billing & Invoicing
+    'billing' => [
+        'title' => 'বিলিং ও চালান',
+        'invoices' => 'চালান',
+        'create_invoice' => 'চালান তৈরি করুন',
+        'invoice_list' => 'চালান তালিকা',
+        'revenue_reports' => 'রাজস্ব প্রতিবেদন',
+        'overdue_invoices' => 'মেয়াদোত্তীর্ণ চালান',
+        'generate_from_session' => 'সেশন থেকে তৈরি করুন',
+        'mark_as_paid' => 'প্রদত্ত হিসাবে চিহ্নিত করুন',
+        'record_payment' => 'পেমেন্ট রেকর্ড করুন',
+        'cancel_invoice' => 'চালান বাতিল করুন',
+        'process_refund' => 'অর্থ ফেরত প্রক্রিয়া করুন',
+        'download_pdf' => 'পিডিএফ ডাউনলোড করুন',
+        'total_revenue' => 'মোট রাজস্ব',
+        'total_overdue' => 'মোট মেয়াদোত্তীর্ণ',
+        'pending_payments' => 'অপেক্ষমাণ পেমেন্ট',
+        'invoice_generated' => 'চালান সফলভাবে তৈরি হয়েছে',
+        'payment_recorded' => 'পেমেন্ট সফলভাবে রেকর্ড করা হয়েছে',
+        'refund_processed' => 'অর্থ ফেরত সফলভাবে প্রক্রিয়া করা হয়েছে',
     ]
 ];
 

@@ -1,0 +1,113 @@
+<?php
+
+return [
+    // Phase 5: Billing & Invoicing (Bengali)
+    'title' => 'বিলিং ও চালান',
+    'description' => 'চালান তৈরি, পেমেন্ট প্রক্রিয়াকরণ এবং রাজস্ব রিপোর্টিং',
+
+    'invoices' => [
+        'title' => 'চালান',
+        'invoice' => 'চালান',
+        'create' => 'চালান তৈরি করুন',
+        'edit' => 'চালান সম্পাদনা',
+        'view' => 'চালান দেখুন',
+        'list' => 'চালান তালিকা',
+        'back' => 'চালানগুলিতে ফিরে যান',
+    ],
+
+    'statuses' => [
+        'draft' => 'খসড়া',
+        'issued' => 'জারি করা',
+        'partially_paid' => 'আংশিক অর্থ প্রদান',
+        'paid' => 'প্রদত্ত',
+        'overdue' => 'মেয়াদোত্তীর্ণ',
+        'cancelled' => 'বাতিল',
+    ],
+
+    'payment_statuses' => [
+        'unpaid' => 'অপরিশোধিত',
+        'partial' => 'আংশিক',
+        'paid' => 'প্রদত্ত',
+    ],
+
+    'fields' => [
+        'invoice_number' => 'চালান নম্বর',
+        'invoice_date' => 'চালানের তারিখ',
+        'due_date' => 'প্রাপ্য তারিখ',
+        'amount' => 'পরিমাণ',
+        'tax_amount' => 'ট্যাক্সের পরিমাণ',
+        'discount_amount' => 'ছাড়ের পরিমাণ',
+        'total_amount' => 'মোট পরিমাণ',
+        'payment_method' => 'পেমেন্ট পদ্ধতি',
+        'reference_number' => 'রেফারেন্স নম্বর',
+        'payment_date' => 'পেমেন্টের তারিখ',
+        'user_name' => 'ব্যবহারকারীর নাম',
+        'user_email' => 'ব্যবহারকারীর ইমেল',
+        'description' => 'বর্ণনা',
+        'notes' => 'নোট',
+        'currency' => 'মুদ্রা',
+        'session' => 'পার্কিং সেশন',
+        'booking' => 'বুকিং',
+        'status' => 'অবস্থা',
+        'payment_status' => 'পেমেন্ট অবস্থা',
+    ],
+
+    'actions' => [
+        'mark_paid' => 'প্রদত্ত হিসাবে চিহ্নিত করুন',
+        'record_payment' => 'পেমেন্ট রেকর্ড করুন',
+        'cancel' => 'বাতিল করুন',
+        'refund' => 'অর্থ ফেরত দিন',
+        'download_pdf' => 'পিডিএফ ডাউনলোড করুন',
+        'generate_from_session' => 'সেশন থেকে তৈরি করুন',
+        'view_details' => 'বিবরণ দেখুন',
+        'print' => 'প্রিন্ট করুন',
+    ],
+
+    'messages' => [
+        'no_invoices' => 'কোনো চালান পাওয়া যায়নি',
+        'invoice_created' => 'চালান সফলভাবে তৈরি হয়েছে',
+        'invoice_updated' => 'চালান সফলভাবে আপডেট হয়েছে',
+        'invoice_deleted' => 'চালান সফলভাবে মুছে ফেলা হয়েছে',
+        'invoice_marked_paid' => 'চালান সফলভাবে প্রদত্ত হিসাবে চিহ্নিত করা হয়েছে',
+        'payment_recorded' => 'পেমেন্ট সফলভাবে রেকর্ড করা হয়েছে',
+        'invoice_cancelled' => 'চালান সফলভাবে বাতিল করা হয়েছে',
+        'refund_processed' => 'অর্থ ফেরত সফলভাবে প্রক্রিয়া করা হয়েছে',
+        'generating_invoices' => 'পার্কিং সেশন থেকে চালান তৈরি করা হচ্ছে...',
+        'generated_count' => 'তৈরি করা হয়েছে :count চালান',
+        'already_invoiced' => 'সেশনের ইতিমধ্যে একটি চালান রয়েছে',
+        'cannot_refund_unpaid' => 'একটি অপরিশোধিত চালানের জন্য অর্থ ফেরত দেওয়া যায় না',
+        'refund_exceeds_total' => 'অর্থ ফেরতের পরিমাণ চালানের মোট অতিক্রম করে',
+    ],
+
+    'reports' => [
+        'title' => 'প্রতিবেদন',
+        'revenue_report' => 'রাজস্ব প্রতিবেদন',
+        'overdue_report' => 'মেয়াদোত্তীর্ণ চালান প্রতিবেদন',
+        'total_revenue' => 'মোট রাজস্ব',
+        'total_tax' => 'মোট ট্যাক্স',
+        'total_discount' => 'মোট ছাড়',
+        'invoice_count' => 'চালানের সংখ্যা',
+        'average_invoice' => 'গড় চালান',
+        'parking_revenue' => 'পার্কিং রাজস্ব',
+        'booking_revenue' => 'বুকিং রাজস্ব',
+        'total_overdue' => 'মোট মেয়াদোত্তীর্ণ পরিমাণ',
+        'overdue_count' => 'মেয়াদোত্তীর্ণ চালানের সংখ্যা',
+        'date_range' => 'তারিখের পরিসর',
+        'from_date' => 'শুরুর তারিখ',
+        'to_date' => 'শেষের তারিখ',
+        'filter' => 'ফিল্টার',
+        'export' => 'প্রতিবেদন রপ্তানি করুন',
+    ],
+
+    'dialog' => [
+        'mark_paid_title' => 'চালান প্রদত্ত হিসাবে চিহ্নিত করুন',
+        'mark_paid_message' => 'আপনি কি এই চালানটিকে প্রদত্ত হিসাবে চিহ্নিত করতে নিশ্চিত?',
+        'cancel_title' => 'চালান বাতিল করুন',
+        'cancel_message' => 'আপনি কি এই চালানটি বাতিল করতে নিশ্চিত?',
+        'refund_title' => 'অর্থ ফেরত প্রক্রিয়া করুন',
+        'refund_amount' => 'অর্থ ফেরতের পরিমাণ',
+        'refund_reason' => 'অর্থ ফেরতের কারণ',
+        'confirm' => 'নিশ্চিত করুন',
+        'cancel_btn' => 'বাতিল করুন',
+    ],
+];

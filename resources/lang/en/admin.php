@@ -519,5 +519,27 @@ return [
         'exit_recorded' => 'Exit recorded successfully',
         'search_results' => 'Search Results',
         'no_results' => 'No sessions found',
+    ],
+
+    // Phase 5: Billing & Invoicing
+    'billing' => [
+        'title' => 'Billing & Invoicing',
+        'invoices' => 'Invoices',
+        'create_invoice' => 'Create Invoice',
+        'invoice_list' => 'Invoice List',
+        'revenue_reports' => 'Revenue Reports',
+        'overdue_invoices' => 'Overdue Invoices',
+        'generate_from_session' => 'Generate from Session',
+        'mark_as_paid' => 'Mark as Paid',
+        'record_payment' => 'Record Payment',
+        'cancel_invoice' => 'Cancel Invoice',
+        'process_refund' => 'Process Refund',
+        'download_pdf' => 'Download PDF',
+        'total_revenue' => 'Total Revenue',
+        'total_overdue' => 'Total Overdue',
+        'pending_payments' => 'Pending Payments',
+        'invoice_generated' => 'Invoice generated successfully',
+        'payment_recorded' => 'Payment recorded successfully',
+        'refund_processed' => 'Refund processed successfully',
     ]
 ];

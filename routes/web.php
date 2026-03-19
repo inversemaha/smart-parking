@@ -151,12 +151,27 @@ Route::middleware(['auth', 'set.language'])->prefix('admin')->name('admin.')->gr
         Route::post('/{payment}/refund', [AdminPaymentController::class, 'refund'])->name('refund');
     });
 
-    // Invoice Management CRUD
+    // Invoice Management CRUD (Phase 5: Billing & Invoicing)
     Route::middleware('permission:manage_invoices')->prefix('invoices')->name('invoices.')->group(function () {
+        // Invoice list and details
         Route::get('/', [AdminInvoiceController::class, 'index'])->name('index');
         Route::get('/{invoice}', [AdminInvoiceController::class, 'show'])->name('show');
         Route::get('/{invoice}/download', [AdminInvoiceController::class, 'download'])->name('download');
+        
+        // Invoice generation from parking sessions
+        Route::get('/create', [AdminInvoiceController::class, 'create'])->name('create');
+        Route::post('/{session}/generate', [AdminInvoiceController::class, 'generateFromSession'])->name('generate-from-session');
+        
+        // Payment operations
         Route::post('/{invoice}/mark-paid', [AdminInvoiceController::class, 'markPaid'])->name('mark-paid');
+        Route::post('/{invoice}/record-payment', [AdminInvoiceController::class, 'recordPayment'])->name('record-payment');
+        Route::post('/{invoice}/cancel', [AdminInvoiceController::class, 'cancel'])->name('cancel');
+        Route::post('/{invoice}/refund', [AdminInvoiceController::class, 'refund'])->name('refund');
+        
+        // Reports
+        Route::get('/reports/revenue', [AdminInvoiceController::class, 'revenue'])->name('revenue');
+        Route::get('/reports/overdue', [AdminInvoiceController::class, 'overdue'])->name('overdue');
+        Route::post('/check-overdue', [AdminInvoiceController::class, 'checkOverdue'])->name('check-overdue');
     });
 
     // Booking Management CRUD

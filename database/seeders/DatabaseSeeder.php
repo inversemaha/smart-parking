@@ -35,6 +35,7 @@ class DatabaseSeeder extends Seeder
             Phase1ParkingSeeder::class,              // Phase 1: Zones, Floors, Vehicle Types, Rates
             Phase2AccessControlSeeder::class,        // Phase 2: Parking Gates, QR Codes, Access Logs
             Phase3ParkingSessionsSeeder::class,      // Phase 3: Parking Sessions (Entry/Exit Tracking)
+            Phase5BillingSeeder::class,              // Phase 5: Billing & Invoicing (must be after Phase 3)
             ParkingLocationSeeder::class,            // Create parking locations and slots
             BookingSeeder::class,                    // Create test bookings
             PaymentSeeder::class,                    // Create test payments
@@ -59,6 +60,8 @@ class DatabaseSeeder extends Seeder
         $this->command->info('├── Phase 1: Parking Zones, Floors, Vehicle Types, Rates');
         $this->command->info('├── Phase 2: Parking Gates, QR Codes, Access Logs');
         $this->command->info('├── Phase 3: Parking Sessions (Entry/Exit Tracking)');
+        $this->command->info('├── Phase 4: Operator Mode (Gate Dashboard)');
+        $this->command->info('├── Phase 5: Billing & Invoicing');
         $this->command->info('├── Users: Admin and Test Users');
         $this->command->info('├── Vehicles: Test Vehicle Registry');
         $this->command->info('├── Bookings: Historical Booking Data');
