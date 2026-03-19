@@ -101,7 +101,7 @@
 
         <!-- Bookings -->
         <li>
-            <a href="javascript:;" class="side-menu">
+            <a href="{{ route('admin.bookings.index') }}" class="side-menu {{ request()->routeIs('admin.bookings*') ? 'side-menu--active' : '' }}">
                 <div class="side-menu__icon">
                     <i data-lucide="calendar"></i>
                 </div>
@@ -114,19 +114,27 @@
             </a>
             <ul class="">
                 <li>
-                    <a href="javascript:;" class="side-menu">
+                    <a href="{{ route('admin.bookings.index') }}" class="side-menu {{ request()->routeIs('admin.bookings.index') && !request()->has('status') ? 'side-menu--active' : '' }}">
                         <div class="side-menu__icon">
-                            <i data-lucide="activity"></i>
+                            <i data-lucide="list"></i>
                         </div>
                         <div class="side-menu__title">All Bookings</div>
                     </a>
                 </li>
                 <li>
-                    <a href="javascript:;" class="side-menu">
+                    <a href="{{ route('admin.bookings.index', ['status' => 'pending']) }}" class="side-menu">
                         <div class="side-menu__icon">
-                            <i data-lucide="activity"></i>
+                            <i data-lucide="clock"></i>
                         </div>
                         <div class="side-menu__title">Pending</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('admin.bookings.index', ['status' => 'active']) }}" class="side-menu">
+                        <div class="side-menu__icon">
+                            <i data-lucide="zap"></i>
+                        </div>
+                        <div class="side-menu__title">Active</div>
                     </a>
                 </li>
             </ul>

@@ -9,6 +9,7 @@ use App\Domains\Admin\Controllers\PermissionController;
 use App\Domains\Admin\Controllers\AdminDashboardController;
 use App\Domains\Admin\Controllers\AdminVehicleController;
 use App\Domains\Admin\Controllers\AdminParkingLocationController;
+use App\Domains\Admin\Controllers\AdminBookingController;
 use App\Domains\User\Controllers\VisitorController;
 
 /*
@@ -116,6 +117,14 @@ Route::middleware(['auth', 'set.language'])->prefix('admin')->name('admin.')->gr
         Route::get('/roles', [PermissionController::class, 'roles'])->name('permissions.roles');
         Route::post('/roles', [PermissionController::class, 'createRole'])->name('roles.store');
         Route::put('/roles/{role}', [PermissionController::class, 'updateRole'])->name('roles.update');
+    });
+
+    // Booking Management CRUD
+    Route::prefix('bookings')->name('bookings.')->group(function () {
+        Route::get('/', [AdminBookingController::class, 'index'])->name('index');
+        Route::get('/{booking}', [AdminBookingController::class, 'show'])->name('show');
+        Route::post('/{booking}/confirm', [AdminBookingController::class, 'confirm'])->name('confirm');
+        Route::post('/{booking}/cancel', [AdminBookingController::class, 'cancel'])->name('cancel');
     });
 
     // Parking Location Management CRUD
