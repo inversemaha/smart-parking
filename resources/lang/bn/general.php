@@ -186,4 +186,10 @@ return [
     'confirm_cancel' => 'আপনি কি এটি বাতিল করতে চান?',
     'documents' => 'ডকুমেন্ট',
     'file_formats_supported' => 'সমর্থিত ফাইল ফরম্যাট',
+    'export_csv' => 'সিএসভি রপ্তানি করুন',
+    'showing' => 'দেখাচ্ছে',
+    'of' => 'এর',
+    'no_records_found' => 'কোন রেকর্ড পাওয়া যায়নি',
+    'delete_confirmation' => 'মুছে ফেলার নিশ্চয়তা',
+    'delete_confirmation_message' => 'আপনি কি এই রেকর্ডটি মুছে ফেলতে চান? এই পদক্ষেপটি পূর্ববত করা যাবে না।',
 ];

@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
-@section('title', 'Vehicles Management')
-@section('page-title', 'Vehicles Management')
+@section('title', __('admin.vehicles.title'))
+@section('page-title', __('admin.vehicles.title'))
 
 @section('content')
 <div class="grid grid-cols-12 gap-6 mt-10">
@@ -9,7 +9,7 @@
     <div class="intro-y col-span-12">
         <div class="flex flex-wrap sm:flex-nowrap items-center mt-2 mb-4">
             <a href="{{ route('admin.vehicles.create') }}" class="btn btn-primary shadow-md mr-2">
-                <i data-lucide="plus" class="w-4 h-4 mr-2"></i> Add New Vehicle
+                <i data-lucide="plus" class="w-4 h-4 mr-2"></i> {{ __('admin.vehicles.add_new') }}
             </a>
             <div class="dropdown ml-0">
                 <button class="dropdown-toggle btn px-2 box" aria-expanded="false" data-tw-toggle="dropdown">
@@ -17,14 +17,14 @@
                 </button>
                 <div class="dropdown-menu w-40">
                     <ul class="dropdown-content">
-                        <li><a href="javascript:;" class="dropdown-item" onclick="exportCSV('vehicles')"><i data-lucide="file-text" class="w-4 h-4 mr-2"></i>Export CSV</a></li>
+                        <li><a href="javascript:;" class="dropdown-item" onclick="exportCSV('vehicles')"><i data-lucide="file-text" class="w-4 h-4 mr-2"></i>{{ __('general.export_csv') }}</a></li>
                     </ul>
                 </div>
             </div>
-            <div class="hidden md:block mx-auto text-slate-500">Showing <span id="row-count">0</span> of {{ $vehicles->count() }} vehicles</div>
+            <div class="hidden md:block mx-auto text-slate-500">{{ __('general.showing') }} <span id="row-count">0</span> {{ __('general.of') }} {{ $vehicles->count() }} {{ __('admin.vehicles.label_plural') }}</div>
             <div class="w-full sm:w-auto mt-3 sm:mt-0 sm:ml-auto md:ml-0">
                 <div class="w-56 relative text-slate-500">
-                    <input type="text" id="search-input" class="form-control w-56 box pr-10" placeholder="Search vehicle...">
+                    <input type="text" id="search-input" class="form-control w-56 box pr-10" placeholder="{{ __('general.search') }} {{ __('admin.vehicles.label_plural') }}">
                     <i class="w-4 h-4 absolute my-auto inset-y-0 mr-3 right-0" data-lucide="search"></i>
                 </div>
             </div>
@@ -35,12 +35,12 @@
             <table class="table table-report -mt-2">
                 <thead>
                     <tr>
-                        <th class="whitespace-nowrap">Registration</th>
-                        <th class="whitespace-nowrap">Brand / Model</th>
-                        <th class="text-center whitespace-nowrap">Type</th>
-                        <th class="text-center whitespace-nowrap">Status</th>
-                        <th class="text-center whitespace-nowrap">Owner</th>
-                        <th class="text-center whitespace-nowrap">Actions</th>
+                        <th class="whitespace-nowrap">{{ __('admin.vehicles.fields.registration_number') }}</th>
+                        <th class="whitespace-nowrap">{{ __('admin.vehicles.fields.brand') }} / {{ __('admin.vehicles.fields.model') }}</th>
+                        <th class="text-center whitespace-nowrap">{{ __('admin.vehicles.fields.type') }}</th>
+                        <th class="text-center whitespace-nowrap">{{ __('admin.vehicles.fields.verification_status') }}</th>
+                        <th class="text-center whitespace-nowrap">{{ __('admin.vehicles.fields.owner') }}</th>
+                        <th class="text-center whitespace-nowrap">{{ __('general.actions') }}</th>
                     </tr>
                 </thead>
                 <tbody id="vehicle-table-body">
@@ -63,19 +63,19 @@ ibold {{ $vehicle->verification_status === 'verified' ? 'bg-green-100 text-green
                         <td class="table-report__action w-56">
                             <div class="flex justify-center items-center">
                                 <a class="flex items-center mr-3" href="{{ route('admin.vehicles.show', $vehicle) }}">
-                                    <i data-lucide="eye" class="w-4 h-4 mr-1"></i> View
+                                    <i data-lucide="eye" class="w-4 h-4 mr-1"></i> {{ __('general.view') }}
                                 </a>
                                 <a class="flex items-center mr-3" href="{{ route('admin.vehicles.edit', $vehicle) }}">
-                                    <i data-lucide="check-square" class="w-4 h-4 mr-1"></i> Edit
+                                    <i data-lucide="check-square" class="w-4 h-4 mr-1"></i> {{ __('general.edit') }}
                                 </a>
                                 <a class="flex items-center text-danger cursor-pointer" onclick="deleteVehicle({{ $vehicle->id }})">
-                                    <i data-lucide="trash-2" class="w-4 h-4 mr-1"></i> Delete
+                                    <i data-lucide="trash-2" class="w-4 h-4 mr-1"></i> {{ __('general.delete') }}
                                 </a>
                             </div>
                         </td>
                     </tr>
                     @empty
-                    <tr><td colspan="6" class="text-center text-slate-500">No vehicles found</td></tr>
+                    <tr><td colspan="6" class="text-center text-slate-500">{{ __('general.no_records_found') }}</td></tr>
                     @endforelse
                 </tbody>
             </table>
@@ -88,15 +88,15 @@ ibold {{ $vehicle->verification_status === 'verified' ? 'bg-green-100 text-green
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="font-medium text-base mr-auto">Delete Confirmation</h2>
+                <h2 class="font-medium text-base mr-auto">{{ __('general.delete_confirmation') }}</h2>
                 <button type="button" class="btn-close" data-tw-dismiss="modal" aria-label="Close"><i data-lucide="x" class="w-4 h-4"></i></button>
             </div>
             <div class="modal-body">
-                Are you sure you want to delete this vehicle? This action cannot be undone.
+                {{ __('general.delete_confirmation_message') }}
             </div>
             <div class="modal-footer">
-                <button type="button" data-tw-dismiss="modal" class="btn btn-outline-secondary w-20">Cancel</button>
-                <button type="button" class="btn btn-danger w-20" onclick="confirmDelete()">Delete</button>
+                <button type="button" data-tw-dismiss="modal" class="btn btn-outline-secondary w-20">{{ __('general.cancel') }}</button>
+                <button type="button" class="btn btn-danger w-20" onclick="confirmDelete()">{{ __('general.delete') }}</button>
             </div>
         </div>
     </div>

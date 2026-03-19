@@ -237,4 +237,10 @@ return [
     'confirm_cancel' => 'Are you sure you want to cancel this?',
     'documents' => 'Documents',
     'file_formats_supported' => 'File formats supported',
+    'export_csv' => 'Export CSV',
+    'showing' => 'Showing',
+    'of' => 'of',
+    'no_records_found' => 'No records found',
+    'delete_confirmation' => 'Delete Confirmation',
+    'delete_confirmation_message' => 'Are you sure you want to delete this record? This action cannot be undone.',
 ];

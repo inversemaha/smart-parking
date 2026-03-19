@@ -50,6 +50,37 @@
     </div>
     <!-- END: Search -->
 
+    <!-- BEGIN: Language Switcher -->
+    <div class="intro-x dropdown mr-3 sm:mr-6">
+        <div class="dropdown-toggle btn btn-sm px-2 box flex items-center gap-2" role="button" aria-expanded="false" data-tw-toggle="dropdown">
+            <i data-lucide="globe" class="w-4 h-4"></i>
+            <span class="hidden sm:inline text-xs font-medium uppercase">{{ app()->getLocale() }}</span>
+        </div>
+        <div class="dropdown-menu w-40">
+            <ul class="dropdown-content">
+                <li>
+                    <form action="{{ route('language.switch', 'en') }}" method="POST" class="inline">
+                        @csrf
+                        <button type="submit" class="dropdown-item w-full text-left {{ app()->getLocale() === 'en' ? 'bg-primary/10 text-primary' : '' }}">
+                            <i data-lucide="check" class="w-4 h-4 mr-2 {{ app()->getLocale() === 'en' ? 'inline' : 'hidden' }}"></i>
+                            <span>English</span>
+                        </button>
+                    </form>
+                </li>
+                <li>
+                    <form action="{{ route('language.switch', 'bn') }}" method="POST" class="inline">
+                        @csrf
+                        <button type="submit" class="dropdown-item w-full text-left {{ app()->getLocale() === 'bn' ? 'bg-primary/10 text-primary' : '' }}">
+                            <i data-lucide="check" class="w-4 h-4 mr-2 {{ app()->getLocale() === 'bn' ? 'inline' : 'hidden' }}"></i>
+                            <span>বাংলা (Bengali)</span>
+                        </button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- END: Language Switcher -->
+
     <!-- BEGIN: Notifications -->
     <div class="intro-x dropdown mr-auto sm:mr-6">
         <div class="dropdown-toggle notification notification--bullet cursor-pointer" role="button" aria-expanded="false" data-tw-toggle="dropdown">

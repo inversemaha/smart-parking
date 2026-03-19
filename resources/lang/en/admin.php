@@ -66,6 +66,8 @@ return [
     // Vehicle Management
     'vehicles' => [
         'title' => 'Vehicle Management',
+        'add_new' => 'Add New Vehicle',
+        'label_plural' => 'Vehicles',
         'pending_verification' => 'Pending Verification',
         'verify' => 'Verify Vehicle',
         'reject' => 'Reject Vehicle',

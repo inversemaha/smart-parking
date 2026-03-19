@@ -4,12 +4,12 @@
 <div class="content">
     <!-- Breadcrumb & Header -->
     <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between mb-4">
-        <h1 class="text-lg font-medium text-slate-800 dark:text-slate-100">Users</h1>
+        <h1 class="text-lg font-medium text-slate-800 dark:text-slate-100">{{ __('admin.users.title') }}</h1>
         <nav class="flex pt-2 sm:pt-0" aria-label="Breadcrumb">
             <ol class="flex items-center space-x-2">
-                <li><a href="{{ route('admin.dashboard.index') }}" class="text-slate-500 dark:text-slate-400 hover:text-slate-600">Dashboard</a></li>
+                <li><a href="{{ route('admin.dashboard.index') }}" class="text-slate-500 dark:text-slate-400 hover:text-slate-600">{{ __('admin.dashboard') }}</a></li>
                 <li class="text-slate-500 dark:text-slate-400">/</li>
-                <li class="text-slate-600 dark:text-slate-300">Users</li>
+                <li class="text-slate-600 dark:text-slate-300">{{ __('admin.users.title') }}</li>
             </ol>
         </nav>
     </div>
@@ -28,17 +28,17 @@
             <div class="flex flex-col sm:flex-row sm:items-center gap-4">
                 <a href="{{ route('admin.users.create') }}" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors inline-flex items-center">
                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                    Add User
+                    {{ __('admin.users.create') }}
                 </a>
                 <div class="flex-1">
-                    <input type="text" id="search" placeholder="Search by name or email..."
+                    <input type="text" id="search" placeholder="{{ __('general.search') }}..."
                         class="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500">
                 </div>
                 <select id="status-filter" class="px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <option value="">All Status</option>
-                    <option value="active">Active</option>
-                    <option value="suspended">Suspended</option>
-                    <option value="deactivated">Deactivated</option>
+                    <option value="">{{ __('general.all_status') }}</option>
+                    <option value="active">{{ __('admin.users.status.active') }}</option>
+                    <option value="suspended">{{ __('admin.users.status.suspended') }}</option>
+                    <option value="deactivated">{{ __('general.deactivated') }}</option>
                 </select>
             </div>
         </div>

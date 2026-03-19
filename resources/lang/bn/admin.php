@@ -66,6 +66,8 @@ return [
     // Vehicle Management
     'vehicles' => [
         'title' => 'যানবাহন ব্যবস্থাপনা',
+        'add_new' => 'নতুন যানবাহন যোগ করুন',
+        'label_plural' => 'যানবাহন',
         'pending_verification' => 'যাচাইয়ের অপেক্ষায়',
         'verify' => 'যানবাহন যাচাই',
         'reject' => 'যানবাহন প্রত্যাখ্যান',
