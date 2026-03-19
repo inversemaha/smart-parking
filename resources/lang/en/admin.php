@@ -428,3 +428,48 @@ return [
         'rate_restored_successfully' => 'Parking rate restored successfully',
         'rate_already_exists_for_zone_vehicle' => 'A rate already exists for this zone and vehicle type combination',
         'rates_imported_successfully' => ':count parking rates imported successfully'
+    ],
+
+    'parking_gates' => [
+        'title' => 'Parking Gates',
+        'singular' => 'Gate',
+        'create' => 'Create Gate',
+        'edit' => 'Edit Gate',
+        'delete' => 'Delete Gate',
+        'restore' => 'Restore Gate',
+        'gate_created_successfully' => 'Parking gate created successfully',
+        'gate_updated_successfully' => 'Parking gate updated successfully',
+        'gate_deleted_successfully' => 'Parking gate deleted successfully',
+        'gate_restored_successfully' => 'Parking gate restored successfully',
+        'all_gates' => 'All Gates',
+        'add_gate' => 'Add Gate'
+    ],
+
+    'qr_codes' => [
+        'title' => 'QR Code Management',
+        'singular' => 'QR Code',
+        'create' => 'Create QR Code',
+        'edit' => 'Edit QR Code',
+        'delete' => 'Delete QR Code',
+        'restore' => 'Restore QR Code',
+        'qr_code_created_successfully' => 'QR code created successfully',
+        'qr_code_updated_successfully' => 'QR code updated successfully',
+        'qr_code_deleted_successfully' => 'QR code deleted successfully',
+        'qr_code_restored_successfully' => 'QR code restored successfully',
+        'all_qr_codes' => 'All QR Codes',
+        'add_qr_code' => 'Add QR Code',
+        'qr_statistics' => 'QR Statistics',
+        'bulk_generate' => 'Bulk Generate'
+    ],
+
+    'parking_access_logs' => [
+        'title' => 'Access Logs',
+        'singular' => 'Access Log',
+        'view' => 'View Access Logs',
+        'entries' => 'Entries',
+        'exits' => 'Exits',
+        'allowed' => 'Allowed Access',
+        'denied' => 'Denied Access',
+        'pending' => 'Pending Access',
+        'alerts' => 'Access Alerts'    ]
+];

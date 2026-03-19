@@ -434,6 +434,51 @@ return [
         'rate_restored_successfully' => 'পার্কিং রেট সফলভাবে পুনরুদ্ধার হয়েছে',
         'rate_already_exists_for_zone_vehicle' => 'এই জোন এবং যানবাহন প্রকারের জন্য ইতিমধ্যে একটি রেট বিদ্যমান',
         'rates_imported_successfully' => ':count পার্কিং রেট সফলভাবে আমদানি করা হয়েছে'
+    ],
+
+    // Phase 2: Access Control & QR Codes
+    'parking_gates' => [
+        'title' => 'পার্কিং গেট',
+        'singular' => 'গেট',
+        'create' => 'গেট তৈরি করুন',
+        'edit' => 'গেট সম্পাদনা করুন',
+        'delete' => 'গেট মুছে ফেলুন',
+        'restore' => 'গেট পুনরুদ্ধার করুন',
+        'gate_created_successfully' => 'পার্কিং গেট সফলভাবে তৈরি হয়েছে',
+        'gate_updated_successfully' => 'পার্কিং গেট সফলভাবে আপডেট হয়েছে',
+        'gate_deleted_successfully' => 'পার্কিং গেট সফলভাবে মুছে ফেলা হয়েছে',
+        'gate_restored_successfully' => 'পার্কিং গেট সফলভাবে পুনরুদ্ধার হয়েছে',
+        'all_gates' => 'সমস্ত গেট',
+        'add_gate' => 'গেট যোগ করুন'
+    ],
+
+    'qr_codes' => [
+        'title' => 'কিউআর কোড ব্যবস্থাপনা',
+        'singular' => 'কিউআর কোড',
+        'create' => 'কিউআর কোড তৈরি করুন',
+        'edit' => 'কিউআর কোড সম্পাদনা করুন',
+        'delete' => 'কিউআর কোড মুছে ফেলুন',
+        'restore' => 'কিউআর কোড পুনরুদ্ধার করুন',
+        'qr_code_created_successfully' => 'কিউআর কোড সফলভাবে তৈরি হয়েছে',
+        'qr_code_updated_successfully' => 'কিউআর কোড সফলভাবে আপডেট হয়েছে',
+        'qr_code_deleted_successfully' => 'কিউআর কোড সফলভাবে মুছে ফেলা হয়েছে',
+        'qr_code_restored_successfully' => 'কিউআর কোড সফলভাবে পুনরুদ্ধার হয়েছে',
+        'all_qr_codes' => 'সমস্ত কিউআর কোড',
+        'add_qr_code' => 'কিউআর কোড যোগ করুন',
+        'qr_statistics' => 'কিউআর পরিসংখ্যান',
+        'bulk_generate' => 'বাল্ক জেনারেট'
+    ],
+
+    'parking_access_logs' => [
+        'title' => 'অ্যাক্সেস লগ',
+        'singular' => 'অ্যাক্সেস লগ',
+        'view' => 'অ্যাক্সেস লগ দেখুন',
+        'entries' => 'প্রবেশ',
+        'exits' => 'প্রস্থান',
+        'allowed' => 'অনুমত অ্যাক্সেস',
+        'denied' => 'অস্বীকৃত অ্যাক্সেস',
+        'pending' => 'মুলতুবি অ্যাক্সেস',
+        'alerts' => 'অ্যাক্সেস সতর্কতা'
     ]
 ];
 

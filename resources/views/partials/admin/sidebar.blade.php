@@ -243,6 +243,80 @@
                         </li>
                     </ul>
                 </li>
+
+                <!-- Parking Gates -->
+                <li>
+                    <a href="{{ route('admin.parking-gates.index') }}" class="side-menu {{ request()->routeIs('admin.parking-gates*') ? 'side-menu--active' : '' }}">
+                        <div class="side-menu__icon">
+                            <i data-lucide="lock-open"></i>
+                        </div>
+                        <div class="side-menu__title">
+                            {{ __('admin.parking_gates') }}
+                            <div class="side-menu__sub-icon">
+                                <i data-lucide="chevron-down"></i>
+                            </div>
+                        </div>
+                    </a>
+                    <ul class="">
+                        <li>
+                            <a href="{{ route('admin.parking-gates.index') }}" class="side-menu {{ request()->routeIs('admin.parking-gates.index') ? 'side-menu--active' : '' }}">
+                                <div class="side-menu__icon">
+                                    <i data-lucide="list"></i>
+                                </div>
+                                <div class="side-menu__title">{{ __('admin.all_gates') }}</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('admin.parking-gates.create') }}" class="side-menu {{ request()->routeIs('admin.parking-gates.create') ? 'side-menu--active' : '' }}">
+                                <div class="side-menu__icon">
+                                    <i data-lucide="plus"></i>
+                                </div>
+                                <div class="side-menu__title">{{ __('admin.add_gate') }}</div>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- QR Code Management -->
+                <li>
+                    <a href="{{ route('admin.parking-qr-codes.index') }}" class="side-menu {{ request()->routeIs('admin.parking-qr-codes*') ? 'side-menu--active' : '' }}">
+                        <div class="side-menu__icon">
+                            <i data-lucide="qr-code"></i>
+                        </div>
+                        <div class="side-menu__title">
+                            {{ __('admin.qr_codes') }}
+                            <div class="side-menu__sub-icon">
+                                <i data-lucide="chevron-down"></i>
+                            </div>
+                        </div>
+                    </a>
+                    <ul class="">
+                        <li>
+                            <a href="{{ route('admin.parking-qr-codes.index') }}" class="side-menu {{ request()->routeIs('admin.parking-qr-codes.index') ? 'side-menu--active' : '' }}">
+                                <div class="side-menu__icon">
+                                    <i data-lucide="list"></i>
+                                </div>
+                                <div class="side-menu__title">{{ __('admin.all_qr_codes') }}</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('admin.parking-qr-codes.create') }}" class="side-menu {{ request()->routeIs('admin.parking-qr-codes.create') ? 'side-menu--active' : '' }}">
+                                <div class="side-menu__icon">
+                                    <i data-lucide="plus"></i>
+                                </div>
+                                <div class="side-menu__title">{{ __('admin.add_qr_code') }}</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('admin.parking-qr-codes.statistics') }}" class="side-menu {{ request()->routeIs('admin.parking-qr-codes.statistics') ? 'side-menu--active' : '' }}">
+                                <div class="side-menu__icon">
+                                    <i data-lucide="bar-chart-2"></i>
+                                </div>
+                                <div class="side-menu__title">{{ __('admin.qr_statistics') }}</div>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
             </ul>
         </li>
 

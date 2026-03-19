@@ -20,6 +20,8 @@ use App\Domains\Parking\Controllers\ParkingZoneController;
 use App\Domains\Parking\Controllers\ParkingFloorController;
 use App\Domains\Parking\Controllers\VehicleTypeController;
 use App\Domains\Parking\Controllers\ParkingRateController;
+use App\Domains\Parking\Controllers\ParkingGateController;
+use App\Domains\Parking\Controllers\ParkingQrCodeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -224,6 +226,35 @@ Route::middleware(['auth', 'set.language'])->prefix('admin')->name('admin.')->gr
         Route::get('/zone/{zone}/matrix', [ParkingRateController::class, 'matrixByZone'])->name('matrix-zone');
         Route::get('/import', [ParkingRateController::class, 'importForm'])->name('import-form');
         Route::post('/import', [ParkingRateController::class, 'import'])->name('import');
+    });
+
+    // Phase 2: Parking Gates Management CRUD
+    Route::middleware('permission:manage_parking')->prefix('parking-gates')->name('parking-gates.')->group(function () {
+        Route::get('/', [ParkingGateController::class, 'index'])->name('index');
+        Route::get('/create', [ParkingGateController::class, 'create'])->name('create');
+        Route::post('/', [ParkingGateController::class, 'store'])->name('store');
+        Route::get('/{gate}', [ParkingGateController::class, 'show'])->name('show');
+        Route::get('/{gate}/edit', [ParkingGateController::class, 'edit'])->name('edit');
+        Route::put('/{gate}', [ParkingGateController::class, 'update'])->name('update');
+        Route::delete('/{gate}', [ParkingGateController::class, 'destroy'])->name('destroy');
+        Route::post('/{gate}/restore', [ParkingGateController::class, 'restore'])->name('restore');
+        Route::patch('/{gate}/status', [ParkingGateController::class, 'updateStatus'])->name('status');
+        Route::get('/{gate}/access-logs', [ParkingGateController::class, 'accessLogs'])->name('access-logs');
+    });
+
+    // Phase 2: QR Code Management CRUD & Generation
+    Route::middleware('permission:manage_parking')->prefix('parking-qr-codes')->name('parking-qr-codes.')->group(function () {
+        Route::get('/', [ParkingQrCodeController::class, 'index'])->name('index');
+        Route::get('/create', [ParkingQrCodeController::class, 'create'])->name('create');
+        Route::post('/', [ParkingQrCodeController::class, 'store'])->name('store');
+        Route::get('/{qrCode}', [ParkingQrCodeController::class, 'show'])->name('show');
+        Route::get('/{qrCode}/edit', [ParkingQrCodeController::class, 'edit'])->name('edit');
+        Route::put('/{qrCode}', [ParkingQrCodeController::class, 'update'])->name('update');
+        Route::delete('/{qrCode}', [ParkingQrCodeController::class, 'destroy'])->name('destroy');
+        Route::post('/{qrCode}/restore', [ParkingQrCodeController::class, 'restore'])->name('restore');
+        Route::get('/{qrCode}/download', [ParkingQrCodeController::class, 'download'])->name('download');
+        Route::post('/bulk/generate-for-zone', [ParkingQrCodeController::class, 'bulkGenerateForZone'])->name('bulk-generate');
+        Route::get('/stats/statistics', [ParkingQrCodeController::class, 'statistics'])->name('statistics');
     });
 
     // Vehicle Management CRUD
