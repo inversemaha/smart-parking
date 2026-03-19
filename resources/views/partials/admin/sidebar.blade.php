@@ -214,6 +214,47 @@
             </ul>
         </li>
 
+        <!-- Invoices -->
+        <li>
+            <a href="{{ route('admin.invoices.index') }}" class="side-menu {{ request()->routeIs('admin.invoices*') ? 'side-menu--active' : '' }}">
+                <div class="side-menu__icon">
+                    <i data-lucide="file-text"></i>
+                </div>
+                <div class="side-menu__title">
+                    Invoices
+                    <div class="side-menu__sub-icon">
+                        <i data-lucide="chevron-down"></i>
+                    </div>
+                </div>
+            </a>
+            <ul class="">
+                <li>
+                    <a href="{{ route('admin.invoices.index') }}" class="side-menu {{ request()->routeIs('admin.invoices.index') && !request()->has('status') ? 'side-menu--active' : '' }}">
+                        <div class="side-menu__icon">
+                            <i data-lucide="list"></i>
+                        </div>
+                        <div class="side-menu__title">All Invoices</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('admin.invoices.index', ['status' => 'unpaid']) }}" class="side-menu">
+                        <div class="side-menu__icon">
+                            <i data-lucide="alert-circle"></i>
+                        </div>
+                        <div class="side-menu__title">Unpaid</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('admin.invoices.index', ['status' => 'paid']) }}" class="side-menu">
+                        <div class="side-menu__icon">
+                            <i data-lucide="check-circle"></i>
+                        </div>
+                        <div class="side-menu__title">Paid</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
         <!-- Reports -->
         <li>
             <a href="{{ route('admin.reports.index') }}" class="side-menu {{ request()->routeIs('admin.reports*') ? 'side-menu--active' : '' }}">

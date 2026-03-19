@@ -12,6 +12,7 @@ use App\Domains\Admin\Controllers\AdminParkingLocationController;
 use App\Domains\Admin\Controllers\AdminBookingController;
 use App\Domains\Admin\Controllers\AdminUserController;
 use App\Domains\Admin\Controllers\AdminPaymentController;
+use App\Domains\Admin\Controllers\AdminInvoiceController;
 use App\Domains\User\Controllers\VisitorController;
 
 /*
@@ -138,6 +139,14 @@ Route::middleware(['auth', 'set.language'])->prefix('admin')->name('admin.')->gr
         Route::get('/', [AdminPaymentController::class, 'index'])->name('index');
         Route::get('/{payment}', [AdminPaymentController::class, 'show'])->name('show');
         Route::post('/{payment}/refund', [AdminPaymentController::class, 'refund'])->name('refund');
+    });
+
+    // Invoice Management CRUD
+    Route::prefix('invoices')->name('invoices.')->group(function () {
+        Route::get('/', [AdminInvoiceController::class, 'index'])->name('index');
+        Route::get('/{invoice}', [AdminInvoiceController::class, 'show'])->name('show');
+        Route::get('/{invoice}/download', [AdminInvoiceController::class, 'download'])->name('download');
+        Route::post('/{invoice}/mark-paid', [AdminInvoiceController::class, 'markPaid'])->name('mark-paid');
     });
 
     // Booking Management CRUD
