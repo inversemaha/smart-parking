@@ -140,6 +140,39 @@
             </ul>
         </li>
 
+        <!-- Users -->
+        <li>
+            <a href="{{ route('admin.users.index') }}" class="side-menu {{ request()->routeIs('admin.users*') ? 'side-menu--active' : '' }}">
+                <div class="side-menu__icon">
+                    <i data-lucide="users"></i>
+                </div>
+                <div class="side-menu__title">
+                    Users
+                    <div class="side-menu__sub-icon">
+                        <i data-lucide="chevron-down"></i>
+                    </div>
+                </div>
+            </a>
+            <ul class="">
+                <li>
+                    <a href="{{ route('admin.users.index') }}" class="side-menu {{ request()->routeIs('admin.users.index') ? 'side-menu--active' : '' }}">
+                        <div class="side-menu__icon">
+                            <i data-lucide="list"></i>
+                        </div>
+                        <div class="side-menu__title">All Users</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('admin.users.create') }}" class="side-menu {{ request()->routeIs('admin.users.create') ? 'side-menu--active' : '' }}">
+                        <div class="side-menu__icon">
+                            <i data-lucide="plus"></i>
+                        </div>
+                        <div class="side-menu__title">Add User</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
         <!-- Reports -->
         <li>
             <a href="{{ route('admin.reports.index') }}" class="side-menu {{ request()->routeIs('admin.reports*') ? 'side-menu--active' : '' }}">

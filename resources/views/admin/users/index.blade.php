@@ -1,360 +1,190 @@
 @extends('layouts.admin')
 
-@section('admin-title', __('admin.users.title'))
-@section('admin-subtitle', __('admin.users.manage'))
-
-@section('admin-content')
-<div class="space-y-6">
-    <!-- Header Actions -->
-    <div class="flex items-center justify-between">
-        <div class="flex items-center space-x-4">
-            <!-- Search -->
-            <div class="relative">
-                <input type="text" id="user-search"
-                       class="form-input pl-10 pr-4 py-2 border-gray-300 rounded-lg w-64"
-                       placeholder="{{ __('admin.actions.search') }} {{ __('admin.users.title') }}...">
-                <i data-lucide="search" class="w-5 h-5 text-gray-400 absolute left-3 top-2.5"></i>
-            </div>
-
-            <!-- Status Filter -->
-            <select id="status-filter" class="form-select border-gray-300 rounded-lg">
-                <option value="">{{ __('admin.users.status.all') }}</option>
-                <option value="active">{{ __('admin.users.status.active') }}</option>
-                <option value="suspended">{{ __('admin.users.status.suspended') }}</option>
-                <option value="pending_verification">{{ __('admin.users.status.pending_verification') }}</option>
-            </select>
-        </div>
-
-        @can('createUsers', \App\Policies\AdminPolicy::class)
-        <button onclick="openCreateModal()"
-                class="btn btn-primary">
-            <i data-lucide="plus" class="w-4 h-4 mr-2"></i>
-            {{ __('admin.users.create') }}
-        </button>
-        @endcan
+@section('content')
+<div class="content">
+    <!-- Breadcrumb & Header -->
+    <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between mb-4">
+        <h1 class="text-lg font-medium text-slate-800 dark:text-slate-100">Users</h1>
+        <nav class="flex pt-2 sm:pt-0" aria-label="Breadcrumb">
+            <ol class="flex items-center space-x-2">
+                <li><a href="{{ route('admin.dashboard.index') }}" class="text-slate-500 dark:text-slate-400 hover:text-slate-600">Dashboard</a></li>
+                <li class="text-slate-500 dark:text-slate-400">/</li>
+                <li class="text-slate-600 dark:text-slate-300">Users</li>
+            </ol>
+        </nav>
     </div>
 
-    <!-- Stats Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <div class="stats-card">
-            <div class="flex items-center">
-                <div class="stats-icon bg-blue-100">
-                    <i data-lucide="users" class="w-6 h-6 text-blue-600"></i>
-                </div>
-                <div class="ml-4">
-                    <div class="text-2xl font-semibold text-gray-800" id="total-users">{{ $stats['total'] ?? 0 }}</div>
-                    <div class="text-sm text-gray-600">{{ __('admin.users.fields.total') }}</div>
-                </div>
-            </div>
-        </div>
+    <!-- Messages -->
+    @if($message = session('success'))
+    <div class="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg">{{ $message }}</div>
+    @endif
+    @if($message = session('error'))
+    <div class="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg">{{ $message }}</div>
+    @endif
 
-        <div class="stats-card">
-            <div class="flex items-center">
-                <div class="stats-icon bg-green-100">
-                    <i data-lucide="user-check" class="w-6 h-6 text-green-600"></i>
+    <!-- Actions & Search -->
+    <div class="grid grid-cols-12 gap-6 mb-4">
+        <div class="col-span-12">
+            <div class="flex flex-col sm:flex-row sm:items-center gap-4">
+                <a href="{{ route('admin.users.create') }}" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors inline-flex items-center">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                    Add User
+                </a>
+                <div class="flex-1">
+                    <input type="text" id="search" placeholder="Search by name or email..."
+                        class="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500">
                 </div>
-                <div class="ml-4">
-                    <div class="text-2xl font-semibold text-gray-800" id="active-users">{{ $stats['active'] ?? 0 }}</div>
-                    <div class="text-sm text-gray-600">{{ __('admin.users.status.active') }}</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="stats-card">
-            <div class="flex items-center">
-                <div class="stats-icon bg-yellow-100">
-                    <i data-lucide="user-x" class="w-6 h-6 text-yellow-600"></i>
-                </div>
-                <div class="ml-4">
-                    <div class="text-2xl font-semibold text-gray-800" id="suspended-users">{{ $stats['suspended'] ?? 0 }}</div>
-                    <div class="text-sm text-gray-600">{{ __('admin.users.status.suspended') }}</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="stats-card">
-            <div class="flex items-center">
-                <div class="stats-icon bg-purple-100">
-                    <i data-lucide="clock" class="w-6 h-6 text-purple-600"></i>
-                </div>
-                <div class="ml-4">
-                    <div class="text-2xl font-semibold text-gray-800" id="pending-users">{{ $stats['pending'] ?? 0 }}</div>
-                    <div class="text-sm text-gray-600">{{ __('admin.users.status.pending_verification') }}</div>
-                </div>
+                <select id="status-filter" class="px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="">All Status</option>
+                    <option value="active">Active</option>
+                    <option value="suspended">Suspended</option>
+                    <option value="deactivated">Deactivated</option>
+                </select>
             </div>
         </div>
     </div>
 
-    <!-- Users Table -->
-    <div class="bg-white rounded-lg shadow-sm border border-gray-200">
-        <div class="p-6">
-            <div class="overflow-x-auto">
-                <table class="w-full">
-                    <thead>
-                        <tr class="border-b border-gray-200">
-                            <th class="text-left py-3 px-4 font-medium text-gray-700">{{ __('admin.users.fields.name') }}</th>
-                            <th class="text-left py-3 px-4 font-medium text-gray-700">{{ __('admin.users.fields.mobile') }}</th>
-                            <th class="text-left py-3 px-4 font-medium text-gray-700">{{ __('admin.users.fields.status') }}</th>
-                            <th class="text-left py-3 px-4 font-medium text-gray-700">{{ __('admin.users.fields.total_bookings') }}</th>
-                            <th class="text-left py-3 px-4 font-medium text-gray-700">{{ __('admin.users.fields.total_spent') }}</th>
-                            <th class="text-left py-3 px-4 font-medium text-gray-700">{{ __('admin.users.fields.created_at') }}</th>
-                            <th class="text-right py-3 px-4 font-medium text-gray-700">{{ __('admin.actions.actions') }}</th>
-                        </tr>
-                    </thead>
-                    <tbody id="users-table-body">
-                        <!-- Users will be loaded via AJAX -->
-                        <tr>
-                            <td colspan="7" class="text-center py-8 text-gray-500">
-                                <i data-lucide="loader" class="w-6 h-6 mx-auto mb-2 animate-spin"></i>
-                                {{ __('admin.messages.loading') }}
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- Pagination -->
-            <div class="mt-6" id="pagination-container">
-                <!-- Pagination will be loaded via AJAX -->
-            </div>
+    <!-- Table -->
+    <div class="bg-white dark:bg-slate-800 rounded-lg shadow-lg overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full">
+                <thead class="bg-slate-100 dark:bg-slate-700 border-b border-slate-200 dark:border-slate-600">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-sm font-medium text-slate-600 dark:text-slate-400">Name</th>
+                        <th class="px-6 py-3 text-left text-sm font-medium text-slate-600 dark:text-slate-400">Email</th>
+                        <th class="px-6 py-3 text-left text-sm font-medium text-slate-600 dark:text-slate-400">Type</th>
+                        <th class="px-6 py-3 text-left text-sm font-medium text-slate-600 dark:text-slate-400">Roles</th>
+                        <th class="px-6 py-3 text-left text-sm font-medium text-slate-600 dark:text-slate-400">Status</th>
+                        <th class="px-6 py-3 text-center text-sm font-medium text-slate-600 dark:text-slate-400">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
+                    @forelse($users as $user)
+                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-700 user-row"
+                        data-name="{{ strtolower($user->name) }}"
+                        data-email="{{ strtolower($user->email) }}"
+                        data-status="{{ $user->suspended_at ? 'suspended' : ($user->deactivated_at ? 'deactivated' : 'active') }}">
+                        <td class="px-6 py-4">
+                            <div class="font-medium text-slate-900 dark:text-white">{{ $user->name }}</div>
+                            <div class="text-xs text-slate-500 dark:text-slate-400">{{ $user->user_type }}</div>
+                        </td>
+                        <td class="px-6 py-4 text-slate-900 dark:text-white">{{ $user->email }}</td>
+                        <td class="px-6 py-4">
+                            <span class="px-2 py-1 text-xs rounded bg-slate-100 dark:bg-slate-700 text-slate-800 dark:text-slate-300">
+                                {{ ucfirst($user->user_type) }}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 text-sm">
+                            @forelse($user->roles as $role)
+                            <span class="inline-block px-2 py-1 text-xs rounded bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 mr-1 mb-1">
+                                {{ $role->name }}
+                            </span>
+                            @empty
+                            <span class="text-slate-500 dark:text-slate-400">No roles</span>
+                            @endforelse
+                        </td>
+                        <td class="px-6 py-4">
+                            @if($user->suspended_at)
+                            <span class="px-3 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">
+                                Suspended
+                            </span>
+                            @elseif($user->deactivated_at)
+                            <span class="px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">
+                                Deactivated
+                            </span>
+                            @else
+                            <span class="px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+                                Active
+                            </span>
+                            @endif
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="flex justify-center gap-2">
+                                <a href="{{ route('admin.users.show', $user->id) }}" class="px-3 py-1 text-xs bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-200 rounded hover:bg-blue-200 transition-colors">
+                                    View
+                                </a>
+                                <a href="{{ route('admin.users.edit', $user->id) }}" class="px-3 py-1 text-xs bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-200 rounded hover:bg-yellow-200 transition-colors">
+                                    Edit
+                                </a>
+                                @if(!$user->suspended_at)
+                                <button onclick="suspendUser({{ $user->id }}, '{{ $user->name }}')" class="px-3 py-1 text-xs bg-orange-100 text-orange-700 dark:bg-orange-900 dark:text-orange-200 rounded hover:bg-orange-200 transition-colors">
+                                    Suspend
+                                </button>
+                                @else
+                                <button onclick="activateUser({{ $user->id }}, '{{ $user->name }}')" class="px-3 py-1 text-xs bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-200 rounded hover:bg-green-200 transition-colors">
+                                    Activate
+                                </button>
+                                @endif
+                            </div>
+                        </td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="6" class="px-6 py-8 text-center text-slate-500 dark:text-slate-400">
+                            No users found
+                        </td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
         </div>
     </div>
-</div>
 
-<!-- Create/Edit User Modal -->
-<div id="user-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-    <div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
-        <div class="p-6">
-            <div class="flex items-center justify-between mb-4">
-                <h3 class="text-lg font-medium text-gray-800" id="modal-title">{{ __('admin.users.create') }}</h3>
-                <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600">
-                    <i data-lucide="x" class="w-6 h-6"></i>
-                </button>
-            </div>
-
-            <form id="user-form">
-                <input type="hidden" id="user-id" name="user_id">
-
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('admin.users.fields.name') }}</label>
-                        <input type="text" id="user-name" name="name" required
-                               class="form-input w-full border-gray-300 rounded-lg">
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('admin.users.fields.mobile') }}</label>
-                        <input type="text" id="user-mobile" name="mobile" required
-                               class="form-input w-full border-gray-300 rounded-lg">
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('admin.users.fields.status') }}</label>
-                        <select id="user-status" name="status" class="form-select w-full border-gray-300 rounded-lg">
-                            <option value="active">{{ __('admin.users.status.active') }}</option>
-                            <option value="suspended">{{ __('admin.users.status.suspended') }}</option>
-                            <option value="pending_verification">{{ __('admin.users.status.pending_verification') }}</option>
-                        </select>
-                    </div>
-
-                    <div id="password-field" class="hidden">
-                        <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('admin.users.fields.password') }}</label>
-                        <input type="password" id="user-password" name="password"
-                               class="form-input w-full border-gray-300 rounded-lg">
-                    </div>
-                </div>
-
-                <div class="flex justify-end space-x-3 mt-6">
-                    <button type="button" onclick="closeModal()"
-                            class="btn btn-secondary">
-                        {{ __('admin.actions.cancel') }}
-                    </button>
-                    <button type="submit" class="btn btn-primary">
-                        {{ __('admin.actions.save') }}
-                    </button>
-                </div>
-            </form>
-        </div>
+    <!-- Pagination -->
+    <div class="mt-6">
+        {{ $users->links() }}
     </div>
 </div>
 
-@push('scripts')
 <script>
-let currentPage = 1;
-let isLoading = false;
-
-// Load users data
-function loadUsers(page = 1, search = '', status = '') {
-    if (isLoading) return;
-    isLoading = true;
-
-    const params = new URLSearchParams({
-        page: page,
-        search: search,
-        status: status,
-        per_page: 15
-    });
-
-    fetch(`/api/admin/users?${params}`, {
-        headers: {
-            'Authorization': `Bearer ${localStorage.getItem('api_token')}`,
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            renderUsersTable(data.data);
-            renderPagination(data.meta);
-            updateStats();
-        }
-    })
-    .catch(error => {
-        console.error('Error loading users:', error);
-        showNotification('{{ __("admin.messages.errors.operation_failed") }}', 'error');
-    })
-    .finally(() => {
-        isLoading = false;
-    });
-}
-
-// Render users table
-function renderUsersTable(users) {
-    const tbody = document.getElementById('users-table-body');
-
-    if (users.length === 0) {
-        tbody.innerHTML = `
-            <tr>
-                <td colspan="7" class="text-center py-8 text-gray-500">
-                    {{ __('admin.messages.no_data') }}
-                </td>
-            </tr>
-        `;
-        return;
-    }
-
-    tbody.innerHTML = users.map(user => `
-        <tr class="border-b border-gray-100 hover:bg-gray-50">
-            <td class="py-3 px-4">
-                <div class="flex items-center">
-                    <div class="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center mr-3">
-                        <span class="text-xs font-medium text-gray-600">${user.name.charAt(0).toUpperCase()}</span>
-                    </div>
-                    <div>
-                        <div class="font-medium text-gray-800">${user.name}</div>
-                        <div class="text-sm text-gray-500">#${user.id}</div>
-                    </div>
-                </div>
-            </td>
-            <td class="py-3 px-4 text-gray-600">${user.mobile}</td>
-            <td class="py-3 px-4">
-                <span class="inline-flex px-2 py-1 text-xs font-medium rounded-full ${getStatusClass(user.status)}">
-                    ${getStatusText(user.status)}
-                </span>
-            </td>
-            <td class="py-3 px-4 text-gray-600">${user.total_bookings || 0}</td>
-            <td class="py-3 px-4 text-gray-600">৳${(user.total_spent || 0).toLocaleString()}</td>
-            <td class="py-3 px-4 text-gray-600">${formatDate(user.created_at)}</td>
-            <td class="py-3 px-4 text-right">
-                <div class="flex items-center justify-end space-x-2">
-                    @can('editUsers', \App\Policies\AdminPolicy::class)
-                    <button onclick="editUser(${user.id})"
-                            class="text-blue-600 hover:text-blue-800 text-sm">
-                        {{ __('admin.actions.edit') }}
-                    </button>
-                    @endcan
-
-                    @can('suspendUsers', \App\Policies\AdminPolicy::class)
-                    ${user.status === 'active' ?
-                        `<button onclick="suspendUser(${user.id})" class="text-yellow-600 hover:text-yellow-800 text-sm">
-                            {{ __('admin.users.suspend') }}
-                        </button>` :
-                        `<button onclick="activateUser(${user.id})" class="text-green-600 hover:text-green-800 text-sm">
-                            {{ __('admin.users.activate') }}
-                        </button>`
-                    }
-                    @endcan
-
-                    @can('deleteUsers', \App\Policies\AdminPolicy::class)
-                    <button onclick="deleteUser(${user.id})"
-                            class="text-red-600 hover:text-red-800 text-sm">
-                        {{ __('admin.actions.delete') }}
-                    </button>
-                    @endcan
-                </div>
-            </td>
-        </tr>
-    `).join('');
-}
-
-// Helper functions
-function getStatusClass(status) {
-    switch(status) {
-        case 'active': return 'bg-green-100 text-green-800';
-        case 'suspended': return 'bg-yellow-100 text-yellow-800';
-        case 'pending_verification': return 'bg-purple-100 text-purple-800';
-        default: return 'bg-gray-100 text-gray-800';
-    }
-}
-
-function getStatusText(status) {
-    const statusMap = {
-        'active': '{{ __("admin.users.status.active") }}',
-        'suspended': '{{ __("admin.users.status.suspended") }}',
-        'pending_verification': '{{ __("admin.users.status.pending_verification") }}'
-    };
-    return statusMap[status] || status;
-}
-
-function formatDate(dateString) {
-    return new Date(dateString).toLocaleDateString();
-}
-
-// Modal functions
-function openCreateModal() {
-    document.getElementById('modal-title').textContent = '{{ __("admin.users.create") }}';
-    document.getElementById('user-form').reset();
-    document.getElementById('user-id').value = '';
-    document.getElementById('password-field').classList.remove('hidden');
-    document.getElementById('user-modal').classList.remove('hidden');
-    document.getElementById('user-modal').classList.add('flex');
-}
-
-function closeModal() {
-    document.getElementById('user-modal').classList.add('hidden');
-    document.getElementById('user-modal').classList.remove('flex');
-}
-
-// Event listeners
-document.addEventListener('DOMContentLoaded', function() {
-    loadUsers();
-
-    // Search functionality
-    let searchTimeout;
-    document.getElementById('user-search').addEventListener('input', function(e) {
-        clearTimeout(searchTimeout);
-        searchTimeout = setTimeout(() => {
-            loadUsers(1, e.target.value, document.getElementById('status-filter').value);
-        }, 500);
-    });
-
-    // Status filter
-    document.getElementById('status-filter').addEventListener('change', function(e) {
-        loadUsers(1, document.getElementById('user-search').value, e.target.value);
-    });
-
-    // Initialize Lucide icons
-    if (window.createIcons && window.icons) {
-        window.createIcons({ icons: window.icons, nameAttr: 'data-lucide' });
-    }
+document.getElementById('search').addEventListener('keyup', function() {
+    filterTable();
 });
 
-// Show notification
-function showNotification(message, type = 'info') {
-    // Implementation depends on your notification system
-    console.log(`${type}: ${message}`);
+document.getElementById('status-filter').addEventListener('change', function() {
+    filterTable();
+});
+
+function filterTable() {
+    const searchTerm = document.getElementById('search').value.toLowerCase();
+    const statusFilter = document.getElementById('status-filter').value.toLowerCase();
+    
+    document.querySelectorAll('.user-row').forEach(row => {
+        const name = row.getAttribute('data-name');
+        const email = row.getAttribute('data-email');
+        const status = row.getAttribute('data-status');
+        
+        const matchSearch = name.includes(searchTerm) || email.includes(searchTerm);
+        const matchStatus = !statusFilter || status === statusFilter;
+        
+        row.style.display = matchSearch && matchStatus ? '' : 'none';
+    });
+}
+
+function suspendUser(userId, userName) {
+    const reason = prompt(`Suspend ${userName}? Enter reason:`);
+    if (reason) {
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = `{{ route('admin.users.suspend', '') }}/${userId}`;
+        form.innerHTML = `
+            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+            <input type="hidden" name="reason" value="${reason}">
+        `;
+        document.body.appendChild(form);
+        form.submit();
+    }
+}
+
+function activateUser(userId, userName) {
+    if (confirm(`Activate ${userName}?`)) {
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = `{{ route('admin.users.activate', '') }}/${userId}`;
+        form.innerHTML = `<input type="hidden" name="_token" value="{{ csrf_token() }}">`;
+        document.body.appendChild(form);
+        form.submit();
+    }
 }
 </script>
-@endpush
 @endsection

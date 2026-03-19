@@ -10,6 +10,7 @@ use App\Domains\Admin\Controllers\AdminDashboardController;
 use App\Domains\Admin\Controllers\AdminVehicleController;
 use App\Domains\Admin\Controllers\AdminParkingLocationController;
 use App\Domains\Admin\Controllers\AdminBookingController;
+use App\Domains\Admin\Controllers\AdminUserController;
 use App\Domains\User\Controllers\VisitorController;
 
 /*
@@ -117,6 +118,18 @@ Route::middleware(['auth', 'set.language'])->prefix('admin')->name('admin.')->gr
         Route::get('/roles', [PermissionController::class, 'roles'])->name('permissions.roles');
         Route::post('/roles', [PermissionController::class, 'createRole'])->name('roles.store');
         Route::put('/roles/{role}', [PermissionController::class, 'updateRole'])->name('roles.update');
+    });
+
+    // User Management CRUD
+    Route::prefix('users')->name('users.')->group(function () {
+        Route::get('/', [AdminUserController::class, 'index'])->name('index');
+        Route::get('/create', [AdminUserController::class, 'create'])->name('create');
+        Route::post('/', [AdminUserController::class, 'store'])->name('store');
+        Route::get('/{user}', [AdminUserController::class, 'show'])->name('show');
+        Route::get('/{user}/edit', [AdminUserController::class, 'edit'])->name('edit');
+        Route::put('/{user}', [AdminUserController::class, 'update'])->name('update');
+        Route::post('/{user}/suspend', [AdminUserController::class, 'suspend'])->name('suspend');
+        Route::post('/{user}/activate', [AdminUserController::class, 'activate'])->name('activate');
     });
 
     // Booking Management CRUD
