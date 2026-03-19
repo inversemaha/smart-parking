@@ -7,6 +7,7 @@ use App\Domains\User\Controllers\BookingController as UserBookingController;
 use App\Domains\User\Controllers\PaymentController as UserPaymentController;
 use App\Domains\Admin\Controllers\PermissionController;
 use App\Domains\Admin\Controllers\AdminDashboardController;
+use App\Domains\Admin\Controllers\AdminVehicleController;
 use App\Domains\User\Controllers\VisitorController;
 
 /*
@@ -116,8 +117,18 @@ Route::middleware(['auth', 'set.language'])->prefix('admin')->name('admin.')->gr
         Route::put('/roles/{role}', [PermissionController::class, 'updateRole'])->name('roles.update');
     });
 
-    // Vehicle verification management
+    // Vehicle Management CRUD
     Route::prefix('vehicles')->name('vehicles.')->group(function () {
+        // CRUD operations
+        Route::get('/', [AdminVehicleController::class, 'index'])->name('index');
+        Route::get('/create', [AdminVehicleController::class, 'create'])->name('create');
+        Route::post('/', [AdminVehicleController::class, 'store'])->name('store');
+        Route::get('/{vehicle}', [AdminVehicleController::class, 'show'])->name('show');
+        Route::get('/{vehicle}/edit', [AdminVehicleController::class, 'edit'])->name('edit');
+        Route::put('/{vehicle}', [AdminVehicleController::class, 'update'])->name('update');
+        Route::delete('/{vehicle}', [AdminVehicleController::class, 'destroy'])->name('destroy');
+        
+        // Verification management
         Route::get('/pending', [AdminDashboardController::class, 'pendingVehicles'])->name('pending');
         Route::post('/{vehicle}/verify', [AdminDashboardController::class, 'verifyVehicle'])->name('verify');
         Route::post('/{vehicle}/reject', [AdminDashboardController::class, 'rejectVehicle'])->name('reject');

@@ -18,12 +18,43 @@
 
         <!-- Vehicles -->
         <li>
-            <a href="{{ route('admin.vehicles.pending') }}" class="side-menu {{ request()->routeIs('admin.vehicles*') ? 'side-menu--active' : '' }}">
+            <a href="{{ route('admin.vehicles.index') }}" class="side-menu {{ request()->routeIs('admin.vehicles*') ? 'side-menu--active' : '' }}">
                 <div class="side-menu__icon">
                     <i data-lucide="car"></i>
                 </div>
-                <div class="side-menu__title">Vehicles</div>
+                <div class="side-menu__title">
+                    Vehicles
+                    <div class="side-menu__sub-icon">
+                        <i data-lucide="chevron-down"></i>
+                    </div>
+                </div>
             </a>
+            <ul class="">
+                <li>
+                    <a href="{{ route('admin.vehicles.index') }}" class="side-menu {{ request()->routeIs('admin.vehicles.index') ? 'side-menu--active' : '' }}">
+                        <div class="side-menu__icon">
+                            <i data-lucide="list"></i>
+                        </div>
+                        <div class="side-menu__title">All Vehicles</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('admin.vehicles.pending') }}" class="side-menu {{ request()->routeIs('admin.vehicles.pending') ? 'side-menu--active' : '' }}">
+                        <div class="side-menu__icon">
+                            <i data-lucide="clock"></i>
+                        </div>
+                        <div class="side-menu__title">Pending Verification</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('admin.vehicles.create') }}" class="side-menu {{ request()->routeIs('admin.vehicles.create') ? 'side-menu--active' : '' }}">
+                        <div class="side-menu__icon">
+                            <i data-lucide="plus"></i>
+                        </div>
+                        <div class="side-menu__title">Add Vehicle</div>
+                    </a>
+                </li>
+            </ul>
         </li>
 
         <!-- Parking Locations -->
