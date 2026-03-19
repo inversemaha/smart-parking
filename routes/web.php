@@ -16,6 +16,10 @@ use App\Domains\Admin\Controllers\AdminInvoiceController;
 use App\Domains\Admin\Controllers\SystemSettingsController;
 use App\Domains\Admin\Controllers\ProfileController;
 use App\Domains\User\Controllers\VisitorController;
+use App\Domains\Parking\Controllers\ParkingZoneController;
+use App\Domains\Parking\Controllers\ParkingFloorController;
+use App\Domains\Parking\Controllers\VehicleTypeController;
+use App\Domains\Parking\Controllers\ParkingRateController;
 
 /*
 |--------------------------------------------------------------------------
@@ -168,6 +172,58 @@ Route::middleware(['auth', 'set.language'])->prefix('admin')->name('admin.')->gr
         Route::get('/{parkingLocation}/edit', [AdminParkingLocationController::class, 'edit'])->name('edit');
         Route::put('/{parkingLocation}', [AdminParkingLocationController::class, 'update'])->name('update');
         Route::delete('/{parkingLocation}', [AdminParkingLocationController::class, 'destroy'])->name('destroy');
+    });
+
+    // Phase 1: Parking Zones Management CRUD
+    Route::middleware('permission:manage_parking')->prefix('parking-zones')->name('parking-zones.')->group(function () {
+        Route::get('/', [ParkingZoneController::class, 'index'])->name('index');
+        Route::get('/create', [ParkingZoneController::class, 'create'])->name('create');
+        Route::post('/', [ParkingZoneController::class, 'store'])->name('store');
+        Route::get('/{zone}', [ParkingZoneController::class, 'show'])->name('show');
+        Route::get('/{zone}/edit', [ParkingZoneController::class, 'edit'])->name('edit');
+        Route::put('/{zone}', [ParkingZoneController::class, 'update'])->name('update');
+        Route::delete('/{zone}', [ParkingZoneController::class, 'destroy'])->name('destroy');
+        Route::post('/{zone}/restore', [ParkingZoneController::class, 'restore'])->name('restore');
+    });
+
+    // Phase 1: Parking Floors Management CRUD
+    Route::middleware('permission:manage_parking')->prefix('parking-floors')->name('parking-floors.')->group(function () {
+        Route::get('/', [ParkingFloorController::class, 'index'])->name('index');
+        Route::get('/create', [ParkingFloorController::class, 'create'])->name('create');
+        Route::post('/', [ParkingFloorController::class, 'store'])->name('store');
+        Route::get('/{floor}', [ParkingFloorController::class, 'show'])->name('show');
+        Route::get('/{floor}/edit', [ParkingFloorController::class, 'edit'])->name('edit');
+        Route::put('/{floor}', [ParkingFloorController::class, 'update'])->name('update');
+        Route::delete('/{floor}', [ParkingFloorController::class, 'destroy'])->name('destroy');
+        Route::post('/{floor}/restore', [ParkingFloorController::class, 'restore'])->name('restore');
+    });
+
+    // Phase 1: Vehicle Types Management CRUD
+    Route::middleware('permission:manage_parking')->prefix('vehicle-types')->name('vehicle-types.')->group(function () {
+        Route::get('/', [VehicleTypeController::class, 'index'])->name('index');
+        Route::get('/create', [VehicleTypeController::class, 'create'])->name('create');
+        Route::post('/', [VehicleTypeController::class, 'store'])->name('store');
+        Route::get('/{vehicleType}', [VehicleTypeController::class, 'show'])->name('show');
+        Route::get('/{vehicleType}/edit', [VehicleTypeController::class, 'edit'])->name('edit');
+        Route::put('/{vehicleType}', [VehicleTypeController::class, 'update'])->name('update');
+        Route::delete('/{vehicleType}', [VehicleTypeController::class, 'destroy'])->name('destroy');
+        Route::post('/{vehicleType}/restore', [VehicleTypeController::class, 'restore'])->name('restore');
+        Route::post('/bulk/order', [VehicleTypeController::class, 'updateOrder'])->name('bulk-order');
+    });
+
+    // Phase 1: Parking Rates Management CRUD
+    Route::middleware('permission:manage_parking')->prefix('parking-rates')->name('parking-rates.')->group(function () {
+        Route::get('/', [ParkingRateController::class, 'index'])->name('index');
+        Route::get('/create', [ParkingRateController::class, 'create'])->name('create');
+        Route::post('/', [ParkingRateController::class, 'store'])->name('store');
+        Route::get('/{rate}', [ParkingRateController::class, 'show'])->name('show');
+        Route::get('/{rate}/edit', [ParkingRateController::class, 'edit'])->name('edit');
+        Route::put('/{rate}', [ParkingRateController::class, 'update'])->name('update');
+        Route::delete('/{rate}', [ParkingRateController::class, 'destroy'])->name('destroy');
+        Route::post('/{rate}/restore', [ParkingRateController::class, 'restore'])->name('restore');
+        Route::get('/zone/{zone}/matrix', [ParkingRateController::class, 'matrixByZone'])->name('matrix-zone');
+        Route::get('/import', [ParkingRateController::class, 'importForm'])->name('import-form');
+        Route::post('/import', [ParkingRateController::class, 'import'])->name('import');
     });
 
     // Vehicle Management CRUD

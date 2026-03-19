@@ -90,6 +90,162 @@
             </ul>
         </li>
 
+        <!-- Phase 1: Parking Management (Zones, Floors, Vehicles, Rates) -->
+        <li>
+            <a href="#" class="side-menu {{ request()->routeIs('admin.parking-zones*', 'admin.parking-floors*', 'admin.vehicle-types*', 'admin.parking-rates*') ? 'side-menu--active' : '' }}">
+                <div class="side-menu__icon">
+                    <i data-lucide="building-2"></i>
+                </div>
+                <div class="side-menu__title">
+                    Parking Management
+                    <div class="side-menu__sub-icon">
+                        <i data-lucide="chevron-down"></i>
+                    </div>
+                </div>
+            </a>
+            <ul class="">
+                <!-- Parking Zones -->
+                <li>
+                    <a href="{{ route('admin.parking-zones.index') }}" class="side-menu {{ request()->routeIs('admin.parking-zones*') ? 'side-menu--active' : '' }}">
+                        <div class="side-menu__icon">
+                            <i data-lucide="layers"></i>
+                        </div>
+                        <div class="side-menu__title">
+                            Zones
+                            <div class="side-menu__sub-icon">
+                                <i data-lucide="chevron-down"></i>
+                            </div>
+                        </div>
+                    </a>
+                    <ul class="">
+                        <li>
+                            <a href="{{ route('admin.parking-zones.index') }}" class="side-menu {{ request()->routeIs('admin.parking-zones.index') ? 'side-menu--active' : '' }}">
+                                <div class="side-menu__icon">
+                                    <i data-lucide="list"></i>
+                                </div>
+                                <div class="side-menu__title">All Zones</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('admin.parking-zones.create') }}" class="side-menu {{ request()->routeIs('admin.parking-zones.create') ? 'side-menu--active' : '' }}">
+                                <div class="side-menu__icon">
+                                    <i data-lucide="plus"></i>
+                                </div>
+                                <div class="side-menu__title">Add Zone</div>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- Parking Floors -->
+                <li>
+                    <a href="{{ route('admin.parking-floors.index') }}" class="side-menu {{ request()->routeIs('admin.parking-floors*') ? 'side-menu--active' : '' }}">
+                        <div class="side-menu__icon">
+                            <i data-lucide="grid-3x3"></i>
+                        </div>
+                        <div class="side-menu__title">
+                            Floors
+                            <div class="side-menu__sub-icon">
+                                <i data-lucide="chevron-down"></i>
+                            </div>
+                        </div>
+                    </a>
+                    <ul class="">
+                        <li>
+                            <a href="{{ route('admin.parking-floors.index') }}" class="side-menu {{ request()->routeIs('admin.parking-floors.index') ? 'side-menu--active' : '' }}">
+                                <div class="side-menu__icon">
+                                    <i data-lucide="list"></i>
+                                </div>
+                                <div class="side-menu__title">All Floors</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('admin.parking-floors.create') }}" class="side-menu {{ request()->routeIs('admin.parking-floors.create') ? 'side-menu--active' : '' }}">
+                                <div class="side-menu__icon">
+                                    <i data-lucide="plus"></i>
+                                </div>
+                                <div class="side-menu__title">Add Floor</div>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- Vehicle Types -->
+                <li>
+                    <a href="{{ route('admin.vehicle-types.index') }}" class="side-menu {{ request()->routeIs('admin.vehicle-types*') ? 'side-menu--active' : '' }}">
+                        <div class="side-menu__icon">
+                            <i data-lucide="type"></i>
+                        </div>
+                        <div class="side-menu__title">
+                            Vehicle Types
+                            <div class="side-menu__sub-icon">
+                                <i data-lucide="chevron-down"></i>
+                            </div>
+                        </div>
+                    </a>
+                    <ul class="">
+                        <li>
+                            <a href="{{ route('admin.vehicle-types.index') }}" class="side-menu {{ request()->routeIs('admin.vehicle-types.index') ? 'side-menu--active' : '' }}">
+                                <div class="side-menu__icon">
+                                    <i data-lucide="list"></i>
+                                </div>
+                                <div class="side-menu__title">All Types</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('admin.vehicle-types.create') }}" class="side-menu {{ request()->routeIs('admin.vehicle-types.create') ? 'side-menu--active' : '' }}">
+                                <div class="side-menu__icon">
+                                    <i data-lucide="plus"></i>
+                                </div>
+                                <div class="side-menu__title">Add Type</div>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- Parking Rates -->
+                <li>
+                    <a href="{{ route('admin.parking-rates.index') }}" class="side-menu {{ request()->routeIs('admin.parking-rates*') ? 'side-menu--active' : '' }}">
+                        <div class="side-menu__icon">
+                            <i data-lucide="dollar-sign"></i>
+                        </div>
+                        <div class="side-menu__title">
+                            Rates & Pricing
+                            <div class="side-menu__sub-icon">
+                                <i data-lucide="chevron-down"></i>
+                            </div>
+                        </div>
+                    </a>
+                    <ul class="">
+                        <li>
+                            <a href="{{ route('admin.parking-rates.index') }}" class="side-menu {{ request()->routeIs('admin.parking-rates.index') ? 'side-menu--active' : '' }}">
+                                <div class="side-menu__icon">
+                                    <i data-lucide="list"></i>
+                                </div>
+                                <div class="side-menu__title">All Rates</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('admin.parking-rates.create') }}" class="side-menu {{ request()->routeIs('admin.parking-rates.create') ? 'side-menu--active' : '' }}">
+                                <div class="side-menu__icon">
+                                    <i data-lucide="plus"></i>
+                                </div>
+                                <div class="side-menu__title">Add Rate</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('admin.parking-rates.import-form') }}" class="side-menu {{ request()->routeIs('admin.parking-rates.import-form') ? 'side-menu--active' : '' }}">
+                                <div class="side-menu__icon">
+                                    <i data-lucide="upload"></i>
+                                </div>
+                                <div class="side-menu__title">Import CSV</div>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+
         <!-- Bookings -->
         <li>
             <a href="{{ route('admin.bookings.index') }}" class="side-menu {{ request()->routeIs('admin.bookings*') ? 'side-menu--active' : '' }}">

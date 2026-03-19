@@ -30,6 +30,7 @@ class DatabaseSeeder extends Seeder
         // Module-specific seeders (can be run independently)
         $this->command->info('🏢 Seeding business modules...');
         $this->call([
+            Phase1ParkingSeeder::class,    // Create Phase 1 parking zones, floors, vehicle types and rates
             ParkingLocationSeeder::class,  // Create parking locations and slots
             UserSeeder::class,             // Create test users
             VehicleSeeder::class,          // Create test vehicles

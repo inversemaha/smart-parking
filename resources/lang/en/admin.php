@@ -371,5 +371,60 @@ return [
         'create_role' => 'Create Role',
         'edit_role' => 'Edit Role',
         'role_permissions' => 'Role Permissions'
-    ]
-];
+    ],
+
+    // Phase 1: Parking Management (Zones, Floors, Vehicles, Rates)
+    'parking_zones' => [
+        'title' => 'Parking Zones',
+        'singular' => 'Zone',
+        'create' => 'Create Zone',
+        'edit' => 'Edit Zone',
+        'delete' => 'Delete Zone',
+        'restore' => 'Restore Zone',
+        'zone_created_successfully' => 'Zone created successfully',
+        'zone_updated_successfully' => 'Zone updated successfully',
+        'zone_deleted_successfully' => 'Zone deleted successfully',
+        'zone_restored_successfully' => 'Zone restored successfully'
+    ],
+
+    'parking_floors' => [
+        'title' => 'Parking Floors',
+        'singular' => 'Floor',
+        'create' => 'Create Floor',
+        'edit' => 'Edit Floor',
+        'delete' => 'Delete Floor',
+        'restore' => 'Restore Floor',
+        'floor_created_successfully' => 'Floor created successfully',
+        'floor_updated_successfully' => 'Floor updated successfully',
+        'floor_deleted_successfully' => 'Floor deleted successfully',
+        'floor_restored_successfully' => 'Floor restored successfully',
+        'floor_already_exists_in_zone' => 'A floor with this number already exists in this zone'
+    ],
+
+    'vehicle_types' => [
+        'title' => 'Vehicle Types',
+        'singular' => 'Vehicle Type',
+        'create' => 'Create Vehicle Type',
+        'edit' => 'Edit Vehicle Type',
+        'delete' => 'Delete Vehicle Type',
+        'restore' => 'Restore Vehicle Type',
+        'vehicle_type_created_successfully' => 'Vehicle type created successfully',
+        'vehicle_type_updated_successfully' => 'Vehicle type updated successfully',
+        'vehicle_type_deleted_successfully' => 'Vehicle type deleted successfully',
+        'vehicle_type_restored_successfully' => 'Vehicle type restored successfully',
+        'cannot_delete_vehicle_type_has_rates' => 'Cannot delete vehicle type that has associated rates'
+    ],
+
+    'parking_rates' => [
+        'title' => 'Parking Rates & Pricing',
+        'singular' => 'Parking Rate',
+        'create' => 'Create Rate',
+        'edit' => 'Edit Rate',
+        'delete' => 'Delete Rate',
+        'restore' => 'Restore Rate',
+        'rate_created_successfully' => 'Parking rate created successfully',
+        'rate_updated_successfully' => 'Parking rate updated successfully',
+        'rate_deleted_successfully' => 'Parking rate deleted successfully',
+        'rate_restored_successfully' => 'Parking rate restored successfully',
+        'rate_already_exists_for_zone_vehicle' => 'A rate already exists for this zone and vehicle type combination',
+        'rates_imported_successfully' => ':count parking rates imported successfully'

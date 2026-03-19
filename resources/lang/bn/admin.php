@@ -377,5 +377,63 @@ return [
         'create_role' => 'ভূমিকা তৈরি',
         'edit_role' => 'ভূমিকা সম্পাদনা',
         'role_permissions' => 'ভূমিকার অনুমতি'
+    ],
+
+    // Phase 1: Parking Management (Zones, Floors, Vehicles, Rates)
+    'parking_zones' => [
+        'title' => 'পার্কিং জোন',
+        'singular' => 'জোন',
+        'create' => 'জোন তৈরি করুন',
+        'edit' => 'জোন সম্পাদনা করুন',
+        'delete' => 'জোন মুছে ফেলুন',
+        'restore' => 'জোন পুনরুদ্ধার করুন',
+        'zone_created_successfully' => 'জোন সফলভাবে তৈরি হয়েছে',
+        'zone_updated_successfully' => 'জোন সফলভাবে আপডেট হয়েছে',
+        'zone_deleted_successfully' => 'জোন সফলভাবে মুছে ফেলা হয়েছে',
+        'zone_restored_successfully' => 'জোন সফলভাবে পুনরুদ্ধার হয়েছে'
+    ],
+
+    'parking_floors' => [
+        'title' => 'পার্কিং ফ্লোর',
+        'singular' => 'ফ্লোর',
+        'create' => 'ফ্লোর তৈরি করুন',
+        'edit' => 'ফ্লোর সম্পাদনা করুন',
+        'delete' => 'ফ্লোর মুছে ফেলুন',
+        'restore' => 'ফ্লোর পুনরুদ্ধার করুন',
+        'floor_created_successfully' => 'ফ্লোর সফলভাবে তৈরি হয়েছে',
+        'floor_updated_successfully' => 'ফ্লোর সফলভাবে আপডেট হয়েছে',
+        'floor_deleted_successfully' => 'ফ্লোর সফলভাবে মুছে ফেলা হয়েছে',
+        'floor_restored_successfully' => 'ফ্লোর সফলভাবে পুনরুদ্ধার হয়েছে',
+        'floor_already_exists_in_zone' => 'এই জোনে ইতিমধ্যে এই ফ্লোর নম্বর বিদ্যমান'
+    ],
+
+    'vehicle_types' => [
+        'title' => 'যানবাহন প্রকার',
+        'singular' => 'যানবাহন প্রকার',
+        'create' => 'যানবাহন প্রকার তৈরি করুন',
+        'edit' => 'যানবাহন প্রকার সম্পাদনা করুন',
+        'delete' => 'যানবাহন প্রকার মুছে ফেলুন',
+        'restore' => 'যানবাহন প্রকার পুনরুদ্ধার করুন',
+        'vehicle_type_created_successfully' => 'যানবাহন প্রকার সফলভাবে তৈরি হয়েছে',
+        'vehicle_type_updated_successfully' => 'যানবাহন প্রকার সফলভাবে আপডেট হয়েছে',
+        'vehicle_type_deleted_successfully' => 'যানবাহন প্রকার সফলভাবে মুছে ফেলা হয়েছে',
+        'vehicle_type_restored_successfully' => 'যানবাহন প্রকার সফলভাবে পুনরুদ্ধার হয়েছে',
+        'cannot_delete_vehicle_type_has_rates' => 'সংযুক্ত রেট সহ যানবাহন প্রকার মুছে ফেলা যায় না'
+    ],
+
+    'parking_rates' => [
+        'title' => 'পার্কিং রেট এবং মূল্য নির্ধারণ',
+        'singular' => 'পার্কিং রেট',
+        'create' => 'রেট তৈরি করুন',
+        'edit' => 'রেট সম্পাদনা করুন',
+        'delete' => 'রেট মুছে ফেলুন',
+        'restore' => 'রেট পুনরুদ্ধার করুন',
+        'rate_created_successfully' => 'পার্কিং রেট সফলভাবে তৈরি হয়েছে',
+        'rate_updated_successfully' => 'পার্কিং রেট সফলভাবে আপডেট হয়েছে',
+        'rate_deleted_successfully' => 'পার্কিং রেট সফলভাবে মুছে ফেলা হয়েছে',
+        'rate_restored_successfully' => 'পার্কিং রেট সফলভাবে পুনরুদ্ধার হয়েছে',
+        'rate_already_exists_for_zone_vehicle' => 'এই জোন এবং যানবাহন প্রকারের জন্য ইতিমধ্যে একটি রেট বিদ্যমান',
+        'rates_imported_successfully' => ':count পার্কিং রেট সফলভাবে আমদানি করা হয়েছে'
     ]
 ];
+
