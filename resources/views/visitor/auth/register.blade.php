@@ -17,11 +17,11 @@
                 </button>
                 <div class="dropdown-menu w-40">
                     <div class="dropdown-content">
-                        <form method="POST" action="{{ route('visitor.language.switch', ['locale' => 'en']) }}">
+                        <form method="POST" action="{{ route('language.switch', ['locale' => 'en']) }}">
                             @csrf
                             <button type="submit" class="dropdown-item w-full text-left">English</button>
                         </form>
-                        <form method="POST" action="{{ route('visitor.language.switch', ['locale' => 'bn']) }}">
+                        <form method="POST" action="{{ route('language.switch', ['locale' => 'bn']) }}">
                             @csrf
                             <button type="submit" class="dropdown-item w-full text-left">বাংলা</button>
                         </form>

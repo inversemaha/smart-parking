@@ -8,6 +8,11 @@ use App\Domains\User\Models\Role;
 use App\Domains\User\Models\Permission;
 use Illuminate\Support\Facades\Hash;
 
+/**
+ * @deprecated Use RolesAndPermissionsSeeder instead
+ * This seeder has been consolidated into RolesAndPermissionsSeeder for better maintainability.
+ * See database/seeders/RolesAndPermissionsSeeder.php
+ */
 class DefaultRolesAndPermissionsSeeder extends Seeder
 {
     /**

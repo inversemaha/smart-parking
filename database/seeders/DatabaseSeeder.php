@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
         // Core system seeders (always run first)
         $this->command->info('📋 Seeding core system data...');
         $this->call([
-            DefaultRolesAndPermissionsSeeder::class,
+            UnifiedPermissionsSeeder::class,
             SystemSettingsSeeder::class,
         ]);
         $this->command->info('✅ Core system seeding completed.');

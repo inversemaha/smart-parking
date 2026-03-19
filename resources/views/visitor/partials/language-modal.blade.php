@@ -14,7 +14,7 @@
                         {{ __('general.language_description') }}
                     </div>
 
-                    <form method="POST" action="{{ route('visitor.language.switch', 'en') }}" class="inline-block w-full">
+                    <form method="POST" action="{{ route('language.switch', 'en') }}" class="inline-block w-full">
                         @csrf
                         <button type="submit" class="flex items-center w-full p-4 border-2 rounded-lg transition-all duration-200 {{ app()->getLocale() === 'en' ? 'border-primary bg-primary/10' : 'border-gray-200 hover:border-gray-300' }}">
                             <div class="flex items-center space-x-3">
@@ -34,7 +34,7 @@
                         </button>
                     </form>
 
-                    <form method="POST" action="{{ route('visitor.language.switch', 'bn') }}" class="inline-block w-full">
+                    <form method="POST" action="{{ route('language.switch', 'bn') }}" class="inline-block w-full">
                         @csrf
                         <button type="submit" class="flex items-center w-full p-4 border-2 rounded-lg transition-all duration-200 {{ app()->getLocale() === 'bn' ? 'border-primary bg-primary/10' : 'border-gray-200 hover:border-gray-300' }}">
                             <div class="flex items-center space-x-3">

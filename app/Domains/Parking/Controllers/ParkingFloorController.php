@@ -21,7 +21,7 @@ class ParkingFloorController extends Controller
             ->orderBy('floor_number')
             ->paginate(15);
 
-        return view('admin.parking.floors.index', compact('floors'));
+        return view('admin.parking-floors.index', compact('floors'));
     }
 
     /**
@@ -31,7 +31,7 @@ class ParkingFloorController extends Controller
     {
         $zones = ParkingZone::active()->orderBy('name')->get();
         
-        return view('admin.parking.floors.create', compact('zones'));
+        return view('admin.parking-floors.create', compact('zones'));
     }
 
     /**
@@ -75,7 +75,7 @@ class ParkingFloorController extends Controller
     {
         $floor->load('zone', 'slots');
         
-        return view('admin.parking.floors.show', compact('floor'));
+        return view('admin.parking-floors.show', compact('floor'));
     }
 
     /**
@@ -84,8 +84,8 @@ class ParkingFloorController extends Controller
     public function edit(ParkingFloor $floor): View
     {
         $zones = ParkingZone::active()->orderBy('name')->get();
-        
-        return view('admin.parking.floors.edit', compact('floor', 'zones'));
+
+        return view('admin.parking-floors.edit', compact('floor', 'zones'));
     }
 
     /**

@@ -44,6 +44,14 @@ Route::get('/', [VisitorController::class, 'welcome'])->name('welcome');
 Route::get('/home', [VisitorController::class, 'redirectToDashboard'])->middleware('auth')->name('home');
 
 // Language switching
+Route::get('/lang/{locale}', function ($locale) {
+    if (in_array($locale, ['en', 'bn'])) {
+        session(['applocale' => $locale]);
+        app()->setLocale($locale);
+    }
+    return back();
+})->name('lang.switch');
+
 Route::post('/language/{locale}', [VisitorController::class, 'switchLanguage'])->name('language.switch');
 
 // Legacy User dashboard routes (for backward compatibility)

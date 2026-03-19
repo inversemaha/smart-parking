@@ -3,20 +3,40 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Domains\User\Models\Permission;
+use App\Domains\User\Models\User;
 use App\Domains\User\Models\Role;
+use App\Domains\User\Models\Permission;
+use Illuminate\Support\Facades\Hash;
 
 /**
- * @deprecated Use RolesAndPermissionsSeeder instead
- * This seeder has been consolidated into RolesAndPermissionsSeeder for better maintainability.
- * See database/seeders/RolesAndPermissionsSeeder.php
+ * @deprecated Use UnifiedPermissionsSeeder instead
+ * 
+ * This seeder has been consolidated into UnifiedPermissionsSeeder.php
+ * UnifiedPermissionsSeeder provides:
+ * - 117 comprehensive permissions covering ALL modules
+ * - 7 roles with appropriate permission assignments
+ * - Admin role with complete access to all modules
+ * - Default users for testing
  */
-class AdvancedPermissionsSeeder extends Seeder
+class RolesAndPermissionsSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
+    {
+        $this->createAllPermissions();
+        $this->createAllRoles();
+        $this->assignPermissionsToRoles();
+        $this->createDefaultUsers();
+
+        $this->command->info('✅ All roles, permissions, and users created successfully!');
+    }
+
+    /**
+     * Create all system permissions
+     */
+    private function createAllPermissions(): void
     {
         $permissions = [
             // Dashboard Permissions
@@ -57,6 +77,7 @@ class AdvancedPermissionsSeeder extends Seeder
             ['name' => 'operate.gates', 'module' => 'gates', 'description' => 'Operate parking gates'],
             ['name' => 'override.gates', 'module' => 'gates', 'description' => 'Override gate operations'],
             ['name' => 'view.gate.logs', 'module' => 'gates', 'description' => 'View gate operation logs'],
+            ['name' => 'operate_gate', 'module' => 'gate', 'description' => 'Gate operator dashboard access'],
 
             // Payment Management Permissions
             ['name' => 'manage_payments', 'module' => 'payments', 'description' => 'Full payment management access'],
@@ -86,7 +107,6 @@ class AdvancedPermissionsSeeder extends Seeder
             ['name' => 'manage_own_vehicles', 'module' => 'profile', 'description' => 'Manage own vehicles'],
         ];
 
-        // Create permissions
         foreach ($permissions as $permission) {
             Permission::firstOrCreate(
                 ['name' => $permission['name']],
@@ -94,92 +114,137 @@ class AdvancedPermissionsSeeder extends Seeder
             );
         }
 
-        // Create roles with specific permissions
-        $this->createRoles();
-
-        $this->command->info('Advanced permissions and roles system seeded successfully!');
+        $this->command->info('📋 Created ' . count($permissions) . ' permissions');
     }
 
     /**
-     * Create roles with appropriate permissions.
+     * Create all system roles
      */
-    private function createRoles(): void
+    private function createAllRoles(): void
     {
-        // Super Admin Role (has all permissions)
-        $superAdmin = Role::firstOrCreate(
-            ['name' => 'super-admin'],
-            [
-                'guard_name' => 'web',
-                'description' => 'Super Administrator with full system access',
-                'is_active' => true
-            ]
-        );
-        $superAdmin->permissions()->sync(Permission::all()->pluck('id'));
+        $roles = [
+            ['name' => 'super-admin', 'description' => 'Super Administrator with full system access'],
+            ['name' => 'admin', 'description' => 'Administrator with management access'],
+            ['name' => 'manager', 'description' => 'Manager with limited administrative access'],
+            ['name' => 'gate-operator', 'description' => 'Gate operator with gate control access'],
+            ['name' => 'operator', 'description' => 'Gate operator with limited access'],
+            ['name' => 'user', 'description' => 'Standard user with basic access'],
+        ];
 
-        // Admin Role (most permissions except super admin functions)
-        $admin = Role::firstOrCreate(
-            ['name' => 'admin'],
-            [
-                'guard_name' => 'web',
-                'description' => 'Administrator with management access',
-                'is_active' => true
-            ]
-        );
-        $adminPermissions = Permission::whereIn('name', [
-            'admin.dashboard.view', 'manage_users', 'view_users', 'create_users', 'edit_users',
-            'manage_parking', 'view_parking_areas', 'create_parking_areas', 'edit_parking_areas',
-            'manage_bookings', 'view_all_bookings', 'cancel_bookings',
-            'manage_vehicles', 'verify_vehicles', 'view_all_vehicles',
-            'manage_payments', 'view_all_payments', 'refund_payments',
-            'manage_invoices', 'view_all_invoices', 'download_invoices', 'mark_invoice_paid',
-            'view_reports', 'export_reports', 'view_financial_reports',
-            'manage_settings', 'view_logs', 'view_user_sessions', 'view_access_logs'
-        ])->pluck('id');
-        $admin->permissions()->sync($adminPermissions);
+        foreach ($roles as $role) {
+            Role::firstOrCreate(
+                ['name' => $role['name']],
+                array_merge($role, ['guard_name' => 'web', 'is_active' => true])
+            );
+        }
 
-        // Manager Role (limited admin access)
-        $manager = Role::firstOrCreate(
-            ['name' => 'manager'],
-            [
-                'guard_name' => 'web',
-                'description' => 'Manager with limited administrative access',
-                'is_active' => true
-            ]
-        );
-        $managerPermissions = Permission::whereIn('name', [
-            'admin.dashboard.view', 'view_users', 'manage_parking', 'view_parking_areas',
-            'view_all_bookings', 'manage_vehicles', 'view_all_vehicles',
-            'view_reports', 'view_logs'
-        ])->pluck('id');
-        $manager->permissions()->sync($managerPermissions);
+        $this->command->info('🎭 Created ' . count($roles) . ' roles');
+    }
 
-        // Gate Operator Role
-        $gateOperator = Role::firstOrCreate(
-            ['name' => 'gate-operator'],
-            [
-                'guard_name' => 'web',
-                'description' => 'Gate operator with gate control access',
-                'is_active' => true
-            ]
-        );
-        $gatePermissions = Permission::whereIn('name', [
-            'user.dashboard.view', 'operate.gates', 'view.gate.logs',
-            'view_all_bookings', 'view_all_vehicles'
-        ])->pluck('id');
-        $gateOperator->permissions()->sync($gatePermissions);
+    /**
+     * Assign permissions to roles
+     */
+    private function assignPermissionsToRoles(): void
+    {
+        $allPermissions = Permission::all();
 
-        // User Role (standard user permissions)
-        $user = Role::firstOrCreate(
-            ['name' => 'user'],
+        // Super Admin - All permissions
+        $superAdmin = Role::where('name', 'super-admin')->first();
+        if ($superAdmin) {
+            $superAdmin->permissions()->sync($allPermissions->pluck('id'));
+        }
+
+        // Admin - All except permission/role management
+        $admin = Role::where('name', 'admin')->first();
+        if ($admin) {
+            $adminPermissions = Permission::whereNotIn('name', [
+                'manage_permissions', 'manage_roles'
+            ])->pluck('id');
+            $admin->permissions()->sync($adminPermissions);
+        }
+
+        // Manager - Limited admin access
+        $manager = Role::where('name', 'manager')->first();
+        if ($manager) {
+            $managerPermissions = Permission::whereIn('name', [
+                'admin.dashboard.view', 'view_users', 'manage_parking', 'view_parking_areas',
+                'view_all_bookings', 'manage_vehicles', 'view_all_vehicles',
+                'view_reports', 'view_logs'
+            ])->pluck('id');
+            $manager->permissions()->sync($managerPermissions);
+        }
+
+        // Gate Operator - Gate control and basic permissions
+        $gateOperator = Role::where('name', 'gate-operator')->first();
+        if ($gateOperator) {
+            $gatePermissions = Permission::whereIn('name', [
+                'user.dashboard.view', 'operate.gates', 'view.gate.logs',
+                'view_all_bookings', 'view_all_vehicles'
+            ])->pluck('id');
+            $gateOperator->permissions()->sync($gatePermissions);
+        }
+
+        // Operator - Gate operations only
+        $operator = Role::where('name', 'operator')->first();
+        if ($operator) {
+            $operatorPermissions = Permission::whereIn('name', [
+                'operate_gate', 'gate.entry', 'gate.exit', 'gate.scan',
+                'vehicles.view', 'bookings.view', 'parking.view'
+            ])->pluck('id');
+            $operator->permissions()->sync($operatorPermissions);
+        }
+
+        // User - Basic permissions only
+        $user = Role::where('name', 'user')->first();
+        if ($user) {
+            $userPermissions = Permission::whereIn('name', [
+                'user.dashboard.view', 'edit_own_profile', 'view_own_bookings', 'manage_own_vehicles'
+            ])->pluck('id');
+            $user->permissions()->sync($userPermissions);
+        }
+
+        $this->command->info('✔️  Assigned permissions to all roles');
+    }
+
+    /**
+     * Create default system users
+     */
+    private function createDefaultUsers(): void
+    {
+        // Create super admin user
+        $superAdmin = User::firstOrCreate(
+            ['email' => 'admin@parking.com'],
             [
-                'guard_name' => 'web',
-                'description' => 'Standard user with basic access',
+                'name' => 'Super Administrator',
+                'phone' => '01700000000',
+                'password' => Hash::make('password'),
+                'email_verified_at' => now(),
                 'is_active' => true
             ]
         );
-        $userPermissions = Permission::whereIn('name', [
-            'user.dashboard.view', 'edit_own_profile', 'view_own_bookings', 'manage_own_vehicles'
-        ])->pluck('id');
-        $user->permissions()->sync($userPermissions);
+
+        if (!$superAdmin->hasRole('super-admin')) {
+            $superAdmin->assignRole('super-admin');
+        }
+
+        // Create test user
+        $testUser = User::firstOrCreate(
+            ['email' => 'user@parking.com'],
+            [
+                'name' => 'Test User',
+                'phone' => '01700000001',
+                'password' => Hash::make('password'),
+                'email_verified_at' => now(),
+                'is_active' => true
+            ]
+        );
+
+        if (!$testUser->hasRole('user')) {
+            $testUser->assignRole('user');
+        }
+
+        $this->command->info('👥 Created default users');
+        $this->command->line('   Admin: admin@parking.com / password');
+        $this->command->line('   User: user@parking.com / password');
     }
 }

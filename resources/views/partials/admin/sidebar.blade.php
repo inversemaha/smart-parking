@@ -92,7 +92,7 @@
 
         <!-- Phase 1: Parking Management (Zones, Floors, Vehicles, Rates) -->
         <li>
-            <a href="#" class="side-menu {{ request()->routeIs('admin.parking-zones*', 'admin.parking-floors*', 'admin.vehicle-types*', 'admin.parking-rates*') ? 'side-menu--active' : '' }}">
+            <a href="#" class="side-menu {{ request()->routeIs('admin.parking-zones*') || request()->routeIs('admin.parking-floors*') || request()->routeIs('admin.vehicle-types*') || request()->routeIs('admin.parking-rates*') ? 'side-menu--active' : '' }}">
                 <div class="side-menu__icon">
                     <i data-lucide="building-2"></i>
                 </div>
@@ -251,7 +251,7 @@
                             <i data-lucide="lock-open"></i>
                         </div>
                         <div class="side-menu__title">
-                            {{ __('admin.parking_gates') }}
+                            {{ __('admin.parking_gates.title') }}
                             <div class="side-menu__sub-icon">
                                 <i data-lucide="chevron-down"></i>
                             </div>
@@ -284,7 +284,7 @@
                             <i data-lucide="qr-code"></i>
                         </div>
                         <div class="side-menu__title">
-                            {{ __('admin.qr_codes') }}
+                            {{ __('admin.qr_codes.title') }}
                             <div class="side-menu__sub-icon">
                                 <i data-lucide="chevron-down"></i>
                             </div>
@@ -325,7 +325,7 @@
                             <i data-lucide="clock"></i>
                         </div>
                         <div class="side-menu__title">
-                            {{ __('admin.parking_sessions') }}
+                            {{ __('admin.parking_sessions.title') }}
                             <div class="side-menu__sub-icon">
                                 <i data-lucide="chevron-down"></i>
                             </div>

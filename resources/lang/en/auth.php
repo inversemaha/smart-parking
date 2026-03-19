@@ -11,6 +11,10 @@ return [
     'forgot_password' => 'Forgot Password?',
     'reset_password' => 'Reset Password',
     'send_reset_link' => 'Send Password Reset Link',
+    'enter_credentials' => 'Enter your email and password to login',
+    'no_account' => "Don't have an account?",
+    'login_welcome' => 'A few more clicks to access your account',
+    'login_description' => 'Manage your smart parking system efficiently',
 
     // Messages
     'failed' => 'These credentials do not match our records.',
