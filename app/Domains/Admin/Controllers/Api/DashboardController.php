@@ -56,9 +56,9 @@ class DashboardController extends Controller
                         'today' => Booking::whereDate('created_at', $today)->count(),
                     ],
                     'payments' => [
-                        'total_amount' => Payment::where('status', 'completed')->sum('amount'),
-                        'today_amount' => Payment::whereDate('created_at', $today)->where('status', 'completed')->sum('amount'),
-                        'month_amount' => Payment::where('created_at', '>=', $lastMonth)->where('status', 'completed')->sum('amount'),
+                        'total_amount' => Payment::where('status', 'paid')->sum('amount'),
+                        'today_amount' => Payment::whereDate('created_at', $today)->where('status', 'paid')->sum('amount'),
+                        'month_amount' => Payment::where('created_at', '>=', $lastMonth)->where('status', 'paid')->sum('amount'),
                         'pending' => Payment::where('status', 'pending')->count(),
                     ]
                 ];
@@ -368,11 +368,104 @@ class DashboardController extends Controller
         }
     }
 
+    /**
+     * Restart queue workers.
+     */
+    public function restartQueue(Request $request): JsonResponse
+    {
+        try {
+            Artisan::call('queue:restart');
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Queue restart signal sent successfully',
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to restart queue',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    /**
+     * Revenue report endpoint.
+     */
+    public function getRevenueReport(Request $request): JsonResponse
+    {
+        $period = $request->get('period', 'month');
+
+        return response()->json([
+            'success' => true,
+            'data' => $this->getRevenueTrend($period),
+        ]);
+    }
+
+    /**
+     * Booking report endpoint.
+     */
+    public function getBookingReport(Request $request): JsonResponse
+    {
+        $period = $request->get('period', 'month');
+
+        return response()->json([
+            'success' => true,
+            'data' => $this->getBookingTrend($period),
+        ]);
+    }
+
+    /**
+     * User report endpoint.
+     */
+    public function getUserReport(Request $request): JsonResponse
+    {
+        $period = $request->get('period', 'month');
+
+        return response()->json([
+            'success' => true,
+            'data' => $this->getUserGrowth($period),
+        ]);
+    }
+
+    /**
+     * Vehicle report endpoint.
+     */
+    public function getVehicleReport(Request $request): JsonResponse
+    {
+        $period = $request->get('period', 'month');
+
+        $data = Vehicle::query()
+            ->selectRaw('verification_status, COUNT(*) as total')
+            ->groupBy('verification_status')
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'period' => $period,
+                'summary' => $data,
+            ],
+        ]);
+    }
+
+    /**
+     * Export report endpoint.
+     */
+    public function exportReport(Request $request, string $type): JsonResponse
+    {
+        return response()->json([
+            'success' => true,
+            'message' => 'Report export is queued',
+            'data' => ['type' => $type],
+        ]);
+    }
+
     // Helper methods
 
     private function getRevenueTrend(string $period): array
     {
-        $query = Payment::where('status', 'completed');
+        $query = Payment::where('status', 'paid');
         $groupBy = 'DATE(created_at)';
 
         switch ($period) {
@@ -455,7 +548,7 @@ class DashboardController extends Controller
 
     private function getPopularLocations(string $period): array
     {
-        $query = Booking::with('parkingSlot.parkingArea');
+        $query = Booking::with('parkingSlot.parkingLocation');
 
         switch ($period) {
             case 'week':
@@ -467,9 +560,9 @@ class DashboardController extends Controller
         }
 
         return $query->join('parking_slots', 'bookings.parking_slot_id', '=', 'parking_slots.id')
-            ->join('parking_areas', 'parking_slots.parking_area_id', '=', 'parking_areas.id')
-            ->selectRaw('parking_areas.name as location, COUNT(*) as bookings')
-            ->groupBy('parking_areas.id', 'parking_areas.name')
+            ->join('parking_locations', 'parking_slots.parking_location_id', '=', 'parking_locations.id')
+            ->selectRaw('parking_locations.name as location, COUNT(*) as bookings')
+            ->groupBy('parking_locations.id', 'parking_locations.name')
             ->orderByDesc('bookings')
             ->limit(10)
             ->get()

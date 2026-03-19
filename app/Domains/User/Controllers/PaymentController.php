@@ -3,7 +3,9 @@
 namespace App\Domains\User\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Domains\Booking\Models\Booking;
 use App\Domains\Payment\Models\Payment;
+use App\Domains\Payment\Repositories\PaymentRepository;
 use App\Domains\Payment\Services\PaymentService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -39,6 +41,50 @@ class PaymentController extends Controller
     }
 
     /**
+     * Show payment creation page for a booking.
+     */
+    public function create(Booking $booking)
+    {
+        if ($booking->user_id !== auth()->id()) {
+            abort(403);
+        }
+
+        return view('user.payments.process', [
+            'payment' => null,
+            'booking' => $booking,
+        ]);
+    }
+
+    /**
+     * Create payment for a booking.
+     */
+    public function store(Request $request, Booking $booking)
+    {
+        if ($booking->user_id !== auth()->id()) {
+            abort(403);
+        }
+
+        $validated = $request->validate([
+            'amount' => ['nullable', 'numeric', 'min:0'],
+            'gateway' => ['nullable', 'string', 'max:50'],
+            'currency' => ['nullable', 'string', 'max:3'],
+        ]);
+
+        $payment = $this->paymentService->initiatePayment($booking, [
+            'amount' => $validated['amount'] ?? $booking->total_amount,
+            'gateway' => $validated['gateway'] ?? 'sslcommerz',
+            'currency' => $validated['currency'] ?? 'BDT',
+        ]);
+
+        if (!$payment) {
+            return redirect()->back()->with('error', __('Unable to initiate payment at this time.'));
+        }
+
+        return redirect()->route('payments.show', $payment)
+            ->with('success', __('Payment initiated successfully.'));
+    }
+
+    /**
      * Display the specified payment.
      */
     public function show(Payment $payment)
@@ -64,13 +110,8 @@ class PaymentController extends Controller
         Gate::authorize('update', $payment);
 
         if ($payment->status !== 'pending') {
-            return redirect()->route('user.payments.show', $payment)
+            return redirect()->route('payments.show', $payment)
                            ->with('error', __('This payment cannot be processed.'));
-        }
-
-        // If payment URL exists, redirect to gateway
-        if ($payment->payment_url) {
-            return redirect($payment->payment_url);
         }
 
         // Otherwise, show payment form
@@ -102,7 +143,7 @@ class PaymentController extends Controller
                 return response()->json([
                     'success' => true,
                     'message' => __('Payment retry initiated successfully.'),
-                    'redirect' => route('user.payments.process', $newPayment),
+                    'redirect' => route('payments.show', $newPayment),
                 ]);
             } else {
                 return response()->json([
@@ -186,9 +227,9 @@ class PaymentController extends Controller
     {
         Gate::authorize('view', $payment);
 
-        if ($payment->status !== 'completed') {
+        if ($payment->status !== 'paid') {
             return redirect()->back()
-                           ->with('error', __('Receipt is only available for completed payments.'));
+                           ->with('error', __('Receipt is only available for paid payments.'));
         }
 
         $payment->load([
@@ -207,9 +248,9 @@ class PaymentController extends Controller
     {
         Gate::authorize('view', $payment);
 
-        if ($payment->status !== 'completed') {
+        if ($payment->status !== 'paid') {
             return redirect()->back()
-                           ->with('error', __('Receipt is only available for completed payments.'));
+                           ->with('error', __('Receipt is only available for paid payments.'));
         }
 
         // This would integrate with a PDF library like TCPDF or DomPDF

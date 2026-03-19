@@ -266,4 +266,157 @@ class AuthController extends Controller
             'message' => 'Verification email sent'
         ]);
     }
+
+    /**
+     * Get authenticated user profile.
+     */
+    public function profile(Request $request): JsonResponse
+    {
+        return $this->user($request);
+    }
+
+    /**
+     * Update authenticated user profile.
+     */
+    public function updateProfile(Request $request): JsonResponse
+    {
+        $user = $request->user();
+
+        $validated = $request->validate([
+            'name' => ['sometimes', 'string', 'max:255'],
+            'phone' => ['sometimes', 'nullable', 'string', 'max:30'],
+            'locale' => ['sometimes', 'string', 'max:5'],
+        ]);
+
+        $user->update($validated);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Profile updated successfully',
+            'data' => $user->fresh()->makeHidden(['password']),
+        ]);
+    }
+
+    /**
+     * Update authenticated user password.
+     */
+    public function updatePassword(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'current_password' => ['required', 'string'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+        ]);
+
+        $user = $request->user();
+
+        if (!Hash::check($validated['current_password'], $user->password)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Current password is incorrect',
+            ], 422);
+        }
+
+        $user->update([
+            'password' => Hash::make($validated['password']),
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Password updated successfully',
+        ]);
+    }
+
+    /**
+     * Update profile avatar.
+     */
+    public function updateAvatar(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'avatar' => ['required', 'image', 'max:5120'],
+        ]);
+
+        $path = $validated['avatar']->store('avatars', 'public');
+
+        $request->user()->update([
+            'avatar_path' => $path,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Avatar updated successfully',
+            'data' => ['avatar_path' => $path],
+        ]);
+    }
+
+    /**
+     * Delete authenticated account.
+     */
+    public function deleteAccount(Request $request): JsonResponse
+    {
+        $user = $request->user();
+        $user->tokens()->delete();
+        $user->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Account deleted successfully',
+        ]);
+    }
+
+    /**
+     * List active personal access tokens.
+     */
+    public function getDevices(Request $request): JsonResponse
+    {
+        $tokens = $request->user()->tokens()->get(['id', 'name', 'last_used_at', 'created_at']);
+
+        return response()->json([
+            'success' => true,
+            'data' => $tokens,
+        ]);
+    }
+
+    /**
+     * Register a new API device token.
+     */
+    public function registerDevice(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:100'],
+        ]);
+
+        $token = $request->user()->createToken($validated['name'])->plainTextToken;
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Device registered successfully',
+            'data' => ['token' => $token],
+        ], 201);
+    }
+
+    /**
+     * Revoke a single device token.
+     */
+    public function revokeDevice(Request $request, string $device): JsonResponse
+    {
+        $deleted = $request->user()->tokens()->where('id', $device)->delete();
+
+        return response()->json([
+            'success' => (bool) $deleted,
+            'message' => $deleted ? 'Device revoked successfully' : 'Device token not found',
+        ], $deleted ? 200 : 404);
+    }
+
+    /**
+     * Revoke all device tokens.
+     */
+    public function revokeAllDevices(Request $request): JsonResponse
+    {
+        $request->user()->tokens()->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'All devices revoked successfully',
+        ]);
+    }
 }

@@ -165,6 +165,13 @@ class DomainServiceProvider extends ServiceProvider
     protected function loadDomainViews(): void
     {
         $domains = ['User', 'Vehicle', 'Parking', 'Booking', 'Payment', 'Admin'];
+
+        foreach ($domains as $domain) {
+            $viewPath = resource_path('views/' . strtolower($domain));
+
+            if (is_dir($viewPath)) {
+                $this->loadViewsFrom($viewPath, strtolower($domain));
+            }
         }
     }
 }

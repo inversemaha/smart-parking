@@ -4,8 +4,8 @@ namespace App\Domains\User\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Domains\Booking\Models\Booking;
+use App\Domains\Parking\Models\ParkingLocation;
 use App\Domains\Parking\Models\ParkingSlot;
-use App\Domains\Parking\Models\ParkingArea;
 use App\Domains\Vehicle\Models\Vehicle;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -20,7 +20,7 @@ class BookingController extends Controller
     public function index(Request $request): JsonResponse
     {
         $query = $request->user()->bookings()
-            ->with(['vehicle', 'parkingSlot.parkingArea', 'payment']);
+            ->with(['vehicle', 'parkingSlot.parkingLocation', 'payment']);
 
         // Filter by status
         if ($request->has('status')) {
@@ -51,7 +51,7 @@ class BookingController extends Controller
             'parking_slot_id' => 'required|exists:parking_slots,id',
             'start_time' => 'required|date|after:now',
             'end_time' => 'required|date|after:start_time',
-            'duration_type' => 'required|in:hourly,daily,monthly'
+            'duration_type' => 'sometimes|in:hourly,daily,monthly'
         ]);
 
         if ($validator->fails()) {
@@ -83,7 +83,7 @@ class BookingController extends Controller
             }
 
             // Check slot availability
-            $slot = ParkingSlot::with('parkingArea')->find($request->parking_slot_id);
+            $slot = ParkingSlot::with('parkingLocation')->find($request->parking_slot_id);
 
             if (!$slot || !$slot->is_active) {
                 return response()->json([
@@ -100,22 +100,30 @@ class BookingController extends Controller
             }
 
             // Calculate cost
-            $cost = $this->calculateBookingCost($slot, $request->start_time, $request->end_time, $request->duration_type);
+            $cost = $this->calculateBookingCost(
+                $slot,
+                $request->start_time,
+                $request->end_time,
+                $request->input('duration_type')
+            );
 
             // Create booking
             $booking = Booking::create([
                 'user_id' => $request->user()->id,
                 'vehicle_id' => $request->vehicle_id,
+                'parking_location_id' => $slot->parking_location_id,
                 'parking_slot_id' => $request->parking_slot_id,
                 'start_time' => $request->start_time,
                 'end_time' => $request->end_time,
-                'duration_type' => $request->duration_type,
+                'duration_hours' => max(1, Carbon::parse($request->start_time)->diffInHours(Carbon::parse($request->end_time))),
+                'hourly_rate' => $slot->parkingLocation?->hourly_rate ?? 0,
                 'total_amount' => $cost,
                 'status' => 'pending',
-                'booking_reference' => $this->generateBookingReference()
+                'booking_number' => $this->generateBookingReference(),
+                'payment_status' => 'pending',
             ]);
 
-            $booking->load(['vehicle', 'parkingSlot.parkingArea']);
+            $booking->load(['vehicle', 'parkingSlot.parkingLocation']);
 
             return response()->json([
                 'success' => true,
@@ -145,7 +153,7 @@ class BookingController extends Controller
             ], 403);
         }
 
-        $booking->load(['vehicle', 'parkingSlot.parkingArea', 'payment']);
+        $booking->load(['vehicle', 'parkingSlot.parkingLocation', 'payment']);
 
         return response()->json([
             'success' => true,
@@ -186,7 +194,7 @@ class BookingController extends Controller
             $booking->update(['status' => 'cancelled']);
 
             // Process refund if payment was made
-            if ($booking->payment && $booking->payment->status === 'completed') {
+            if ($booking->payment && $booking->payment->status === 'paid') {
                 // Implement refund logic here
             }
 
@@ -249,14 +257,12 @@ class BookingController extends Controller
             $additionalCost = $this->calculateBookingCost(
                 $booking->parkingSlot,
                 $booking->end_time,
-                $request->new_end_time,
-                $booking->duration_type
+                $request->new_end_time
             );
 
             $booking->update([
                 'end_time' => $request->new_end_time,
                 'total_amount' => $booking->total_amount + $additionalCost,
-                'extension_amount' => ($booking->extension_amount ?? 0) + $additionalCost
             ]);
 
             return response()->json([
@@ -282,7 +288,7 @@ class BookingController extends Controller
      */
     public function getAvailableLocations(Request $request): JsonResponse
     {
-        $locations = ParkingArea::with(['slots' => function ($query) {
+        $locations = ParkingLocation::with(['parkingSlots' => function ($query) {
                 $query->where('is_active', true);
             }])
             ->where('is_active', true)
@@ -291,12 +297,10 @@ class BookingController extends Controller
                 return [
                     'id' => $area->id,
                     'name' => $area->name,
-                    'location' => $area->location,
-                    'total_slots' => $area->slots->count(),
-                    'available_slots' => $area->slots->where('status', 'available')->count(),
+                    'location' => $area->address,
+                    'total_slots' => $area->parkingSlots->count(),
+                    'available_slots' => $area->parkingSlots->where('status', 'available')->count(),
                     'hourly_rate' => $area->hourly_rate,
-                    'daily_rate' => $area->daily_rate,
-                    'monthly_rate' => $area->monthly_rate
                 ];
             });
 
@@ -312,7 +316,7 @@ class BookingController extends Controller
     public function getAvailableSlots(Request $request): JsonResponse
     {
         $validator = Validator::make($request->all(), [
-            'parking_area_id' => 'sometimes|exists:parking_areas,id',
+            'parking_location_id' => 'sometimes|exists:parking_locations,id',
             'start_time' => 'sometimes|date',
             'end_time' => 'sometimes|date|after:start_time',
             'vehicle_type' => 'sometimes|in:car,motorcycle,bicycle'
@@ -326,15 +330,15 @@ class BookingController extends Controller
             ], 422);
         }
 
-        $query = ParkingSlot::with('parkingArea')
+        $query = ParkingSlot::with('parkingLocation')
             ->where('is_active', true);
 
-        if ($request->has('parking_area_id')) {
-            $query->where('parking_area_id', $request->parking_area_id);
+        if ($request->has('parking_location_id')) {
+            $query->where('parking_location_id', $request->parking_location_id);
         }
 
         if ($request->has('vehicle_type')) {
-            $query->whereJsonContains('supported_vehicle_types', $request->vehicle_type);
+            $query->whereJsonContains('vehicle_types', $request->vehicle_type);
         }
 
         $slots = $query->get();
@@ -357,7 +361,7 @@ class BookingController extends Controller
      */
     public function getParkingRates(Request $request): JsonResponse
     {
-        $areas = ParkingArea::select('id', 'name', 'hourly_rate', 'daily_rate', 'monthly_rate')
+        $areas = ParkingLocation::select('id', 'name', 'hourly_rate')
             ->where('is_active', true)
             ->get();
 
@@ -376,7 +380,7 @@ class BookingController extends Controller
             'parking_slot_id' => 'required|exists:parking_slots,id',
             'start_time' => 'required|date',
             'end_time' => 'required|date|after:start_time',
-            'duration_type' => 'required|in:hourly,daily,monthly'
+            'duration_type' => 'sometimes|in:hourly,daily,monthly'
         ]);
 
         if ($validator->fails()) {
@@ -388,15 +392,16 @@ class BookingController extends Controller
         }
 
         try {
-            $slot = ParkingSlot::with('parkingArea')->find($request->parking_slot_id);
-            $cost = $this->calculateBookingCost($slot, $request->start_time, $request->end_time, $request->duration_type);
+            $slot = ParkingSlot::with('parkingLocation')->find($request->parking_slot_id);
+            $durationType = $request->input('duration_type') ?: $this->inferDurationType($request->start_time, $request->end_time);
+            $cost = $this->calculateBookingCost($slot, $request->start_time, $request->end_time, $durationType);
 
             return response()->json([
                 'success' => true,
                 'data' => [
                     'total_amount' => $cost,
-                    'rate_type' => $request->duration_type,
-                    'parking_area' => $slot->parkingArea->name
+                    'rate_type' => $durationType,
+                    'parking_location' => $slot->parkingLocation?->name
                 ]
             ]);
 
@@ -407,6 +412,79 @@ class BookingController extends Controller
                 'error' => $e->getMessage()
             ], 500);
         }
+    }
+
+    /**
+     * Update booking details.
+     */
+    public function update(Request $request, Booking $booking): JsonResponse
+    {
+        if ($booking->user_id !== $request->user()->id) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized'
+            ], 403);
+        }
+
+        $validated = $request->validate([
+            'start_time' => ['sometimes', 'date', 'after:now'],
+            'end_time' => ['sometimes', 'date', 'after:start_time'],
+            'notes' => ['sometimes', 'nullable', 'string', 'max:1000'],
+        ]);
+
+        $booking->update($validated);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Booking updated successfully',
+            'data' => $booking->fresh(),
+        ]);
+    }
+
+    /**
+     * Confirm a booking.
+     */
+    public function confirm(Request $request, Booking $booking): JsonResponse
+    {
+        if ($booking->user_id !== $request->user()->id) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized'
+            ], 403);
+        }
+
+        if (!in_array($booking->status, ['pending', 'confirmed'], true)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Booking cannot be confirmed'
+            ], 422);
+        }
+
+        $booking->update([
+            'status' => 'confirmed',
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Booking confirmed successfully',
+            'data' => $booking->fresh(),
+        ]);
+    }
+
+    /**
+     * Get booking history for authenticated user.
+     */
+    public function getBookingHistory(Request $request): JsonResponse
+    {
+        $history = $request->user()->bookings()
+            ->with(['vehicle', 'parkingSlot'])
+            ->orderByDesc('created_at')
+            ->paginate($request->integer('per_page', 15));
+
+        return response()->json([
+            'success' => true,
+            'data' => $history,
+        ]);
     }
 
     // Helper methods
@@ -431,11 +509,12 @@ class BookingController extends Controller
         return $query->exists();
     }
 
-    private function calculateBookingCost(ParkingSlot $slot, string $startTime, string $endTime, string $durationType): float
+    private function calculateBookingCost(ParkingSlot $slot, string $startTime, string $endTime, ?string $durationType = null): float
     {
         $start = Carbon::parse($startTime);
         $end = Carbon::parse($endTime);
-        $area = $slot->parkingArea;
+        $area = $slot->parkingLocation;
+        $durationType = $durationType ?: $this->inferDurationType($startTime, $endTime);
 
         switch ($durationType) {
             case 'hourly':
@@ -445,12 +524,12 @@ class BookingController extends Controller
             case 'daily':
                 $days = $start->diffInDays($end);
                 if ($days < 1) $days = 1;
-                return $days * $area->daily_rate;
+                return $days * $area->hourly_rate * 24;
 
             case 'monthly':
                 $months = $start->diffInMonths($end);
                 if ($months < 1) $months = 1;
-                return $months * $area->monthly_rate;
+                return $months * $area->hourly_rate * 24 * 30;
 
             default:
                 throw new \InvalidArgumentException('Invalid duration type');
@@ -460,5 +539,21 @@ class BookingController extends Controller
     private function generateBookingReference(): string
     {
         return 'BK' . date('Ymd') . str_pad(rand(1, 9999), 4, '0', STR_PAD_LEFT);
+    }
+
+    private function inferDurationType(string $startTime, string $endTime): string
+    {
+        $start = Carbon::parse($startTime);
+        $end = Carbon::parse($endTime);
+
+        if ($start->diffInMonths($end) >= 1) {
+            return 'monthly';
+        }
+
+        if ($start->diffInDays($end) >= 1) {
+            return 'daily';
+        }
+
+        return 'hourly';
     }
 }

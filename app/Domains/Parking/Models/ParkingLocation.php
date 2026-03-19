@@ -2,6 +2,9 @@
 
 namespace App\Domains\Parking\Models;
 
+use App\Domains\Booking\Models\Booking;
+use App\Domains\Booking\Models\VehicleEntry;
+use App\Domains\Booking\Models\VehicleExit;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -46,6 +49,14 @@ class ParkingLocation extends Model
     public function parkingSlots()
     {
         return $this->hasMany(ParkingSlot::class);
+    }
+
+    /**
+     * Backward-compatible slots alias.
+     */
+    public function slots()
+    {
+        return $this->parkingSlots();
     }
 
     /**

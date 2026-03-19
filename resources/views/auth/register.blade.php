@@ -1,181 +1,184 @@
-@extends('layouts.user')
+@extends('layouts.auth')
 
-@section('title', __('Register'))
-
-@push('styles')
-<style>
-    .auth-page {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        min-height: 100vh;
-    }
-
-    .auth-card {
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(10px);
-        border-radius: 20px;
-        box-shadow: 0 25px 45px rgba(0, 0, 0, 0.1);
-    }
-
-    .dark .auth-card {
-        background: rgba(30, 30, 30, 0.95);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-</style>
-@endpush
+@section('title', __('auth.register'))
 
 @section('content')
-<div class="auth-page flex items-center justify-center p-6">
-    <div class="auth-card w-full max-w-md p-8">
-        <!-- Header -->
-        <div class="text-center mb-8">
-            <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-                {{ __('Create Account') }}
-            </h1>
-            <p class="text-gray-600 dark:text-gray-400">
-                {{ __('Join our parking management system') }}
-            </p>
+<!-- Register Card -->
+<div class="box p-8 shadow-xl">
+    <!-- Header -->
+    <div class="mb-8">
+        <h2 class="text-2xl font-bold text-foreground">{{ __('auth.register') }}</h2>
+        <p class="text-slate-500 text-sm mt-2">{{ __('auth.create_new_account') }}</p>
+    </div>
+
+    <!-- Register Form -->
+    <form method="POST" action="{{ route('register') }}" class="space-y-4">
+        @csrf
+
+        <!-- Name Input -->
+        <div>
+            <label for="name" class="block text-sm font-medium text-foreground mb-2">
+                {{ __('auth.full_name') }}
+            </label>
+            <div class="relative">
+                <i data-lucide="user" class="absolute left-3 top-3 w-5 h-5 text-slate-400"></i>
+                <input 
+                    type="text" 
+                    id="name" 
+                    name="name" 
+                    value="{{ old('name') }}"
+                    required
+                    autofocus
+                    class="form-input w-full pl-10 {{ $errors->has('name') ? 'border-danger' : '' }}"
+                    placeholder="John Doe"
+                    autocomplete="name"
+                >
+            </div>
+            @error('name')
+                <p class="text-danger text-xs mt-2 flex items-center gap-1">
+                    <i data-lucide="alert-circle" class="w-4 h-4"></i>
+                    {{ $message }}
+                </p>
+            @enderror
         </div>
 
-        <!-- Language Toggle -->
-        <div class="flex justify-center mb-6">
-            <div class="bg-gray-100 dark:bg-gray-800 rounded-lg p-1 flex">
-                <form action="{{ url('/language/en') }}" method="POST" class="inline">
-                    @csrf
-                    <button type="submit" class="px-3 py-1 rounded-md text-sm font-medium transition-colors {{ app()->getLocale() === 'en' ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow' : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white' }}">
-                        English
-                    </button>
-                </form>
-                <form action="{{ url('/language/bn') }}" method="POST" class="inline">
-                    @csrf
-                    <button type="submit" class="px-3 py-1 rounded-md text-sm font-medium transition-colors {{ app()->getLocale() === 'bn' ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow' : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white' }}">
-                        বাংলা
-                    </button>
-                </form>
+        <!-- Email Input -->
+        <div>
+            <label for="email" class="block text-sm font-medium text-foreground mb-2">
+                {{ __('auth.email') }}
+            </label>
+            <div class="relative">
+                <i data-lucide="mail" class="absolute left-3 top-3 w-5 h-5 text-slate-400"></i>
+                <input 
+                    type="email" 
+                    id="email" 
+                    name="email" 
+                    value="{{ old('email') }}"
+                    required
+                    class="form-input w-full pl-10 {{ $errors->has('email') ? 'border-danger' : '' }}"
+                    placeholder="you@example.com"
+                    autocomplete="email"
+                >
+            </div>
+            @error('email')
+                <p class="text-danger text-xs mt-2 flex items-center gap-1">
+                    <i data-lucide="alert-circle" class="w-4 h-4"></i>
+                    {{ $message }}
+                </p>
+            @enderror
+        </div>
+
+        <!-- Phone Input -->
+        <div>
+            <label for="phone" class="block text-sm font-medium text-foreground mb-2">
+                {{ __('auth.phone') }}
+            </label>
+            <div class="relative">
+                <i data-lucide="phone" class="absolute left-3 top-3 w-5 h-5 text-slate-400"></i>
+                <input 
+                    type="tel" 
+                    id="phone" 
+                    name="phone" 
+                    value="{{ old('phone') }}"
+                    required
+                    class="form-input w-full pl-10 {{ $errors->has('phone') ? 'border-danger' : '' }}"
+                    placeholder="+8801XXXXXXXXX"
+                    autocomplete="tel"
+                >
+            </div>
+            @error('phone')
+                <p class="text-danger text-xs mt-2 flex items-center gap-1">
+                    <i data-lucide="alert-circle" class="w-4 h-4"></i>
+                    {{ $message }}
+                </p>
+            @enderror
+        </div>
+
+        <!-- Password Input -->
+        <div>
+            <label for="password" class="block text-sm font-medium text-foreground mb-2">
+                {{ __('auth.password') }}
+            </label>
+            <div class="relative">
+                <i data-lucide="lock" class="absolute left-3 top-3 w-5 h-5 text-slate-400"></i>
+                <input 
+                    type="password" 
+                    id="password" 
+                    name="password" 
+                    required
+                    class="form-input w-full pl-10 {{ $errors->has('password') ? 'border-danger' : '' }}"
+                    placeholder="Enter a strong password"
+                    autocomplete="new-password"
+                >
+            </div>
+            @error('password')
+                <p class="text-danger text-xs mt-2 flex items-center gap-1">
+                    <i data-lucide="alert-circle" class="w-4 h-4"></i>
+                    {{ $message }}
+                </p>
+            @enderror
+        </div>
+
+        <!-- Confirm Password Input -->
+        <div>
+            <label for="password_confirmation" class="block text-sm font-medium text-foreground mb-2">
+                {{ __('auth.confirm_password') }}
+            </label>
+            <div class="relative">
+                <i data-lucide="lock" class="absolute left-3 top-3 w-5 h-5 text-slate-400"></i>
+                <input 
+                    type="password" 
+                    id="password_confirmation" 
+                    name="password_confirmation" 
+                    required
+                    class="form-input w-full pl-10"
+                    placeholder="Confirm your password"
+                    autocomplete="new-password"
+                >
             </div>
         </div>
 
-        <!-- Error Messages -->
-        @if ($errors->any())
-            <div class="mb-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
-                @foreach ($errors->all() as $error)
-                    <p class="text-sm text-red-600 dark:text-red-400">{{ $error }}</p>
-                @endforeach
-            </div>
-        @endif
+        <!-- Terms Agreement -->
+        <div class="flex items-start gap-2 pt-2">
+            <input 
+                type="checkbox" 
+                id="terms" 
+                name="terms" 
+                required
+                class="w-4 h-4 rounded mt-1"
+            >
+            <label for="terms" class="text-sm text-slate-600">
+                {{ __('auth.agree_terms') }}
+                <a href="#" class="text-primary hover:underline">{{ __('auth.terms_of_service') }}</a>
+                {{ __('general.and') }}
+                <a href="#" class="text-primary hover:underline">{{ __('auth.privacy_policy') }}</a>
+            </label>
+        </div>
 
-        <!-- Register Form -->
-        <form method="POST" action="{{ route('register') }}" class="space-y-6">
-            @csrf
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary w-full mt-6">
+            <i data-lucide="user-plus" class="w-4 h-4 mr-2"></i>
+            {{ __('auth.register') }}
+        </button>
+    </form>
 
-            <!-- Name -->
-            <div>
-                <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    {{ __('Full Name') }}
-                </label>
-                <input id="name" name="name" type="text" required autofocus autocomplete="name"
-                       value="{{ old('name') }}"
-                       class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white transition-colors @error('name') border-red-500 @enderror">
-            </div>
-
-            <!-- Email -->
-            <div>
-                <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    {{ __('Email Address') }}
-                </label>
-                <input id="email" name="email" type="email" required autocomplete="username"
-                       value="{{ old('email') }}"
-                       class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white transition-colors @error('email') border-red-500 @enderror">
-            </div>
-
-            <!-- Phone -->
-            <div>
-                <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    {{ __('Phone Number') }}
-                </label>
-                <input id="phone" name="phone" type="tel" required autocomplete="tel"
-                       value="{{ old('phone') }}"
-                       placeholder="+8801XXXXXXXXX"
-                       class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white transition-colors @error('phone') border-red-500 @enderror">
-            </div>
-
-            <!-- Password -->
-            <div>
-                <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    {{ __('Password') }}
-                </label>
-                <input id="password" name="password" type="password" required autocomplete="new-password"
-                       class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white transition-colors @error('password') border-red-500 @enderror">
-            </div>
-
-            <!-- Confirm Password -->
-            <div>
-                <label for="password_confirmation" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    {{ __('Confirm Password') }}
-                </label>
-                <input id="password_confirmation" name="password_confirmation" type="password" required autocomplete="new-password"
-                       class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white transition-colors">
-            </div>
-
-            <!-- Terms and Privacy -->
-            <div class="flex items-start">
-                <div class="flex items-center h-5">
-                    <input id="terms" name="terms" type="checkbox" required
-                           class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
-                </div>
-                <div class="ml-3 text-sm">
-                    <label for="terms" class="text-gray-700 dark:text-gray-300">
-                        {{ __('I agree to the') }}
-                        <a href="#" class="text-blue-600 dark:text-blue-400 hover:text-blue-500 font-medium">
-                            {{ __('Terms of Service') }}
-                        </a>
-                        {{ __('and') }}
-                        <a href="#" class="text-blue-600 dark:text-blue-400 hover:text-blue-500 font-medium">
-                            {{ __('Privacy Policy') }}
-                        </a>
-                    </label>
-                </div>
-            </div>
-
-            <!-- Submit Button -->
-            <button type="submit"
-                    class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-                {{ __('Create Account') }}
-            </button>
-        </form>
-
-        <!-- Login Link -->
-        <div class="mt-6 text-center">
-            <p class="text-sm text-gray-600 dark:text-gray-400">
-                {{ __('Already have an account?') }}
-                <a href="{{ route('login') }}"
-                   class="font-medium text-blue-600 dark:text-blue-400 hover:text-blue-500">
-                    {{ __('Sign in') }}
-                </a>
-            </p>
+    <!-- Divider -->
+    <div class="relative my-6">
+        <div class="absolute inset-0 flex items-center">
+            <div class="w-full border-t border-slate-300 dark:border-slate-600"></div>
+        </div>
+        <div class="relative flex justify-center text-sm">
+            <span class="px-3 bg-background dark:bg-foreground/[.01] text-slate-500">{{ __('general.or') }}</span>
         </div>
     </div>
+
+    <!-- Login Link -->
+    <a 
+        href="{{ route('login') }}" 
+        class="flex items-center justify-center gap-2 py-2.5 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors text-sm font-medium text-foreground w-full"
+    >
+        <i data-lucide="log-in" class="w-4 h-4"></i>
+        {{ __('auth.already_have_account') }}
+    </a>
 </div>
 @endsection
-
-@push('scripts')
-<script>
-    // Password strength indicator
-    document.getElementById('password').addEventListener('input', function() {
-        const password = this.value;
-        const strength = checkPasswordStrength(password);
-
-        // You can add password strength indicator here
-    });
-
-    function checkPasswordStrength(password) {
-        let score = 0;
-        if (password.length >= 8) score++;
-        if (/[A-Z]/.test(password)) score++;
-        if (/[a-z]/.test(password)) score++;
-        if (/\d/.test(password)) score++;
-        if (/[^A-Za-z\d]/.test(password)) score++;
-
-        return score;
-    }
-</script>
-@endpush

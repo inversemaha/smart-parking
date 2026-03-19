@@ -11,7 +11,7 @@
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
 
     <!-- Scripts -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
 </head>
 <body class="bg-gray-50 text-gray-900 min-h-screen flex flex-col">
     <!-- Header with Navigation -->

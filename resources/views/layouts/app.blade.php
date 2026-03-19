@@ -4,8 +4,8 @@
     <meta charset="utf-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Parking Management System - Modern Admin Dashboard">
-    <meta name="keywords" content="parking, admin, dashboard, management, system">
+    <meta name="description" content="Parking Management System - Dashboard">
+    <meta name="keywords" content="parking, dashboard, management, system">
     <meta name="author" content="Parking Management System">
 
     <link href="https://fonts.googleapis.com" rel="preconnect">
@@ -14,13 +14,9 @@
 
     <title>@yield('title', 'Dashboard') - Parking Management System</title>
 
-    <!-- BEGIN: CSS Assets-->
-    <link rel="stylesheet" href="{{ asset('backend/assets/css/vendors/vector-map.css') }}">
-    <link rel="stylesheet" href="{{ asset('backend/assets/css/vendors/tiny-slider.css') }}">
-    <link rel="stylesheet" href="{{ asset('backend/assets/css/themes/rubick/side-menu.css') }}">
-    <link rel="stylesheet" href="{{ asset('backend/assets/css/vendors/simplebar.css') }}">
+    <!-- BEGIN: CSS Assets -->
     <link rel="stylesheet" href="{{ asset('backend/assets/css/app.css') }}">
-    <!-- END: CSS Assets-->
+    <!-- END: CSS Assets -->
 
     <script>
         (function () {
@@ -74,35 +70,9 @@
         </div>
     </div>
 
-    <!-- BEGIN: Vendor JS Assets-->
-    <script src="{{ asset('backend/assets/js/vendors/dom.js') }}"></script>
-    <script src="{{ asset('backend/assets/js/vendors/lucide.js') }}"></script>
-    <script src="{{ asset('backend/assets/js/vendors/tippy.js') }}"></script>
-    <script src="{{ asset('backend/assets/js/vendors/dayjs.js') }}"></script>
-    <script src="{{ asset('backend/assets/js/vendors/easepick.js') }}"></script>
-    <script src="{{ asset('backend/assets/js/vendors/popper.js') }}"></script>
-    <script src="{{ asset('backend/assets/js/vendors/dropdown.js') }}"></script>
-    <script src="{{ asset('backend/assets/js/vendors/chartjs.js') }}"></script>
-    <script src="{{ asset('backend/assets/js/vendors/vector-map.js') }}"></script>
-    <script src="{{ asset('backend/assets/js/vendors/tiny-slider.js') }}"></script>
-    <script src="{{ asset('backend/assets/js/vendors/modal.js') }}"></script>
-    <script src="{{ asset('backend/assets/js/vendors/simplebar.js') }}"></script>
-    <script src="{{ asset('backend/assets/js/pages/dashboard-overview-1.js') }}"></script>
-    <script src="{{ asset('backend/assets/js/components/base/page-loader.js') }}"></script>
-    <script src="{{ asset('backend/assets/js/components/base/lucide.js') }}"></script>
-    <script src="{{ asset('backend/assets/js/components/base/tippy.js') }}"></script>
-    <script src="{{ asset('backend/assets/js/components/base/easepick.js') }}"></script>
-    <script src="{{ asset('backend/assets/js/components/report-line-chart.js') }}"></script>
-    <script src="{{ asset('backend/assets/js/components/report-pie-chart.js') }}"></script>
-    <script src="{{ asset('backend/assets/js/components/report-donut-chart.js') }}"></script>
-    <script src="{{ asset('backend/assets/js/components/vector-map.js') }}"></script>
-    <script src="{{ asset('backend/assets/js/components/report-donut-chart-1.js') }}"></script>
-    <script src="{{ asset('backend/assets/js/components/simple-line-chart-1.js') }}"></script>
-    <script src="{{ asset('backend/assets/js/components/base/tiny-slider.js') }}"></script>
-    <script src="{{ asset('backend/assets/js/themes/rubick.js') }}"></script>
-    <script src="{{ asset('backend/assets/js/utils/helper.js') }}"></script>
-    <script src="{{ asset('backend/assets/js/components/theme-switcher.js') }}"></script>
-    <!-- END: Vendor JS Assets-->
+    <!-- BEGIN: Vendor JS Assets -->
+    <script src="{{ asset('backend/assets/js/app.js') }}"></script>
+    <!-- END: Vendor JS Assets -->
 
     @stack('scripts')
 </body>

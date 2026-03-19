@@ -18,7 +18,7 @@ class PaymentController extends Controller
     public function index(Request $request): JsonResponse
     {
         $query = $request->user()->payments()
-            ->with(['booking.vehicle', 'booking.parkingSlot.parkingArea']);
+            ->with(['booking.vehicle', 'booking.parkingSlot.parkingLocation']);
 
         // Filter by status
         if ($request->has('status')) {
@@ -37,6 +37,14 @@ class PaymentController extends Controller
             'success' => true,
             'data' => $payments
         ]);
+    }
+
+    /**
+     * Alias for route compatibility.
+     */
+    public function createPayment(Request $request, Booking $booking): JsonResponse
+    {
+        return $this->store($request, $booking);
     }
 
     /**
@@ -91,13 +99,16 @@ class PaymentController extends Controller
         try {
             // Create payment record
             $payment = Payment::create([
-                'booking_id' => $booking->id,
                 'user_id' => $request->user()->id,
+                'payable_type' => Booking::class,
+                'payable_id' => $booking->id,
                 'amount' => $request->amount,
                 'payment_method' => $request->payment_method,
+                'gateway' => $request->payment_method,
                 'currency' => 'BDT',
-                'status' => 'pending',
-                'transaction_id' => $this->generateTransactionId()
+                'status' => 'initiated',
+                'initiated_at' => now(),
+                'payment_id' => $this->generateTransactionId()
             ]);
 
             // Process payment based on method
@@ -156,7 +167,7 @@ class PaymentController extends Controller
             ], 403);
         }
 
-        $payment->load(['booking.vehicle', 'booking.parkingSlot.parkingArea']);
+        $payment->load(['booking.vehicle', 'booking.parkingSlot.parkingLocation']);
 
         return response()->json([
             'success' => true,
@@ -177,31 +188,31 @@ class PaymentController extends Controller
             ], 403);
         }
 
-        if ($payment->status !== 'completed') {
+        if ($payment->status !== 'paid') {
             return response()->json([
                 'success' => false,
-                'message' => 'Receipt only available for completed payments'
+                'message' => 'Receipt only available for paid payments'
             ], 400);
         }
 
-        $payment->load(['booking.vehicle', 'booking.parkingSlot.parkingArea', 'user']);
+        $payment->load(['booking.vehicle', 'booking.parkingSlot.parkingLocation', 'user']);
 
         $receipt = [
             'payment_id' => $payment->id,
-            'transaction_id' => $payment->transaction_id,
+            'transaction_id' => $payment->payment_id,
             'gateway_transaction_id' => $payment->gateway_transaction_id,
             'amount' => $payment->amount,
             'currency' => $payment->currency,
             'payment_method' => $payment->payment_method,
             'payment_date' => $payment->paid_at,
             'booking' => [
-                'reference' => $payment->booking->booking_reference,
+                'reference' => $payment->booking->booking_number,
                 'start_time' => $payment->booking->start_time,
                 'end_time' => $payment->booking->end_time,
-                'parking_area' => $payment->booking->parkingSlot->parkingArea->name,
+                'parking_area' => optional($payment->booking->parkingSlot->parkingLocation)->name,
                 'slot_number' => $payment->booking->parkingSlot->slot_number,
                 'vehicle' => [
-                    'license_plate' => $payment->booking->vehicle->license_plate,
+                    'license_plate' => $payment->booking->vehicle->registration_number,
                     'brand' => $payment->booking->vehicle->brand,
                     'model' => $payment->booking->vehicle->model
                 ]
@@ -220,11 +231,68 @@ class PaymentController extends Controller
     }
 
     /**
+     * Get current payment status.
+     */
+    public function getPaymentStatus(Request $request, Payment $payment): JsonResponse
+    {
+        if ($payment->user_id !== $request->user()->id) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized'
+            ], 403);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'id' => $payment->id,
+                'status' => $payment->status,
+                'amount' => $payment->amount,
+                'currency' => $payment->currency,
+                'gateway_transaction_id' => $payment->gateway_transaction_id,
+            ],
+        ]);
+    }
+
+    /**
+     * Handle SSLCommerz webhook callback.
+     */
+    public function handleSSLCommerzWebhook(Request $request): JsonResponse
+    {
+        $transactionId = $request->input('transaction_id') ?? $request->input('tran_id');
+
+        if (!$transactionId) {
+            return response()->json([
+                'success' => false,
+                'message' => 'transaction_id is required',
+            ], 422);
+        }
+
+        $payment = Payment::where('payment_id', $transactionId)->first();
+
+        if (!$payment) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Payment not found',
+            ], 404);
+        }
+
+        $payment->update([
+            'gateway_response' => $request->all(),
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Webhook processed',
+        ]);
+    }
+
+    /**
      * Payment success callback.
      */
     public function success(Request $request): JsonResponse
     {
-        $transactionId = $request->get('transaction_id');
+        $transactionId = $request->get('transaction_id') ?? $request->get('tran_id');
         $gatewayTransactionId = $request->get('gateway_transaction_id');
 
         if (!$transactionId) {
@@ -235,7 +303,7 @@ class PaymentController extends Controller
         }
 
         try {
-            $payment = Payment::where('transaction_id', $transactionId)->first();
+            $payment = Payment::where('payment_id', $transactionId)->first();
 
             if (!$payment) {
                 return response()->json([
@@ -249,7 +317,7 @@ class PaymentController extends Controller
 
             if ($verificationResult['success']) {
                 $payment->update([
-                    'status' => 'completed',
+                    'status' => 'paid',
                     'paid_at' => now(),
                     'gateway_transaction_id' => $gatewayTransactionId,
                     'gateway_response' => $verificationResult['response'] ?? null
@@ -292,7 +360,7 @@ class PaymentController extends Controller
      */
     public function failure(Request $request): JsonResponse
     {
-        $transactionId = $request->get('transaction_id');
+        $transactionId = $request->get('transaction_id') ?? $request->get('tran_id');
 
         if (!$transactionId) {
             return response()->json([
@@ -302,7 +370,7 @@ class PaymentController extends Controller
         }
 
         try {
-            $payment = Payment::where('transaction_id', $transactionId)->first();
+            $payment = Payment::where('payment_id', $transactionId)->first();
 
             if ($payment) {
                 $payment->update([
@@ -333,7 +401,7 @@ class PaymentController extends Controller
      */
     public function cancel(Request $request): JsonResponse
     {
-        $transactionId = $request->get('transaction_id');
+        $transactionId = $request->get('transaction_id') ?? $request->get('tran_id');
 
         if (!$transactionId) {
             return response()->json([
@@ -343,7 +411,7 @@ class PaymentController extends Controller
         }
 
         try {
-            $payment = Payment::where('transaction_id', $transactionId)->first();
+            $payment = Payment::where('payment_id', $transactionId)->first();
 
             if ($payment) {
                 $payment->update([
@@ -435,7 +503,7 @@ class PaymentController extends Controller
         try {
             return [
                 'success' => true,
-                'payment_url' => 'https://nagad.com/pay/' . $payment->transaction_id,
+                'payment_url' => 'https://nagad.com/pay/' . $payment->payment_id,
                 'gateway_transaction_id' => 'NAGAD_' . time()
             ];
         } catch (\Exception $e) {
@@ -449,7 +517,7 @@ class PaymentController extends Controller
         try {
             return [
                 'success' => true,
-                'payment_url' => 'https://rocket.com.bd/pay/' . $payment->transaction_id,
+                'payment_url' => 'https://rocket.com.bd/pay/' . $payment->payment_id,
                 'gateway_transaction_id' => 'ROCKET_' . time()
             ];
         } catch (\Exception $e) {
@@ -519,6 +587,6 @@ class PaymentController extends Controller
 
     private function generateTransactionId(): string
     {
-        return 'TXN' . date('Ymd') . str_pad(rand(1, 999999), 6, '0', STR_PAD_LEFT);
+        return 'PAY' . date('Ymd') . str_pad(rand(1, 999999), 6, '0', STR_PAD_LEFT);
     }
 }

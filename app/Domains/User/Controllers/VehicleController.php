@@ -4,6 +4,7 @@ namespace App\Domains\User\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Domains\Vehicle\Models\Vehicle;
+use App\Domains\Vehicle\Repositories\VehicleRepository;
 use App\Domains\Vehicle\Services\VehicleService;
 use App\Shared\DTOs\VehicleDTO;
 use Illuminate\Http\Request;
@@ -79,7 +80,7 @@ class VehicleController extends Controller
 
             $vehicle = $this->vehicleService->createVehicle($vehicleData);
 
-            return redirect()->route('user.vehicles.show', $vehicle)
+            return redirect()->route('vehicles.show', $vehicle)
                            ->with('success', __('Vehicle added successfully and verification has been initiated.'));
         } catch (\Exception $e) {
             return redirect()->back()
@@ -120,7 +121,7 @@ class VehicleController extends Controller
         Gate::authorize('update', $vehicle);
 
         if ($vehicle->verification_status === 'verified') {
-            return redirect()->route('user.vehicles.show', $vehicle)
+            return redirect()->route('vehicles.show', $vehicle)
                            ->with('error', __('Verified vehicles cannot be edited.'));
         }
 
@@ -159,7 +160,7 @@ class VehicleController extends Controller
         try {
             $this->vehicleService->updateVehicle($vehicle, $validator->validated());
 
-            return redirect()->route('user.vehicles.show', $vehicle)
+            return redirect()->route('vehicles.show', $vehicle)
                            ->with('success', __('Vehicle updated successfully.'));
         } catch (\Exception $e) {
             return redirect()->back()
@@ -193,7 +194,7 @@ class VehicleController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => __('Vehicle deleted successfully.'),
-                'redirect' => route('user.vehicles.index'),
+                'redirect' => route('vehicles.index'),
             ]);
         } catch (\Exception $e) {
             return response()->json([
@@ -245,5 +246,21 @@ class VehicleController extends Controller
                 'message' => __('Verification request failed: :message', ['message' => $e->getMessage()]),
             ]);
         }
+    }
+
+    /**
+     * Upload additional vehicle documents.
+     */
+    public function uploadDocuments(Request $request, Vehicle $vehicle)
+    {
+        Gate::authorize('update', $vehicle);
+
+        $request->validate([
+            'documents' => ['required', 'array'],
+            'documents.*' => ['file', 'mimes:jpg,jpeg,png,pdf', 'max:5120'],
+        ]);
+
+        return redirect()->route('vehicles.edit', $vehicle)
+            ->with('info', __('Document upload endpoint is available. Document persistence can be enabled after vehicle document schema is finalized.'));
     }
 }

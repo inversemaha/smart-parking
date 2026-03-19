@@ -490,4 +490,61 @@ class GateController extends Controller
             'total_amount' => $totalAmount,
         ];
     }
+
+    /**
+     * Admin gate dashboard.
+     */
+    public function index()
+    {
+        return response()->json([
+            'success' => true,
+            'message' => 'Gate dashboard endpoint is active',
+        ]);
+    }
+
+    /**
+     * Gate entries listing.
+     */
+    public function entries(Request $request)
+    {
+        $entries = VehicleEntry::with(['vehicle', 'booking'])
+            ->latest('entry_time')
+            ->paginate($request->integer('per_page', 20));
+
+        return response()->json([
+            'success' => true,
+            'data' => $entries,
+        ]);
+    }
+
+    /**
+     * Gate exits listing.
+     */
+    public function exits(Request $request)
+    {
+        $exits = VehicleExit::with(['vehicle', 'booking'])
+            ->latest('exit_time')
+            ->paginate($request->integer('per_page', 20));
+
+        return response()->json([
+            'success' => true,
+            'data' => $exits,
+        ]);
+    }
+
+    /**
+     * Entry logs listing.
+     */
+    public function entryLogs(Request $request)
+    {
+        return $this->entries($request);
+    }
+
+    /**
+     * Exit logs listing.
+     */
+    public function exitLogs(Request $request)
+    {
+        return $this->exits($request);
+    }
 }

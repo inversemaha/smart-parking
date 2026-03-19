@@ -5,7 +5,6 @@ use App\Domains\User\Controllers\DashboardController as UserDashboardController;
 use App\Domains\User\Controllers\VehicleController as UserVehicleController;
 use App\Domains\User\Controllers\BookingController as UserBookingController;
 use App\Domains\User\Controllers\PaymentController as UserPaymentController;
-use App\Domains\Auth\Controllers\AuthController;
 use App\Domains\Admin\Controllers\PermissionController;
 use App\Domains\Admin\Controllers\AdminDashboardController;
 use App\Domains\User\Controllers\VisitorController;
@@ -28,17 +27,8 @@ Route::get('/', [VisitorController::class, 'welcome'])->name('welcome');
 // Default dashboard redirect (detect user type and redirect appropriately)
 Route::get('/home', [VisitorController::class, 'redirectToDashboard'])->middleware('auth')->name('home');
 
-// Visitor Panel Routes
-require __DIR__.'/visitor.php';
-
 // Language switching
 Route::post('/language/{locale}', [VisitorController::class, 'switchLanguage'])->name('language.switch');
-
-// Authentication routes (Laravel Breeze/Fortify handles these)
-require __DIR__.'/auth.php';
-
-// Gate operations routes
-require __DIR__.'/gate.php';
 
 // Legacy User dashboard routes (for backward compatibility)
 // TODO: Migrate existing users to visitor routes gradually
@@ -149,10 +139,11 @@ Route::middleware(['auth', 'set.language'])->prefix('admin')->name('admin.')->gr
     });
 });
 
+require __DIR__.'/auth.php';
+require __DIR__.'/visitor.php';
+require __DIR__.'/gate.php';
+
 // Public API documentation (optional)
 Route::get('/api/docs', function () {
     return view('api.documentation');
 })->name('api.docs');
-
-// Include visitor routes
-require __DIR__.'/visitor.php';

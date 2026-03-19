@@ -8,8 +8,7 @@
     <title>{{ config('app.name', 'Smart Parking') }} - {{ __('general.welcome') }}</title>
 
     <!-- CSS -->
-    <link rel="stylesheet" href="{{ asset('backend/assets/css/themes/rubick/side-menu.css') }}">
-    <link rel="stylesheet" href="{{ asset('backend/assets/css/app.css') }}">
+    <link rel="stylesheet" href="{{ asset('backend/ui/css/app.css') }}">
 
     <style>
         .hero-bg {
@@ -284,11 +283,12 @@
     @include('visitor.partials.language-modal')
 
     <!-- JavaScript -->
-    <script src="{{ asset('backend/assets/js/vendors/lucide.js') }}"></script>
-    <script src="{{ asset('backend/assets/js/components/base.js') }}"></script>
+    <script src="{{ asset('backend/ui/js/app.js') }}"></script>
     <script>
         // Initialize Lucide icons
-        lucide.createIcons();
+        if (window.createIcons && window.icons) {
+            window.createIcons({ icons: window.icons, nameAttr: 'data-lucide' });
+        }
     </script>
 </body>
 </html>

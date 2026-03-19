@@ -45,7 +45,7 @@ class PaymentRepository
      */
     public function findByTransactionId(string $transactionId): ?Payment
     {
-        return $this->model->where('transaction_id', $transactionId)->first();
+        return $this->model->where('payment_id', $transactionId)->first();
     }
 
     /**
@@ -111,7 +111,7 @@ class PaymentRepository
 
         if (isset($filters['search'])) {
             $query->where(function ($q) use ($filters) {
-                $q->where('transaction_id', 'like', '%' . $filters['search'] . '%')
+                $q->where('payment_id', 'like', '%' . $filters['search'] . '%')
                   ->orWhere('gateway_transaction_id', 'like', '%' . $filters['search'] . '%')
                   ->orWhereHas('user', function ($userQuery) use ($filters) {
                       $userQuery->where('name', 'like', '%' . $filters['search'] . '%')
@@ -152,14 +152,14 @@ class PaymentRepository
 
         return [
             'total_payments' => $baseQuery->count(),
-            'completed' => (clone $query)->where('status', 'completed')->count(),
+            'completed' => (clone $query)->where('status', 'paid')->count(),
             'pending' => (clone $query)->where('status', 'pending')->count(),
             'failed' => (clone $query)->where('status', 'failed')->count(),
             'cancelled' => (clone $query)->where('status', 'cancelled')->count(),
-            'total_amount' => (clone $query)->where('status', 'completed')->sum('amount'),
+            'total_amount' => (clone $query)->where('status', 'paid')->sum('amount'),
             'pending_amount' => (clone $query)->where('status', 'pending')->sum('amount'),
             'failed_amount' => (clone $query)->where('status', 'failed')->sum('amount'),
-            'average_amount' => (clone $query)->where('status', 'completed')->avg('amount'),
+            'average_amount' => (clone $query)->where('status', 'paid')->avg('amount'),
             'success_rate' => $this->calculateSuccessRate($query),
             'by_gateway' => $this->getPaymentsByGateway($query),
         ];
@@ -171,7 +171,6 @@ class PaymentRepository
     public function getFailedPayments(): Collection
     {
         return $this->model->where('status', 'failed')
-                          ->where('retry_count', '<', 3)
                           ->with(['booking', 'user'])
                           ->orderBy('created_at', 'asc')
                           ->get();
@@ -182,9 +181,9 @@ class PaymentRepository
      */
     public function getPendingRefunds(): Collection
     {
-        return $this->model->where('refund_status', 'pending')
+        return $this->model->where('status', 'refunded')
                           ->with(['booking', 'user'])
-                          ->orderBy('refund_requested_at', 'asc')
+                          ->orderBy('updated_at', 'desc')
                           ->get();
     }
 
@@ -199,7 +198,7 @@ class PaymentRepository
             return 0.0;
         }
 
-        $successful = (clone $query)->where('status', 'completed')->count();
+        $successful = (clone $query)->where('status', 'paid')->count();
 
         return round(($successful / $total) * 100, 2);
     }

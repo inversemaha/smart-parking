@@ -11,6 +11,8 @@ class ParkingArea extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $table = 'parking_locations';
+
     protected $fillable = [
         'name',
         'code',
@@ -50,7 +52,7 @@ class ParkingArea extends Model
      */
     public function slots()
     {
-        return $this->hasMany(ParkingSlot::class);
+        return $this->hasMany(ParkingSlot::class, 'parking_location_id');
     }
 
     /**

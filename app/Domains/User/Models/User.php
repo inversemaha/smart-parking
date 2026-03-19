@@ -37,6 +37,8 @@ class User extends Authenticatable
         'mobile_verified_at',
         'is_active',
         'deactivated_at',
+        'suspended_at',
+        'suspension_reason',
     ];
 
     /**
@@ -57,6 +59,7 @@ class User extends Authenticatable
             'mobile_verified_at' => 'datetime',
             'date_of_birth' => 'date',
             'deactivated_at' => 'datetime',
+            'suspended_at' => 'datetime',
             'password' => 'hashed',
             'is_active' => 'boolean',
         ];

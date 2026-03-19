@@ -85,6 +85,7 @@ class ValidationHelper
             'start_time' => 'start time',
             'end_time' => 'end time',
             'parking_area_id' => 'parking area',
+            'parking_location_id' => 'parking location',
             'parking_slot_id' => 'parking slot',
             'payment_method' => 'payment method',
         ];

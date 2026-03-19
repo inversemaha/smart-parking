@@ -343,8 +343,8 @@ class ParkingLocationService
     public function getPopularLocations(int $limit = 5): Collection
     {
         return Cache::remember('popular_locations_' . $limit, 1800, function () use ($limit) {
-            return ParkingLocation::withCount(['slots as total_bookings' => function ($query) {
-                $query->join('bookings', 'parking_slots.id', '=', 'bookings.slot_id')
+            return ParkingLocation::withCount(['parkingSlots as total_bookings' => function ($query) {
+                $query->join('bookings', 'parking_slots.id', '=', 'bookings.parking_slot_id')
                       ->whereDate('bookings.created_at', '>=', now()->subDays(7));
             }])
             ->where('is_active', true)
@@ -375,9 +375,9 @@ class ParkingLocationService
     {
         return Cache::remember('total_slot_count', 3600, function () {
             return ParkingLocation::where('is_active', true)
-                ->withCount('slots')
+                ->withCount('parkingSlots')
                 ->get()
-                ->sum('slots_count');
+                ->sum('parking_slots_count');
         });
     }
 
@@ -404,17 +404,17 @@ class ParkingLocationService
     public function getFeaturedLocations(int $limit = 6): Collection
     {
         return Cache::remember('featured_locations_' . $limit, 1800, function () use ($limit) {
-            return ParkingLocation::with(['slots'])
+            return ParkingLocation::with(['parkingSlots'])
                 ->where('is_active', true)
-                ->withCount(['slots as recent_bookings' => function ($query) {
-                    $query->join('bookings', 'parking_slots.id', '=', 'bookings.slot_id')
+                ->withCount(['parkingSlots as recent_bookings' => function ($query) {
+                    $query->join('bookings', 'parking_slots.id', '=', 'bookings.parking_slot_id')
                           ->whereDate('bookings.created_at', '>=', now()->subDays(30));
                 }])
                 ->orderBy('recent_bookings', 'desc')
                 ->limit($limit)
                 ->get()
                 ->map(function ($location) {
-                    $location->total_slots = $location->slots->count();
+                    $location->total_slots = $location->parkingSlots->count();
                     $location->available_slots = $this->getAvailableSlotCount($location->id);
                     return $location;
                 });

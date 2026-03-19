@@ -2,308 +2,216 @@
 
 @section('title', __('general.visitor_dashboard'))
 @section('page-title', __('general.dashboard'))
+@section('content-class', 'mt-6')
 
 @section('content')
-<div class="space-y-6">
-    <!-- Welcome Section -->
-    <div class="bg-gradient-to-r from-primary to-blue-600 rounded-2xl p-6 text-white">
-        <div class="flex items-center justify-between">
-            <div>
-                <h1 class="text-2xl font-bold mb-2">
-                    {{ app()->getLocale() === 'bn' ? 'স্বাগতম' : 'Welcome' }}, {{ $user->name }}!
-                </h1>
-                <p class="text-primary-100">
-                    {{ __('general.dashboard_welcome_message') }}
-                </p>
-            </div>
-            <div class="text-right">
-                <div class="text-3xl mb-2">🚗</div>
-                <div class="text-sm opacity-80">
-                    {{ __('general.member_since', ['date' => $user->created_at->format('M Y')]) }}
-                </div>
-            </div>
-        </div>
+<div class="mt-8">
+    <div class="flex h-10 items-center">
+        <h2 class="me-5 truncate text-lg font-medium">{{ __('general.dashboard') }} - {{ $user->name }}</h2>
+        <a class="text-primary ms-auto flex items-center gap-3" href="{{ route('visitor.dashboard') }}">
+            <i data-lucide="refresh-ccw" class="size-4 stroke-[1.5] [--color:currentColor] stroke-(--color) fill-(--color)/25"></i>
+            {{ __('general.reload_data') }}
+        </a>
     </div>
 
-    <!-- Stats Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <!-- Stats Grid -->
+    <div class="mt-5 grid grid-cols-12 gap-6">
         <!-- Total Vehicles -->
-        <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class="text-sm text-gray-600 dark:text-gray-400">{{ __('vehicles.total') }}</p>
-                    <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ $stats['total_vehicles'] }}</p>
+        <div class="col-span-12 sm:col-span-6 xl:col-span-3">
+            <div class="box p-5">
+                <div class="flex">
+                    <i data-lucide="car" class="size-7 stroke-1 [--color:var(--color-primary)] stroke-(--color) fill-(--color)/25"></i>
+                    <div class="ms-auto text-success rounded-full px-2 py-px text-xs">{{ $stats['total_vehicles'] }}</div>
                 </div>
-                <div class="bg-blue-100 dark:bg-blue-900/30 rounded-full p-3">
-                    <i data-lucide="car" class="size-6 text-blue-600 dark:text-blue-400"></i>
-                </div>
-            </div>
-            <div class="mt-4">
-                <a href="{{ route('visitor.vehicles.index') }}" class="text-sm text-blue-600 dark:text-blue-400 hover:underline">
-                    {{ __('vehicles.manage') }} →
-                </a>
+                <div class="mt-6 text-2xl font-medium leading-8">{{ $stats['total_vehicles'] }}</div>
+                <div class="mt-1.5 text-xs uppercase opacity-70">{{ __('vehicles.total') }}</div>
             </div>
         </div>
 
         <!-- Active Bookings -->
-        <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class="text-sm text-gray-600 dark:text-gray-400">{{ __('bookings.active') }}</p>
-                    <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ $stats['active_bookings'] }}</p>
+        <div class="col-span-12 sm:col-span-6 xl:col-span-3">
+            <div class="box p-5">
+                <div class="flex">
+                    <i data-lucide="calendar-check" class="size-7 stroke-1 [--color:var(--color-success)] stroke-(--color) fill-(--color)/25"></i>
+                    <div class="ms-auto text-primary rounded-full px-2 py-px text-xs">{{ $stats['active_bookings'] }}</div>
                 </div>
-                <div class="bg-green-100 dark:bg-green-900/30 rounded-full p-3">
-                    <i data-lucide="calendar-check" class="size-6 text-green-600 dark:text-green-400"></i>
-                </div>
-            </div>
-            <div class="mt-4">
-                <a href="{{ route('visitor.bookings.index', ['status' => 'active']) }}" class="text-sm text-green-600 dark:text-green-400 hover:underline">
-                    {{ __('bookings.view_active') }} →
-                </a>
+                <div class="mt-6 text-2xl font-medium leading-8">{{ $stats['active_bookings'] }}</div>
+                <div class="mt-1.5 text-xs uppercase opacity-70">{{ __('bookings.active') }}</div>
             </div>
         </div>
 
         <!-- Total Bookings -->
-        <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class="text-sm text-gray-600 dark:text-gray-400">{{ __('bookings.total') }}</p>
-                    <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ $stats['total_bookings'] }}</p>
+        <div class="col-span-12 sm:col-span-6 xl:col-span-3">
+            <div class="box p-5">
+                <div class="flex">
+                    <i data-lucide="calendar" class="size-7 stroke-1 [--color:var(--color-warning)] stroke-(--color) fill-(--color)/25"></i>
+                    <div class="ms-auto text-warning rounded-full px-2 py-px text-xs">{{ $stats['total_bookings'] }}</div>
                 </div>
-                <div class="bg-purple-100 dark:bg-purple-900/30 rounded-full p-3">
-                    <i data-lucide="calendar" class="size-6 text-purple-600 dark:text-purple-400"></i>
-                </div>
-            </div>
-            <div class="mt-4">
-                <a href="{{ route('visitor.bookings.index') }}" class="text-sm text-purple-600 dark:text-purple-400 hover:underline">
-                    {{ __('bookings.view_all') }} →
-                </a>
+                <div class="mt-6 text-2xl font-medium leading-8">{{ $stats['total_bookings'] }}</div>
+                <div class="mt-1.5 text-xs uppercase opacity-70">{{ __('bookings.total') }}</div>
             </div>
         </div>
 
         <!-- Total Spent -->
-        <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class="text-sm text-gray-600 dark:text-gray-400">{{ __('payments.total_spent') }}</p>
-                    <p class="text-2xl font-bold text-gray-900 dark:text-white">৳{{ number_format($stats['total_spent']) }}</p>
+        <div class="col-span-12 sm:col-span-6 xl:col-span-3">
+            <div class="box p-5">
+                <div class="flex">
+                    <i data-lucide="wallet" class="size-7 stroke-1 [--color:var(--color-success)] stroke-(--color) fill-(--color)/25"></i>
+                    <div class="ms-auto text-success rounded-full px-2 py-px text-xs">৳{{ number_format($stats['total_spent'], 0) }}</div>
                 </div>
-                <div class="bg-orange-100 dark:bg-orange-900/30 rounded-full p-3">
-                    <i data-lucide="wallet" class="size-6 text-orange-600 dark:text-orange-400"></i>
-                </div>
-            </div>
-            <div class="mt-4">
-                <a href="{{ route('visitor.payments.index') }}" class="text-sm text-orange-600 dark:text-orange-400 hover:underline">
-                    {{ __('payments.view_history') }} →
-                </a>
+                <div class="mt-6 text-2xl font-medium leading-8">৳{{ number_format($stats['total_spent'], 0) }}</div>
+                <div class="mt-1.5 text-xs uppercase opacity-70">{{ __('payments.total_spent') }}</div>
             </div>
         </div>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Quick Actions & Upcoming -->
+    <div class="mt-8 grid grid-cols-12 gap-6">
         <!-- Quick Actions -->
-        <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
-            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                {{ __('general.quick_actions') }}
-            </h3>
+        <div class="col-span-12 xl:col-span-5">
+            <div class="box p-5">
+                <div class="flex h-10 items-center">
+                    <h2 class="truncate text-lg font-medium">{{ __('general.quick_actions') }}</h2>
+                </div>
 
-            <div class="grid grid-cols-2 gap-4">
-                <a href="{{ route('visitor.bookings.create') }}" class="flex flex-col items-center p-4 rounded-lg border-2 border-dashed border-primary hover:bg-primary/5 transition-colors">
-                    <div class="bg-primary/10 rounded-full p-3 mb-2">
-                        <i data-lucide="plus-circle" class="size-6 text-primary"></i>
-                    </div>
-                    <span class="text-sm font-medium text-primary">{{ __('bookings.new_booking') }}</span>
-                </a>
-
-                <a href="{{ route('visitor.vehicles.create') }}" class="flex flex-col items-center p-4 rounded-lg border-2 border-dashed border-blue-500 hover:bg-blue-50 transition-colors">
-                    <div class="bg-blue-100 rounded-full p-3 mb-2">
-                        <i data-lucide="car" class="size-6 text-blue-600"></i>
-                    </div>
-                    <span class="text-sm font-medium text-blue-600">{{ __('vehicles.add_vehicle') }}</span>
-                </a>
-
-                <a href="{{ route('visitor.parking.locations') }}" class="flex flex-col items-center p-4 rounded-lg border-2 border-dashed border-green-500 hover:bg-green-50 transition-colors">
-                    <div class="bg-green-100 rounded-full p-3 mb-2">
-                        <i data-lucide="map-pin" class="size-6 text-green-600"></i>
-                    </div>
-                    <span class="text-sm font-medium text-green-600">{{ __('parking.find_parking') }}</span>
-                </a>
-
-                <a href="{{ route('visitor.profile.index') }}" class="flex flex-col items-center p-4 rounded-lg border-2 border-dashed border-gray-500 hover:bg-gray-50 transition-colors">
-                    <div class="bg-gray-100 rounded-full p-3 mb-2">
-                        <i data-lucide="user" class="size-6 text-gray-600"></i>
-                    </div>
-                    <span class="text-sm font-medium text-gray-600">{{ __('user.profile') }}</span>
-                </a>
+                <div class="mt-3 space-y-3">
+                    <a href="{{ route('visitor.bookings.create') }}" class="flex items-center gap-3 rounded-xl border border-foreground/10 p-3 hover:bg-foreground/[.03]">
+                        <i data-lucide="plus-circle" class="size-5 text-primary"></i>
+                        <span class="text-sm">{{ __('bookings.new_booking') }}</span>
+                    </a>
+                    <a href="{{ route('visitor.vehicles.create') }}" class="flex items-center gap-3 rounded-xl border border-foreground/10 p-3 hover:bg-foreground/[.03]">
+                        <i data-lucide="car" class="size-5 text-primary"></i>
+                        <span class="text-sm">{{ __('vehicles.add_vehicle') }}</span>
+                    </a>
+                    <a href="{{ route('visitor.parking.locations') }}" class="flex items-center gap-3 rounded-xl border border-foreground/10 p-3 hover:bg-foreground/[.03]">
+                        <i data-lucide="map-pin" class="size-5 text-success"></i>
+                        <span class="text-sm">{{ __('parking.find_parking') }}</span>
+                    </a>
+                    <a href="{{ route('visitor.profile.index') }}" class="flex items-center gap-3 rounded-xl border border-foreground/10 p-3 hover:bg-foreground/[.03]">
+                        <i data-lucide="user" class="size-5 text-warning"></i>
+                        <span class="text-sm">{{ __('user.profile') }}</span>
+                    </a>
+                </div>
             </div>
         </div>
 
         <!-- Upcoming Bookings -->
-        <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
-            <div class="flex items-center justify-between mb-4">
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                    {{ __('bookings.upcoming') }}
-                </h3>
-                <a href="{{ route('visitor.bookings.index') }}" class="text-sm text-primary hover:underline">
-                    {{ __('general.view_all') }}
-                </a>
-            </div>
-
-            @if($upcomingBookings && $upcomingBookings->count() > 0)
-                <div class="space-y-3">
-                    @foreach($upcomingBookings as $booking)
-                        <div class="flex items-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                            <div class="bg-primary/10 rounded-full p-2 mr-3">
-                                <i data-lucide="calendar" class="size-4 text-primary"></i>
-                            </div>
-                            <div class="flex-1 min-w-0">
-                                <p class="text-sm font-medium text-gray-900 dark:text-white truncate">
-                                    {{ $booking->location->name }}
-                                </p>
-                                <p class="text-xs text-gray-500">
-                                    {{ $booking->start_datetime->format('M d, Y H:i') }}
-                                </p>
-                            </div>
-                            <div class="text-right">
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $booking->status === 'confirmed' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' }}">
-                                    {{ __('bookings.status_' . $booking->status) }}
-                                </span>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-            @else
-                <div class="text-center py-6">
-                    <div class="text-4xl mb-2">📅</div>
-                    <p class="text-gray-500 dark:text-gray-400 mb-4">{{ __('bookings.no_upcoming') }}</p>
-                    <a href="{{ route('visitor.bookings.create') }}" class="btn btn--sm btn--primary">
-                        {{ __('bookings.book_now') }}
+        <div class="col-span-12 xl:col-span-7">
+            <div class="box p-5">
+                <div class="flex h-10 items-center border-b border-foreground/10 pb-5">
+                    <h2 class="truncate text-lg font-medium">{{ __('bookings.upcoming') }}</h2>
+                    <a class="text-primary ms-auto text-sm" href="{{ route('visitor.bookings.index') }}">
+                        {{ __('general.view_all') }}
                     </a>
                 </div>
-            @endif
+
+                @if($upcomingBookings && $upcomingBookings->count() > 0)
+                    <div class="mt-5 space-y-3">
+                        @foreach($upcomingBookings as $booking)
+                            <div class="flex items-center gap-3 rounded-lg border border-foreground/10 p-3">
+                                <div class="flex-shrink">
+                                    <i data-lucide="calendar" class="size-5 text-primary"></i>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="text-sm font-medium truncate">{{ $booking->location->name ?? 'N/A' }}</div>
+                                    <div class="text-xs opacity-70">{{ $booking->start_datetime->format('M d, Y H:i') ?? 'N/A' }}</div>
+                                </div>
+                                <div class="flex-shrink">
+                                    <span class="inline-block px-2 py-1 rounded-full text-xs font-medium {{ $booking->status === 'confirmed' ? 'bg-success/20 text-success' : 'bg-warning/20 text-warning' }}">
+                                        {{ __('bookings.status_' . $booking->status) }}
+                                    </span>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                @else
+                    <div class="mt-5 py-8 text-center">
+                        <i data-lucide="calendar" class="size-12 mx-auto opacity-30 mb-2"></i>
+                        <p class="text-sm opacity-70">{{ __('bookings.no_upcoming') }}</p>
+                    </div>
+                @endif
+            </div>
         </div>
     </div>
 
-    <!-- Recent Activity & Vehicles -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Recent Bookings & Vehicles -->
+    <div class="mt-8 grid grid-cols-12 gap-6">
         <!-- Recent Bookings -->
-        <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
-            <div class="flex items-center justify-between mb-4">
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                    {{ __('bookings.recent') }}
-                </h3>
-                <a href="{{ route('visitor.bookings.index') }}" class="text-sm text-primary hover:underline">
-                    {{ __('general.view_all') }}
-                </a>
-            </div>
-
-            @if($recentBookings && $recentBookings->count() > 0)
-                <div class="space-y-3">
-                    @foreach($recentBookings as $booking)
-                        <div class="flex items-center p-3 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition-colors">
-                            <div class="mr-3">
-                                @if($booking->status === 'completed')
-                                    <div class="w-3 h-3 bg-green-500 rounded-full"></div>
-                                @elseif($booking->status === 'active')
-                                    <div class="w-3 h-3 bg-blue-500 rounded-full"></div>
-                                @elseif($booking->status === 'cancelled')
-                                    <div class="w-3 h-3 bg-red-500 rounded-full"></div>
-                                @else
-                                    <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                                @endif
-                            </div>
-                            <div class="flex-1 min-w-0">
-                                <p class="text-sm font-medium text-gray-900 dark:text-white truncate">
-                                    {{ $booking->location->name }}
-                                </p>
-                                <p class="text-xs text-gray-500">
-                                    {{ $booking->created_at->diffForHumans() }} • ৳{{ number_format($booking->total_cost) }}
-                                </p>
-                            </div>
-                            <a href="{{ route('visitor.bookings.show', $booking) }}" class="text-sm text-primary hover:underline">
-                                {{ __('general.view') }}
-                            </a>
-                        </div>
-                    @endforeach
-                </div>
-            @else
-                <div class="text-center py-6">
-                    <div class="text-4xl mb-2">🚗</div>
-                    <p class="text-gray-500 dark:text-gray-400 mb-4">{{ __('bookings.no_recent') }}</p>
-                    <a href="{{ route('visitor.bookings.create') }}" class="btn btn--sm btn--primary">
-                        {{ __('bookings.create_first') }}
+        <div class="col-span-12 lg:col-span-6">
+            <div class="box p-5">
+                <div class="flex h-10 items-center border-b border-foreground/10 pb-5">
+                    <h2 class="truncate text-lg font-medium">{{ __('bookings.recent') }}</h2>
+                    <a class="text-primary ms-auto text-sm" href="{{ route('visitor.bookings.index') }}">
+                        {{ __('general.view_all') }}
                     </a>
                 </div>
-            @endif
+
+                @if($recentBookings && $recentBookings->count() > 0)
+                    <div class="mt-5 space-y-2">
+                        @foreach($recentBookings as $booking)
+                            <div class="flex items-center gap-3 rounded-lg p-2 hover:bg-foreground/[.03]">
+                                <div class="flex-shrink">
+                                    @if($booking->status === 'completed')
+                                        <div class="size-3 rounded-full bg-success"></div>
+                                    @elseif($booking->status === 'active')
+                                        <div class="size-3 rounded-full bg-primary"></div>
+                                    @elseif($booking->status === 'cancelled')
+                                        <div class="size-3 rounded-full bg-danger"></div>
+                                    @else
+                                        <div class="size-3 rounded-full bg-warning"></div>
+                                    @endif
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="text-sm font-medium truncate">{{ $booking->location->name ?? 'N/A' }}</div>
+                                    <div class="text-xs opacity-70">{{ $booking->created_at->diffForHumans() }} • ৳{{ number_format($booking->total_cost ?? 0) }}</div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                @else
+                    <div class="mt-5 py-8 text-center">
+                        <i data-lucide="book-open" class="size-12 mx-auto opacity-30 mb-2"></i>
+                        <p class="text-sm opacity-70">{{ __('bookings.no_recent') }}</p>
+                    </div>
+                @endif
+            </div>
         </div>
 
         <!-- My Vehicles -->
-        <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
-            <div class="flex items-center justify-between mb-4">
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                    {{ __('vehicles.my_vehicles') }}
-                </h3>
-                <a href="{{ route('visitor.vehicles.index') }}" class="text-sm text-primary hover:underline">
-                    {{ __('general.view_all') }}
-                </a>
-            </div>
-
-            @if($vehicles && $vehicles->count() > 0)
-                <div class="space-y-3">
-                    @foreach($vehicles->take(3) as $vehicle)
-                        <div class="flex items-center p-3 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition-colors">
-                            <div class="bg-gray-100 dark:bg-gray-600 rounded-full p-2 mr-3">
-                                @switch($vehicle->type)
-                                    @case('car')
-                                        <i data-lucide="car" class="size-4 text-gray-600 dark:text-gray-300"></i>
-                                        @break
-                                    @case('motorcycle')
-                                        <i data-lucide="bike" class="size-4 text-gray-600 dark:text-gray-300"></i>
-                                        @break
-                                    @default
-                                        <i data-lucide="truck" class="size-4 text-gray-600 dark:text-gray-300"></i>
-                                @endswitch
-                            </div>
-                            <div class="flex-1 min-w-0">
-                                <p class="text-sm font-medium text-gray-900 dark:text-white">
-                                    {{ $vehicle->make }} {{ $vehicle->model }}
-                                </p>
-                                <p class="text-xs text-gray-500">
-                                    {{ $vehicle->license_plate }}
-                                    @if($vehicle->is_default)
-                                        • <span class="text-primary">{{ __('vehicles.default') }}</span>
-                                    @endif
-                                </p>
-                            </div>
-                            @if($vehicle->verification_status === 'verified')
-                                <div class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">
-                                    {{ __('vehicles.verified') }}
-                                </div>
-                            @endif
-                        </div>
-                    @endforeach
-                </div>
-            @else
-                <div class="text-center py-6">
-                    <div class="text-4xl mb-2">🚙</div>
-                    <p class="text-gray-500 dark:text-gray-400 mb-4">{{ __('vehicles.no_vehicles') }}</p>
-                    <a href="{{ route('visitor.vehicles.create') }}" class="btn btn--sm btn--primary">
-                        {{ __('vehicles.add_first') }}
+        <div class="col-span-12 lg:col-span-6">
+            <div class="box p-5">
+                <div class="flex h-10 items-center border-b border-foreground/10 pb-5">
+                    <h2 class="truncate text-lg font-medium">{{ __('vehicles.my_vehicles') }}</h2>
+                    <a class="text-primary ms-auto text-sm" href="{{ route('visitor.vehicles.index') }}">
+                        {{ __('general.view_all') }}
                     </a>
                 </div>
-            @endif
+
+                @if($vehicles && $vehicles->count() > 0)
+                    <div class="mt-5 space-y-2">
+                        @foreach($vehicles->take(5) as $vehicle)
+                            <div class="flex items-center gap-3 rounded-lg p-2 hover:bg-foreground/[.03]">
+                                <div class="flex-shrink">
+                                    <i data-lucide="car" class="size-5 opacity-70"></i>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="text-sm font-medium truncate">{{ $vehicle->make }} {{ $vehicle->model }}</div>
+                                    <div class="text-xs opacity-70">{{ $vehicle->license_plate }}</div>
+                                </div>
+                                @if($vehicle->verification_status === 'verified')
+                                    <span class="px-2 py-1 rounded-full text-xs font-medium bg-success/20 text-success flex-shrink">✓</span>
+                                @endif
+                            </div>
+                        @endforeach
+                    </div>
+                @else
+                    <div class="mt-5 py-8 text-center">
+                        <i data-lucide="car" class="size-12 mx-auto opacity-30 mb-2"></i>
+                        <p class="text-sm opacity-70">{{ __('vehicles.no_vehicles') }}</p>
+                    </div>
+                @endif
+            </div>
         </div>
     </div>
 </div>
-
-@push('scripts')
-<script>
-// Auto-refresh stats every 30 seconds
-setInterval(function() {
-    // You can add AJAX calls here to refresh dashboard data
-    // For now, we'll just log to console
-    console.log('Dashboard refresh check');
-}, 30000);
-</script>
-@endpush
 @endsection

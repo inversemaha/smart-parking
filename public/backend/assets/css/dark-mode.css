@@ -1,0 +1,118 @@
+/**
+ * Dark Mode Toggle Styling for Midone Admin Dashboard
+ */
+
+.dark-mode-switcher {
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100px) translateY(100px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0) translateY(0);
+        opacity: 1;
+    }
+}
+
+.dark-mode-switcher:hover {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important;
+    transform: translateY(-2px);
+    transition: all 0.3s ease;
+}
+
+.dark-mode-switcher__toggle {
+    position: relative;
+    display: inline-block;
+    background: #cbd5e1;
+    transition: background-color 0.3s ease;
+}
+
+.dark-mode-switcher__toggle div {
+    position: absolute;
+    top: 0.25rem;
+    left: 0.25rem;
+    width: 1.25rem;
+    height: 1.25rem;
+    background-color: #ffffff;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: left 0.3s ease;
+}
+
+html.dark .dark-mode-switcher {
+    background-color: #1e293b;
+    border-color: #475569;
+}
+
+html.dark .dark-mode-switcher__toggle {
+    background-color: #3b82f6;
+}
+
+html.dark .dark-mode-switcher__toggle div {
+    left: 1.75rem;
+    background-color: #ffffff;
+}
+
+html.dark .dark-mode-switcher__toggle--active div {
+    left: 1.75rem;
+}
+
+.dark-mode-switcher__toggle--active {
+    background-color: #3b82f6 !important;
+}
+
+/* Smooth transition for toggle switch */
+.dark-mode-switcher__toggle,
+.dark-mode-switcher__toggle div {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Dark mode body styles */
+html.dark {
+    color-scheme: dark;
+}
+
+html.dark body {
+    background-color: #0f172a;
+    color: #e2e8f0;
+}
+
+html.dark .side-nav {
+    background-color: #1e293b;
+    border-color: #334155;
+}
+
+html.dark .top-bar {
+    background-color: #1e293b;
+    border-color: #334155;
+}
+
+html.dark .content {
+    background-color: #0f172a;
+}
+
+/* Responsive for mobile */
+@media (max-width: 640px) {
+    .dark-mode-switcher {
+        width: 36px;
+        height: 36px;
+        mb: 4;
+        mr: 4;
+    }
+
+    .dark-mode-switcher {
+        margin-bottom: 1rem;
+        margin-right: 1rem;
+    }
+
+    .dark-mode-switcher span {
+        display: none;
+    }
+
+    .dark-mode-switcher__toggle {
+        margin: 0;
+    }
+}

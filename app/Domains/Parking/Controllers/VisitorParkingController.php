@@ -43,9 +43,13 @@ class VisitorParkingController extends Controller
      */
     public function locationDetails(ParkingLocation $location): View
     {
-        $location->load(['slots.slotType', 'amenities']);
+        $location->load(['slots']);
 
-        $slotTypes = $location->getAvailableSlotTypes();
+        $slotTypes = $location->slots
+            ->pluck('slot_type')
+            ->filter()
+            ->unique()
+            ->values();
         $nearbyLocations = $this->parkingLocationService->getNearbyLocations($location, 3);
 
         return view('visitor.parking.location-details', compact('location', 'slotTypes', 'nearbyLocations'));
@@ -150,13 +154,14 @@ class VisitorParkingController extends Controller
     public function apiLocationDetails(ParkingLocation $location): JsonResponse
     {
         $location->load([
-            'slots.slotType',
-            'amenities',
-            'operatingHours',
-            'pricingRules'
+            'slots',
         ]);
 
-        $slotTypes = $location->getAvailableSlotTypes();
+        $slotTypes = $location->slots
+            ->pluck('slot_type')
+            ->filter()
+            ->unique()
+            ->values();
         $currentAvailability = $this->parkingLocationService->getCurrentAvailability($location->id);
 
         return response()->json([
@@ -165,8 +170,6 @@ class VisitorParkingController extends Controller
                 'location' => $location,
                 'slot_types' => $slotTypes,
                 'current_availability' => $currentAvailability,
-                'operating_hours' => $location->operatingHours,
-                'pricing_rules' => $location->pricingRules,
             ]
         ]);
     }
@@ -200,8 +203,7 @@ class VisitorParkingController extends Controller
             $request->vehicle_type
         );
 
-        $location = ParkingLocation::with(['operatingHours', 'pricingRules'])
-                                  ->find($request->location_id);
+        $location = ParkingLocation::find($request->location_id);
 
         // Check if location is open during requested time
         $isLocationOpen = $this->parkingLocationService->isLocationOpenDuringTime(

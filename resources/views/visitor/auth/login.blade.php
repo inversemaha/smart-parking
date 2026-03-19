@@ -5,7 +5,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ __('auth.login') }} - {{ config('app.name') }}</title>
-    <link rel="stylesheet" href="{{ asset('backend/assets/css/app.css') }}" />
+    <link rel="stylesheet" href="{{ asset('backend/ui/css/app.css') }}" />
     @include('visitor.auth.partials.dark-init')
 </head>
 <body class="login">
@@ -27,11 +27,11 @@
         <div class="block xl:grid grid-cols-2 gap-4">
             <div class="hidden xl:flex flex-col min-h-screen">
                 <a href="{{ route('welcome') }}" class="-intro-x flex items-center pt-5">
-                    <img alt="{{ config('app.name') }}" class="w-6" src="{{ asset('backend/assets/images/logo.svg') }}">
+                    <img alt="{{ config('app.name') }}" class="w-6" src="{{ asset('backend/ui/images/logo.svg') }}">
                     <span class="text-white text-lg ml-3">{{ config('app.name', 'Rubick') }}</span>
                 </a>
                 <div class="my-auto">
-                    <img alt="{{ config('app.name') }}" class="-intro-x w-1/2 -mt-16" src="{{ asset('backend/assets/images/illustration.svg') }}">
+                    <img alt="{{ config('app.name') }}" class="-intro-x w-1/2 -mt-16" src="{{ asset('backend/ui/images/illustration.svg') }}">
                     <div class="-intro-x text-white font-medium text-4xl leading-tight mt-10">
                         {{ __('auth.welcome_back') }}
                         <br>
@@ -93,7 +93,7 @@
         <div class="dark-mode-switcher__toggle border"></div>
     </div>
 
-    <script src="{{ asset('backend/assets/js/app.js') }}"></script>
+    <script src="{{ asset('backend/ui/js/app.js') }}"></script>
     @include('visitor.auth.partials.theme-toggle-script')
 </body>
 </html>

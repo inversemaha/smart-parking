@@ -1,252 +1,120 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="utf-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link href="{{ asset('backend/assets/images/logo.svg') }}" rel="shortcut icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Parking Management System - Modern Admin Dashboard with Tailwind CSS">
+    <meta name="keywords" content="parking, admin, dashboard, management, system, tailwind">
+    <meta name="author" content="Parking Management System">
 
-@section('page-title', __('admin.title'))
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
 
-@push('styles')
-<style>
-    .admin-sidebar {
-        min-height: calc(100vh - 64px);
-    }
-    .admin-nav-item {
-        @apply flex items-center px-4 py-3 text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors;
-    }
-    .admin-nav-item.active {
-        @apply bg-blue-50 text-blue-700 border-r-2 border-blue-700;
-    }
-    .admin-nav-icon {
-        @apply w-5 h-5 mr-3;
-    }
-    .stats-card {
-        @apply bg-white rounded-lg shadow-sm border border-gray-200 p-6;
-    }
-    .stats-icon {
-        @apply w-12 h-12 rounded-lg flex items-center justify-center;
-    }
-</style>
-@endpush
+    <title>@yield('title', 'Dashboard') - Parking Management System</title>
 
-@section('content')
-<div class="flex min-h-screen bg-gray-50">
-    <!-- Sidebar -->
-    <div class="w-64 bg-white shadow-sm admin-sidebar">
-        <div class="p-6">
-            <h2 class="text-xl font-semibold text-gray-800">{{ __('admin.title') }}</h2>
-            <p class="text-sm text-gray-600 mt-1">{{ __('admin.overview') }}</p>
-        </div>
+    <!-- BEGIN: CSS Assets -->
+    <link rel="stylesheet" href="{{ asset('backend/assets/css/app.css') }}">
+    <link rel="stylesheet" href="{{ asset('backend/assets/css/dark-mode.css') }}">
+    <!-- END: CSS Assets -->
 
-        <nav class="px-4 pb-4">
-            <!-- Dashboard -->
-            <a href="{{ route('admin.dashboard.index') }}"
-               class="admin-nav-item {{ request()->routeIs('admin.dashboard*') ? 'active' : '' }}">
-                <i data-lucide="home" class="admin-nav-icon"></i>
-                {{ __('admin.navigation.dashboard') }}
+    <script>
+        // Initialize dark mode preference on page load
+        (function () {
+            const mode = localStorage.getItem('darkMode');
+            const isSystemDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const shouldDark = mode === 'active' || (mode === 'system' && isSystemDark);
+            document.documentElement.classList.toggle('dark', shouldDark);
+        })();
+    </script>
+
+    @stack('styles')
+</head>
+<body class="py-5">
+    <!-- BEGIN: Mobile Menu -->
+    <div class="mobile-menu md:hidden">
+        <div class="mobile-menu-bar">
+            <a href="{{ route('admin.dashboard.index') }}" class="flex mr-auto">
+                <img alt="Parking Management System" class="w-6" src="{{ asset('backend/assets/images/logo.svg') }}">
             </a>
-
-            <!-- User Management -->
-            <div class="mt-6">
-                <h3 class="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">{{ __('admin.navigation.users') }}</h3>
-                <div class="mt-2 space-y-1">
-                    @can('viewUsers', \App\Policies\AdminPolicy::class)
-                    <a href="{{ route('admin.users.index') }}"
-                       class="admin-nav-item {{ request()->routeIs('admin.users*') ? 'active' : '' }}">
-                        <i data-lucide="user-check" class="admin-nav-icon"></i>
-                        {{ __('admin.users.title') }}
-                    </a>
-                    @endcan
-
-                    @can('manageRoles', \App\Policies\AdminPolicy::class)
-                    <a href="{{ route('admin.permissions.roles') }}"
-                       class="admin-nav-item {{ request()->routeIs('admin.permissions.roles*') ? 'active' : '' }}">
-                        <i data-lucide="shield" class="admin-nav-icon"></i>
-                        {{ __('admin.permissions.roles') }}
-                    </a>
-                    @endcan
-
-                    @can('managePermissions', \App\Policies\AdminPolicy::class)
-                    <a href="{{ route('admin.permissions.index') }}"
-                       class="admin-nav-item {{ request()->routeIs('admin.permissions.index*') ? 'active' : '' }}">
-                        <i data-lucide="key" class="admin-nav-icon"></i>
-                        {{ __('admin.permissions.title') }}
-                    </a>
-                    @endcan
-                </div>
-            </div>
-
-            <!-- Vehicle Management -->
-            <div class="mt-6">
-                <h3 class="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">{{ __('admin.navigation.vehicles') }}</h3>
-                <div class="mt-2 space-y-1">
-                    @can('verifyVehicles', \App\Policies\AdminPolicy::class)
-                    <a href="{{ route('admin.vehicles.pending') }}"
-                       class="admin-nav-item {{ request()->routeIs('admin.vehicles*') ? 'active' : '' }}">
-                        <i data-lucide="car" class="admin-nav-icon"></i>
-                        {{ __('admin.vehicles.title') }}
-                    </a>
-                    @endcan
-                </div>
-            </div>
-
-            <!-- Parking Management -->
-            <div class="mt-6">
-                <h3 class="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">{{ __('admin.navigation.parking') }}</h3>
-                <div class="mt-2 space-y-1">
-                    @can('manageParkingLocations', \App\Policies\AdminPolicy::class)
-                    <a href="{{ route('admin.parking.locations') }}"
-                       class="admin-nav-item {{ request()->routeIs('admin.parking*') ? 'active' : '' }}">
-                        <i data-lucide="map-pin" class="admin-nav-icon"></i>
-                        {{ __('admin.parking.title') }}
-                    </a>
-                    @endcan
-                </div>
-            </div>
-
-            <!-- Booking Management -->
-            <div class="mt-6">
-                <h3 class="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">{{ __('admin.navigation.bookings') }}</h3>
-                <div class="mt-2 space-y-1">
-                    @can('viewBookings', \App\Policies\AdminPolicy::class)
-                    <a href="{{ route('admin.bookings.index') }}"
-                       class="admin-nav-item {{ request()->routeIs('admin.bookings*') ? 'active' : '' }}">
-                        <i data-lucide="calendar" class="admin-nav-icon"></i>
-                        {{ __('admin.bookings.title') }}
-                    </a>
-                    @endcan
-                </div>
-            </div>
-
-            <!-- Payment Management -->
-            <div class="mt-6">
-                <h3 class="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">{{ __('admin.navigation.payments') }}</h3>
-                <div class="mt-2 space-y-1">
-                    @can('viewPayments', \App\Policies\AdminPolicy::class)
-                    <a href="{{ route('admin.payments.index') }}"
-                       class="admin-nav-item {{ request()->routeIs('admin.payments*') ? 'active' : '' }}">
-                        <i data-lucide="credit-card" class="admin-nav-icon"></i>
-                        {{ __('admin.payments.title') }}
-                    </a>
-                    @endcan
-                </div>
-            </div>
-
-            <!-- Reports -->
-            <div class="mt-6">
-                <h3 class="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">{{ __('admin.navigation.reports') }}</h3>
-                <div class="mt-2 space-y-1">
-                    @can('viewReports', \App\Policies\AdminPolicy::class)
-                    <a href="{{ route('admin.reports.index') }}"
-                       class="admin-nav-item {{ request()->routeIs('admin.reports*') ? 'active' : '' }}">
-                        <i data-lucide="bar-chart-3" class="admin-nav-icon"></i>
-                        {{ __('admin.reports.title') }}
-                    </a>
-                    @endcan
-
-                    @can('viewAuditLogs', \App\Policies\AdminPolicy::class)
-                    <a href="{{ route('admin.audit.index') }}"
-                       class="admin-nav-item {{ request()->routeIs('admin.audit*') ? 'active' : '' }}">
-                        <i data-lucide="activity" class="admin-nav-icon"></i>
-                        {{ __('admin.audit.title') }}
-                    </a>
-                    @endcan
-                </div>
-            </div>
-
-            <!-- System Management -->
-            <div class="mt-6">
-                <h3 class="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">{{ __('admin.navigation.system') }}</h3>
-                <div class="mt-2 space-y-1">
-                    @can('viewSystemSettings', \App\Policies\AdminPolicy::class)
-                    <a href="{{ route('admin.settings.index') }}"
-                       class="admin-nav-item {{ request()->routeIs('admin.settings*') ? 'active' : '' }}">
-                        <i data-lucide="settings" class="admin-nav-icon"></i>
-                        {{ __('admin.settings.title') }}
-                    </a>
-                    @endcan
-
-                    @can('viewSystemMonitoring', \App\Policies\AdminPolicy::class)
-                    <a href="{{ route('admin.system.health') }}"
-                       class="admin-nav-item {{ request()->routeIs('admin.system*') ? 'active' : '' }}">
-                        <i data-lucide="monitor" class="admin-nav-icon"></i>
-                        {{ __('admin.system.title') }}
-                    </a>
-                    @endcan
-                </div>
-            </div>
-
-            <!-- Emergency -->
-            @can('performEmergencyOperations', \App\Policies\AdminPolicy::class)
-            <div class="mt-6 border-t pt-4">
-                <a href="{{ route('admin.emergency.index') }}"
-                   class="admin-nav-item text-red-600 hover:text-red-700 hover:bg-red-50 {{ request()->routeIs('admin.emergency*') ? 'active bg-red-50' : '' }}">
-                    <i data-lucide="alert-triangle" class="admin-nav-icon"></i>
-                    {{ __('admin.emergency.title') }}
-                </a>
-            </div>
-            @endcan
-        </nav>
-    </div>
-
-    <!-- Main Content -->
-    <div class="flex-1 min-h-screen">
-        <!-- Header -->
-        <div class="bg-white shadow-sm border-b border-gray-200 px-6 py-4">
-            <div class="flex items-center justify-between">
-                <div>
-                    <h1 class="text-2xl font-semibold text-gray-800">@yield('admin-title', __('admin.dashboard'))</h1>
-                    @if (View::hasSection('admin-subtitle'))
-                        <p class="text-sm text-gray-600 mt-1">@yield('admin-subtitle')</p>
-                    @endif
-                </div>
-
-                <!-- Language Switcher -->
-                <div class="flex items-center space-x-4">
-                    <div class="relative">
-                        <select id="language-switcher"
-                                class="form-select text-sm border-gray-300 rounded-lg"
-                                onchange="switchLanguage(this.value)">
-                            <option value="en" {{ app()->getLocale() === 'en' ? 'selected' : '' }}>English</option>
-                            <option value="bn" {{ app()->getLocale() === 'bn' ? 'selected' : '' }}>বাংলা</option>
-                        </select>
-                    </div>
-
-                    <!-- User Menu -->
-                    <div class="flex items-center space-x-2">
-                        <span class="text-sm text-gray-600">{{ auth()->user()->name }}</span>
-                        <div class="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
-                            <i data-lucide="user" class="w-4 h-4 text-gray-600"></i>
+            <a href="javascript:;" class="mobile-menu-toggler">
+                <i data-lucide="bar-chart-2" class="w-8 h-8 text-white transform -rotate-90"></i>
+            </a>
+        </div>
+        <div class="scrollable">
+            <a href="javascript:;" class="mobile-menu-toggler">
+                <i data-lucide="x-circle" class="w-8 h-8 text-white transform -rotate-90"></i>
+            </a>
+            <ul class="scrollable__content py-2">
+                <li>
+                    <a href="{{ route('admin.dashboard.index') }}" class="menu {{ request()->routeIs('admin.dashboard*') ? 'menu--active' : '' }}">
+                        <div class="menu__icon">
+                            <i data-lucide="home"></i>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Page Content -->
-        <div class="p-6">
-            @yield('admin-content')
+                        <div class="menu__title">Dashboard</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('admin.vehicles.pending') }}" class="menu {{ request()->routeIs('admin.vehicles*') ? 'menu--active' : '' }}">
+                        <div class="menu__icon">
+                            <i data-lucide="car"></i>
+                        </div>
+                        <div class="menu__title">Vehicles</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('admin.reports.index') }}" class="menu {{ request()->routeIs('admin.reports*') ? 'menu--active' : '' }}">
+                        <div class="menu__icon">
+                            <i data-lucide="chart-column"></i>
+                        </div>
+                        <div class="menu__title">Reports</div>
+                    </a>
+                </li>
+            </ul>
         </div>
     </div>
-</div>
+    <!-- END: Mobile Menu -->
 
-@push('scripts')
-<script>
-function switchLanguage(locale) {
-    const form = document.createElement('form');
-    form.method = 'POST';
-    form.action = `{{ url('/language') }}/${locale}`;
+    <div class="flex mt-[4.7rem] md:mt-0">
+        <!-- BEGIN: Side Menu -->
+        @include('partials.admin.sidebar')
+        <!-- END: Side Menu -->
 
-    const csrfToken = document.createElement('input');
-    csrfToken.type = 'hidden';
-    csrfToken.name = '_token';
-    csrfToken.value = '{{ csrf_token() }}';
+        <!-- BEGIN: Content -->
+        <div class="content">
+            <!-- BEGIN: Top Bar -->
+            @include('partials.admin.header')
+            <!-- END: Top Bar -->
 
-    form.appendChild(csrfToken);
-    document.body.appendChild(form);
-    form.submit();
-}
+            <!-- Page Content -->
+            <div class="@yield('content-class', '')">
+                @yield('content')
+            </div>
 
-// Initialize Lucide icons
-document.addEventListener('DOMContentLoaded', function() {
-    lucide.createIcons();
-});
-</script>
-@endpush
-@endsection
+            <!-- Footer -->
+            @include('partials.admin.footer')
+        </div>
+        <!-- END: Content -->
+    </div>
+
+    <!-- BEGIN: Dark Mode Switcher -->
+    <div class="dark-mode-switcher cursor-pointer shadow-md fixed bottom-0 right-0 box border rounded-full w-40 h-12 flex items-center justify-center z-50 mb-10 mr-10 bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 hover:shadow-lg transition-all" role="switch" aria-checked="false" aria-label="Toggle dark mode" onclick="return false;">
+        <div class="mr-4 text-slate-600 dark:text-slate-300 font-medium text-sm select-none pointer-events-none">Dark Mode</div>
+        <div class="dark-mode-switcher__toggle w-12 h-7 bg-slate-300 dark:bg-blue-600 rounded-full relative transition-colors duration-300 pointer-events-none">
+            <div class="absolute top-1 left-1 w-5 h-5 bg-white rounded-full shadow transition-all duration-300 dark-mode-switcher__toggle--active:left-6"></div>
+        </div>
+    </div>
+    <!-- END: Dark Mode Switcher -->
+
+    <!-- BEGIN: JS Assets -->
+    <script src="{{ asset('backend/assets/js/dark-mode.js') }}"></script>
+    <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyArMKJpScpQjwqf26N3I9jIwn6bRJspCiU&libraries=places"></script>
+    <script src="{{ asset('backend/assets/js/app.js') }}"></script>
+    <!-- END: JS Assets -->
+
+    @stack('scripts')
+</body>
+</html>

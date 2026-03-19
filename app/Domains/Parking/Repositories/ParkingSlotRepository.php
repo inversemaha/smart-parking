@@ -43,7 +43,8 @@ class ParkingSlotRepository
         Carbon $endTime
     ): ?ParkingSlot {
         return $this->model->where('parking_location_id', $parkingLocationId)
-                          ->where('vehicle_type', $vehicleType)
+                          ->whereJsonContains('vehicle_types', $vehicleType)
+                          ->where('is_active', true)
                           ->where('status', 'available')
                           ->whereDoesntHave('bookings', function ($query) use ($startTime, $endTime) {
                               $query->where(function ($q) use ($startTime, $endTime) {
@@ -54,7 +55,7 @@ class ParkingSlotRepository
                                              ->where('end_time', '>=', $endTime);
                                     });
                               })
-                              ->whereIn('status', ['confirmed', 'checked_in']);
+                              ->whereIn('status', ['confirmed', 'active']);
                           })
                           ->first();
     }

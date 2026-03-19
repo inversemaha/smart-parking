@@ -4,7 +4,7 @@ namespace App\Domains\User\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Domains\Booking\Models\Booking;
-use App\Domains\Parking\Models\ParkingArea;
+use App\Domains\Parking\Models\ParkingLocation;
 use App\Domains\Booking\Services\BookingService;
 use App\Domains\Vehicle\Services\VehicleService;
 use App\Domains\Parking\Services\ParkingService;

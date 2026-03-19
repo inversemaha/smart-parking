@@ -345,7 +345,9 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Initialize Lucide icons
-    lucide.createIcons();
+    if (window.createIcons && window.icons) {
+        window.createIcons({ icons: window.icons, nameAttr: 'data-lucide' });
+    }
 });
 
 // Show notification

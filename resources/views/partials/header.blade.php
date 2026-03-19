@@ -1,3 +1,9 @@
+@php
+    $homeRoute = \Illuminate\Support\Facades\Route::has('visitor.dashboard') && request()->routeIs('visitor.*')
+        ? route('visitor.dashboard')
+        : (\Illuminate\Support\Facades\Route::has('dashboard.index') ? route('dashboard.index') : '#');
+@endphp
+
 <div class="top-bar group -mt-2 [&.scrolled]:sticky [&.scrolled]:inset-x-0 [&.scrolled]:top-0 [&.scrolled]:z-[999] [&.scrolled]:mt-0">
     <div class="flex h-16 items-center gap-5 border-b transition-all group-[.scrolled]:px-5 group-[.scrolled]:rounded-2xl group-[.scrolled]:bg-background group-[.scrolled]:border group-[.scrolled]:shadow-lg group-[.scrolled]:shadow-foreground/5">
 
@@ -23,7 +29,7 @@
             @else
                 <!-- Default Breadcrumb -->
                 <li class="[&:not(:last-child)>a]:text-(--color-link) text-(--color-base) before:bg-(image:--background-image-chevron) relative before:absolute before:inset-y-0 before:my-auto before:-ml-4 before:size-2 before:-rotate-90 before:bg-center before:bg-no-repeat before:opacity-70 first:before:hidden">
-                    <a href="{{ route('dashboard.index') }}">Dashboard</a>
+                    <a href="{{ $homeRoute }}">Dashboard</a>
                 </li>
                 <li class="[&:not(:last-child)>a]:text-(--color-link) text-(--color-base) before:bg-(image:--background-image-chevron) relative before:absolute before:inset-y-0 before:my-auto before:-ml-4 before:size-2 before:-rotate-90 before:bg-center before:bg-no-repeat before:opacity-70 first:before:hidden">
                     <span>@yield('page-title', 'Overview')</span>
@@ -55,7 +61,7 @@
                         <!-- Sample Notification Items -->
                         <a class="hover:border-foreground/10 hover:bg-foreground/5 -mx-2 flex items-center gap-3.5 rounded-2xl border border-transparent p-2" href="#">
                             <div class="border-background/60 dark:border-foreground/[.05] relative h-14 w-14 flex-none overflow-hidden rounded-full border-4">
-                                <img class="absolute top-0 h-full w-full object-cover" src="{{ asset('backend/assets/images/fakers/profile-8.jpg') }}" alt="Notification User">
+                                <img class="absolute top-0 h-full w-full object-cover" src="{{ asset('backend/ui/images/fakers/profile-8.jpg') }}" alt="Notification User">
                             </div>
                             <div class="w-full">
                                 <div class="text-base font-medium">New parking request</div>

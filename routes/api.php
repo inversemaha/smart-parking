@@ -73,16 +73,17 @@ Route::prefix('v1')->middleware(['auth:sanctum', 'api.rate.limit'])->group(funct
     Route::prefix('bookings')->name('api.bookings.')->group(function () {
         Route::get('/', [ApiBookingController::class, 'index'])->name('index');
         Route::post('/', [ApiBookingController::class, 'store'])->name('store');
-        Route::get('/{booking}', [ApiBookingController::class, 'show'])->name('show');
-        Route::put('/{booking}', [ApiBookingController::class, 'update'])->name('update');
-        Route::delete('/{booking}', [ApiBookingController::class, 'cancel'])->name('cancel');
-        Route::post('/{booking}/extend', [ApiBookingController::class, 'extend'])->name('extend');
-        Route::post('/{booking}/confirm', [ApiBookingController::class, 'confirm'])->name('confirm');
 
         // Booking utilities
         Route::get('/calculate-cost', [ApiBookingController::class, 'calculateCost'])->name('calculate.cost');
         Route::get('/available-slots', [ApiBookingController::class, 'getAvailableSlots'])->name('slots.available');
         Route::get('/history', [ApiBookingController::class, 'getBookingHistory'])->name('history');
+
+        Route::get('/{booking}', [ApiBookingController::class, 'show'])->name('show');
+        Route::put('/{booking}', [ApiBookingController::class, 'update'])->name('update');
+        Route::delete('/{booking}', [ApiBookingController::class, 'cancel'])->name('cancel');
+        Route::post('/{booking}/extend', [ApiBookingController::class, 'extend'])->name('extend');
+        Route::post('/{booking}/confirm', [ApiBookingController::class, 'confirm'])->name('confirm');
     });
 
     // Payment routes
